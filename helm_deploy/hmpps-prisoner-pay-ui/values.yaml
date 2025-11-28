@@ -42,11 +42,11 @@ generic-service:
   namespace_secrets:
     # These secrets are created by terraform.
     hmpps-prisoner-pay-ui-client-creds:
-      CLIENT_CREDS_CLIENT_ID: 'CLIENT_CREDS_CLIENT_ID'
-      CLIENT_CREDS_CLIENT_SECRET: 'CLIENT_CREDS_CLIENT_SECRET'
+      SYSTEM_CLIENT_ID: 'SYSTEM_CLIENT_ID'
+      SYSTEM_CLIENT_SECRET: 'SYSTEM_CLIENT_SECRET'
     hmpps-prisoner-pay-ui-auth-code:
-      AUTH_CODE_CLIENT_ID: 'AUTH_CODE_CLIENT_ID'
-      AUTH_CODE_CLIENT_SECRET: 'AUTH_CODE_CLIENT_SECRET'    
+      API_CLIENT_ID: 'API_CLIENT_ID'
+      API_CLIENT_SECRET: 'API_CLIENT_SECRET'    
     hmpps-prisoner-pay-ui-session-secret:
       SESSION_SECRET: 'SESSION_SECRET'
     elasticache-redis:

@@ -46,10 +46,10 @@ services:
       - HMPPS_AUTH_EXTERNAL_URL=http://localhost:9090/auth
       - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
       # These will need to match new creds in the seed auth service auth
-      - AUTH_CODE_CLIENT_ID=hmpps-typescript-template
-      - AUTH_CODE_CLIENT_SECRET=clientsecret
-      - CLIENT_CREDS_CLIENT_ID=hmpps-typescript-template-system
-      - CLIENT_CREDS_CLIENT_SECRET=clientsecret
+      - API_CLIENT_ID=hmpps-typescript-template
+      - API_CLIENT_SECRET=clientsecret
+      - SYSTEM_CLIENT_ID=hmpps-typescript-template-system
+      - SYSTEM_CLIENT_SECRET=clientsecret
       - SESSION_SECRET=somesecretvalue
       - TOKEN_VERIFICATION_API_URL=http://hmpps-auth:8080/auth
       - TOKEN_VERIFICATION_ENABLED=false

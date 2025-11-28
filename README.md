@@ -20,8 +20,8 @@ user's roles. The JWT token will be verified and then stored in the user's sessi
 
 These credentials are configured using the following env variables:
 
-- AUTH_CODE_CLIENT_ID
-- AUTH_CODE_CLIENT_SECRET
+- API_CLIENT_ID
+- API_CLIENT_SECRET
 
 ### Client Credentials flow
 
@@ -36,8 +36,8 @@ These tokens are cached until expiration.
 
 These credentials are configured using the following env variables:
 
-- CLIENT_CREDS_CLIENT_ID
-- CLIENT_CREDS_CLIENT_SECRET
+- SYSTEM_CLIENT_ID
+- SYSTEM_CLIENT_SECRET
 
 ### Dependencies
 

@@ -175,15 +175,15 @@ As part of this change we also renamed the env var names used for configuring ou
 We've now renamed the client that is used to authenticate new users using the auth code oauth2 grant:
 
 ```
-API_CLIENT_ID -> AUTH_CODE_CLIENT_ID
-API_CLIENT_SECRET -> AUTH_CODE_CLIENT_SECRET
+API_CLIENT_ID -> API_CLIENT_ID
+API_CLIENT_SECRET -> API_CLIENT_SECRET
 ```
 
 and we've renamed the client used to request tokens using the client credentials grant as follows:
 
 ```
-SYSTEM_CLIENT_ID -> CLIENT_CREDS_CLIENT_ID
-SYSTEM_CLIENT_SECRET -> CLIENT_CREDS_CLIENT_SECRET
+SYSTEM_CLIENT_ID -> SYSTEM_CLIENT_ID
+SYSTEM_CLIENT_SECRET -> SYSTEM_CLIENT_SECRET
 ```
 
 ---
