@@ -9,7 +9,8 @@ export default function routes({ auditService, exampleService }: Services): Rout
   router.get('/', async (req, res, next) => {
     await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
-    const currentTime = await exampleService.getCurrentTime()
+    // const currentTime = await exampleService.getCurrentTime()
+    const currentTime = '2024-06-01T12:00:00Z' // Placeholder until exampleService is implemented
     return res.render('pages/index', { currentTime })
   })
 
