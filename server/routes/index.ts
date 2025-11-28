@@ -3,14 +3,13 @@ import { Router } from 'express'
 import type { Services } from '../services'
 import { Page } from '../services/auditService'
 
-export default function routes({ auditService, exampleService }: Services): Router {
+export default function routes({ auditService }: Services): Router {
   const router = Router()
 
   router.get('/', async (req, res, next) => {
     await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
-    // const currentTime = await exampleService.getCurrentTime()
-    const currentTime = '2024-06-01T12:00:00Z' // Placeholder until exampleService is implemented
+    const currentTime = '2024-06-01T12:00:00Z'
     return res.render('pages/index', { currentTime })
   })
 
