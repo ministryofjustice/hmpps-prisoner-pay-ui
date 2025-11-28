@@ -15,7 +15,7 @@ test.describe('Example', () => {
 
     const examplePage = await ExamplePage.verifyOnPage(page)
 
-    expect(examplePage.timestamp).toHaveText('The time is currently 2025-01-01T12:00:00Z')
+    expect(examplePage.timestamp).toHaveText('The time is currently 2024-06-01T12:00:00Z')
   })
 
   // test('ExampleApi failure shows error page', async ({ page }) => {
