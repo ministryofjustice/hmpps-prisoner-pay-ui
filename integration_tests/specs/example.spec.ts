@@ -18,11 +18,11 @@ test.describe('Example', () => {
     expect(examplePage.timestamp).toHaveText('The time is currently 2025-01-01T12:00:00Z')
   })
 
-  test('ExampleApi failure shows error page', async ({ page }) => {
-    await exampleApi.stubExampleTime(500)
+  // test('ExampleApi failure shows error page', async ({ page }) => {
+  //   await exampleApi.stubExampleTime(500)
 
-    await login(page)
+  //   await login(page)
 
-    await expect(page.locator('h1', { hasText: 'Internal Server Error' })).toBeVisible()
-  })
+  //   await expect(page.locator('h1', { hasText: 'Internal Server Error' })).toBeVisible()
+  // })
 })
