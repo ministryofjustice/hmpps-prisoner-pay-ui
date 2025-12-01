@@ -3,7 +3,7 @@
 
 generic-service:
   ingress:
-    host: prisoner-pay-ui.hmpps.service.justice.gov.uk
+    host: prisoner-pay.hmpps.service.justice.gov.uk
 
   env:
     INGRESS_URL: "https://prisoner-pay-ui.hmpps.service.justice.gov.uk"

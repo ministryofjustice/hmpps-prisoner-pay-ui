@@ -5,7 +5,7 @@ generic-service:
   replicaCount: 2
 
   ingress:
-    host: prisoner-pay-ui-dev.hmpps.service.justice.gov.uk
+    host: prisoner-pay-dev.hmpps.service.justice.gov.uk
 
   env:
     INGRESS_URL: "https://prisoner-pay-ui-dev.hmpps.service.justice.gov.uk"
