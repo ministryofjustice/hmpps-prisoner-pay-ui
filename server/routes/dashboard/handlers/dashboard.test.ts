@@ -19,7 +19,7 @@ describe('GET /dashboard', () => {
   })
 
   it('should render dashboard page', async () => {
-    await handler.get(req, res)
+    await handler.GET(req, res)
     expect(res.render).toHaveBeenCalledWith('pages/dashboard/dashboard', expect.any(Object))
   })
 })

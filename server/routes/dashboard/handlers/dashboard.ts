@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 export default class DashboardHandler {
   constructor() {}
 
-  public get = async (req: Request, res: Response) => {
+  GET = async (req: Request, res: Response) => {
     const prisonPopulation = 1200
     const payTypes = [
       {

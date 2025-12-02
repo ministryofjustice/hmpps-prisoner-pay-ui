@@ -7,7 +7,7 @@ export default function Index(): Router {
 
   const dashboardHandler = new DashboardHandler()
 
-  get('/', dashboardHandler.get)
+  get('/', dashboardHandler.GET)
 
   return router
 }
