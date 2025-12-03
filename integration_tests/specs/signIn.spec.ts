@@ -3,7 +3,7 @@ import hmppsAuth from '../mockApis/hmppsAuth'
 import exampleApi from '../mockApis/exampleApi'
 
 import { login, resetStubs } from '../testUtils'
-import HomePage from '../pages/homePage'
+import DashboardPage from '../pages/dashboard/dashboardPage'
 
 test.describe('SignIn', () => {
   test.beforeEach(async () => {
@@ -31,24 +31,24 @@ test.describe('SignIn', () => {
   test('User name visible in header', async ({ page }) => {
     await login(page, { name: 'A TestUser' })
 
-    const homePage = await HomePage.verifyOnPage(page)
+    const dashboardPage = await DashboardPage.verifyOnPage(page)
 
-    await expect(homePage.usersName).toHaveText('A. Testuser')
+    await expect(dashboardPage.usersName).toHaveText('A. Testuser')
   })
 
   test('Phase banner visible in header', async ({ page }) => {
     await login(page)
 
-    const homePage = await HomePage.verifyOnPage(page)
+    const dashboardPage = await DashboardPage.verifyOnPage(page)
 
-    await expect(homePage.phaseBanner).toHaveText('dev')
+    await expect(dashboardPage.phaseBanner).toHaveText('dev')
   })
 
   test('User can sign out', async ({ page }) => {
     await login(page)
 
-    const homePage = await HomePage.verifyOnPage(page)
-    await homePage.signOut()
+    const dashboardPage = await DashboardPage.verifyOnPage(page)
+    await dashboardPage.signOut()
 
     await expect(page.getByRole('heading')).toHaveText('Sign in')
   })
@@ -58,8 +58,8 @@ test.describe('SignIn', () => {
 
     await hmppsAuth.stubManageDetailsPage()
 
-    const homePage = await HomePage.verifyOnPage(page)
-    await homePage.clickManageUserDetails()
+    const dashboardPage = await DashboardPage.verifyOnPage(page)
+    await dashboardPage.clickManageUserDetails()
 
     await expect(page.getByRole('heading')).toHaveText('Your account details')
   })
@@ -77,7 +77,7 @@ test.describe('SignIn', () => {
 
     await login(page, { name: 'Some OtherTestUser', active: true })
 
-    const homePage = await HomePage.verifyOnPage(page)
-    await expect(homePage.usersName).toHaveText('S. Othertestuser')
+    const dashboardPage = await DashboardPage.verifyOnPage(page)
+    await expect(dashboardPage.usersName).toHaveText('S. Othertestuser')
   })
 })

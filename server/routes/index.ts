@@ -1,17 +1,12 @@
 import { Router } from 'express'
 
 import type { Services } from '../services'
-import { Page } from '../services/auditService'
+import DashboardRoutes from './dashboard'
 
-export default function routes({ auditService }: Services): Router {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function routes(services: Services): Router {
   const router = Router()
 
-  router.get('/', async (req, res, next) => {
-    await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
-
-    const currentTime = '2024-06-01T12:00:00Z'
-    return res.render('pages/index', { currentTime })
-  })
-
+  router.use('/', DashboardRoutes())
   return router
 }
