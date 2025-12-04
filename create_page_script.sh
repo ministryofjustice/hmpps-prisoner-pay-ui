@@ -135,7 +135,7 @@ EOF
 # Create integration test file
 echo -e "${GREEN}✓${NC} Creating test: ${TEST_PATH}"
 cat > "$TEST_PATH" << 'EOF'
-import { expect, type Locator, type Page } from '@playwright/test'
+import { type Locator, type Page } from '@playwright/test'
 import AbstractPage from '../abstractPage'
 
 export default class CLASS_NAMEPage extends AbstractPage {
