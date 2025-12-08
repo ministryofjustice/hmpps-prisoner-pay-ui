@@ -16,6 +16,7 @@ import config from '../config'
 import HmppsAuditClient from './hmppsAuditClient'
 import logger from '../../logger'
 import ExampleApiClient from './exampleApiClient'
+import OrchestratorApiClient from './orchestratorApiClient'
 
 export const dataAccess = () => {
   const hmppsAuthClient = new AuthenticationClient(
@@ -28,10 +29,11 @@ export const dataAccess = () => {
     applicationInfo,
     hmppsAuthClient,
     exampleApiClient: new ExampleApiClient(hmppsAuthClient),
+    orchestratorApiClient: new OrchestratorApiClient(hmppsAuthClient),
     hmppsAuditClient: new HmppsAuditClient(config.sqs.audit),
   }
 }
 
 export type DataAccess = ReturnType<typeof dataAccess>
 
-export { AuthenticationClient, HmppsAuditClient, ExampleApiClient }
+export { AuthenticationClient, HmppsAuditClient, ExampleApiClient, OrchestratorApiClient }

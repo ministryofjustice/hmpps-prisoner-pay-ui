@@ -1,10 +1,14 @@
 import { Request, Response } from 'express'
 import DashboardHandler from './dashboard'
+import OrchestratorService from '../../../services/orchestratorService'
 
+jest.mock('../../../services/orchestratorService')
 jest.mock('../../../services/auditService')
 
+const orchestratorService = new OrchestratorService(null)
+
 describe('GET /dashboard', () => {
-  const handler = new DashboardHandler()
+  const handler = new DashboardHandler(orchestratorService)
   let req: Request
   let res: Response
 

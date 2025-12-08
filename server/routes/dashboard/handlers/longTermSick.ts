@@ -1,25 +1,19 @@
 import { Request, Response } from 'express'
 import OrchestratorService from '../../../services/orchestratorService'
 
-export default class DashboardHandler {
+export default class LongTermSickHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
 
   GET = async (req: Request, res: Response) => {
     const longTermSickRecord = this.orchestratorService.getLongTermSick()
-    const prisonPopulation = 1200
-    const payTypes = [
-      {
-        key: 'LTS',
-        name: 'Long term sick',
-        prisonerCount: 12,
-        url: '/long-term-sick',
-      },
-    ]
 
-    return res.render('pages/dashboard/dashboard', {
+    return res.render('pages/dashboard/long-term-sick', {
       longTermSickRecord,
-      prisonPopulation,
-      payTypes,
     })
+  }
+
+  POST = async (req: Request, res: Response) => {
+    // TODO: Implement POST logic
+    return res.redirect('')
   }
 }
