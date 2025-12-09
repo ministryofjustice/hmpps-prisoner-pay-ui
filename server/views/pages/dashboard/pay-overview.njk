@@ -1,8 +1,80 @@
 {% extends "layout.njk" %}
 
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
 {% set pageTitle = applicationName + " - Page name" %}
 {% set mainClasses = "govuk-body" %}
 
+{% set weekPay = (payType.dailyPayAmount * 5) / 100 %}
+{% set payTypeDescriptionLower = payType.description | lower %}
+
 {% block content %}
-  {# TODO: Add page content #}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1>{{ payType.description }}</h1>
+            {# Following line needs to be made generic #}
+            <p class="govuk-body">People have been signed off for more than 4 weeks</p class="govuk-body"> 
+            <p class="govuk-body">They're paid {{ payType.dailyPayAmount }}p per day (£{{ weekPay }} for a 5 day week)</p>
+
+            {{ govukButton({
+                text: "Add someone to " + payTypeDescriptionLower,
+                href: '/'
+            }) }}
+
+            {% set rows = [] %}
+            {% for row in records %}
+                {% set rows = (rows.push([
+                    {
+                        text: row.prisonerName
+                    }, {
+                        text: row.cellLocation
+                    }, {
+                        text: row.startDate
+                    }, {
+                        text: row.endDate
+                    }, {
+                        text: ''
+                    }, {
+                        html: '<a href="/">Remove from ' + payTypeDescriptionLower + '</a>'
+                    }
+                ]), rows) %}
+            {% endfor %}
+            {{ govukTable({
+                attributes: {
+                        'data-module': 'moj-sortable-table',
+                        'data-table-fixed-rows': 'true'
+                },
+                caption: "Preview",
+                captionClasses: "govuk-visually-hidden",
+                head: [
+                    {
+                        text: "Prisoner Details",
+                        attributes: { "aria-sort": "ascending" }
+                    }, 
+                    {
+                        text: "Cell location",
+                        attributes: { "aria-sort": "none" }
+                    }, 
+                    {
+                        text: "Date added to " + payTypeDescriptionLower,
+                        attributes: { "aria-sort": "none" }
+                    },
+                    {
+                        text: "End Date",
+                        attributes: { "aria-sort": "none" }
+                    },
+                    {
+                        text: "Current allocations",
+                        attributes: { "aria-sort": "none" }
+                    },
+                    {
+                        text: ""
+                    }
+                ],
+                rows: rows,
+                classes: "govuk-!-margin-bottom-6"
+            }) }}
+        </div>
+    </div>
 {% endblock %}

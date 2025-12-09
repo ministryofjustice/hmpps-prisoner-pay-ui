@@ -10,15 +10,16 @@ export default function Index({ orchestratorService }: Services): Router {
   const post = (path: string, handler: RequestHandler) => router.post(path, handler)
 
   const dashboardHandler = new DashboardHandler(orchestratorService)
-  const payOverviewHandler = new PayOverviewHandler()
+  const payOverviewHandler = new PayOverviewHandler(orchestratorService)
   const longTermSickHandler = new LongTermSickHandler(orchestratorService)
 
   get('/', dashboardHandler.GET)
-  get('/pay-overview', payOverviewHandler.GET)
-  get('/long-term-sick', longTermSickHandler.GET)
 
-  post('/pay-overview', payOverviewHandler.POST)
+  get('/long-term-sick', longTermSickHandler.GET)
   post('/long-term-sick', longTermSickHandler.POST)
+
+  get('/:payId/pay-overview', payOverviewHandler.GET)
+  post('/:payId/pay-overview', payOverviewHandler.POST)
 
   return router
 }

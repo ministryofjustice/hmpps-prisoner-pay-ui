@@ -1,10 +1,24 @@
 import { Request, Response } from 'express'
+import OrchestratorService from '../../../services/orchestratorService'
 
 export default class PayOverviewHandler {
-  constructor() {}
+  constructor(private readonly orchestratorService: OrchestratorService) {}
 
   GET = async (req: Request, res: Response) => {
-    return res.render('pages/dashboard/pay-overview', {})
+    const { payId } = req.params
+    const payTypes = [
+      {
+        id: 1,
+        code: 'LTS',
+        description: 'Long-term Sick',
+        dailyPayAmount: 65,
+      },
+    ]
+    const longTermSickRecord = this.orchestratorService.getLongTermSick()
+    return res.render('pages/dashboard/pay-overview', {
+      payType: payTypes.find(pt => pt.id === Number(payId)),
+      records: longTermSickRecord,
+    })
   }
 
   POST = async (req: Request, res: Response) => {
