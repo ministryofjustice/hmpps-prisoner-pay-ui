@@ -6,18 +6,10 @@ export default class PayOverviewHandler {
 
   GET = async (req: Request, res: Response) => {
     const { payId } = req.params
-    const payTypes = [
-      {
-        id: 1,
-        code: 'LTS',
-        description: 'Long-term Sick',
-        dailyPayAmount: 65,
-      },
-    ]
-    const longTermSickRecord = this.orchestratorService.getLongTermSick()
+    const paySummary = this.orchestratorService.getPaySummaryById(Number(payId))
     return res.render('pages/dashboard/pay-overview', {
-      payType: payTypes.find(pt => pt.id === Number(payId)),
-      records: longTermSickRecord,
+      payType: paySummary,
+      records: paySummary.registeredPrisoners,
     })
   }
 

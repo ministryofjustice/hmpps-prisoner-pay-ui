@@ -1,10 +1,20 @@
 import { Request, Response } from 'express'
+import { when } from 'jest-when'
 import PayOverviewHandler from './payOverview'
 import OrchestratorService from '../../../services/orchestratorService'
 
 jest.mock('../../../services/orchestratorService')
 
 const orchestratorService = new OrchestratorService(null)
+
+const paySummary = {
+  id: 1,
+  code: 'LTS',
+  description: 'Long-term Sick',
+  dailyPayAmount: 65,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  registeredPrisoners: [] as any[],
+}
 
 describe('PayOverviewHandler', () => {
   let handler: PayOverviewHandler
@@ -20,6 +30,8 @@ describe('PayOverviewHandler', () => {
       render: jest.fn(),
       redirect: jest.fn(),
     }
+
+    when(orchestratorService.getPaySummaryById).calledWith(1).mockReturnValue(paySummary)
   })
 
   describe('GET', () => {
@@ -32,8 +44,9 @@ describe('PayOverviewHandler', () => {
           code: 'LTS',
           description: 'Long-term Sick',
           dailyPayAmount: 65,
+          registeredPrisoners: [],
         },
-        records: orchestratorService.getLongTermSick(),
+        records: [],
       })
     })
   })
