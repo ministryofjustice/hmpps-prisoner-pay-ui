@@ -8,6 +8,18 @@ export default class OrchestratorApiClient extends RestClient {
     super('orchestrator API', config.apis.exampleApi, logger, authenticationClient)
   }
 
+  getPayTypes() {
+    return [
+      {
+        id: 1,
+        key: 'LTS',
+        description: 'Long-term Sick',
+        prisonerCount: 12,
+        url: '/long-term-sick',
+      },
+    ]
+  }
+
   getPaySummaryById(payId: number) {
     return [
       {

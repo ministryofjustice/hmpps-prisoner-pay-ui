@@ -5,19 +5,10 @@ export default class DashboardHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
 
   GET = async (req: Request, res: Response) => {
-    const longTermSickRecord = this.orchestratorService.getLongTermSick()
+    const payTypes = this.orchestratorService.getPayTypes()
     const prisonPopulation = 1200
-    const payTypes = [
-      {
-        key: 'LTS',
-        name: 'Long term sick',
-        prisonerCount: 12,
-        url: '/long-term-sick',
-      },
-    ]
 
     return res.render('pages/dashboard/dashboard', {
-      longTermSickRecord,
       prisonPopulation,
       payTypes,
     })
