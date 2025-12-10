@@ -1,18 +1,13 @@
 import { Request, Response } from 'express'
+import OrchestratorService from '../../../services/orchestratorService'
 
 export default class DashboardHandler {
-  constructor() {}
+  constructor(private readonly orchestratorService: OrchestratorService) {}
 
   GET = async (req: Request, res: Response) => {
+    const payTypes = this.orchestratorService.getPayTypes()
     const prisonPopulation = 1200
-    const payTypes = [
-      {
-        key: 'LTS',
-        name: 'Long term sick',
-        prisonerCount: 12,
-        url: '/add/long-term-sick',
-      },
-    ]
+
     return res.render('pages/dashboard/dashboard', {
       prisonPopulation,
       payTypes,

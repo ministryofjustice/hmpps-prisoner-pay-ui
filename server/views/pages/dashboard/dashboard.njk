@@ -20,7 +20,7 @@
             {% for payType in payTypes %}
                 {% set rows = (rows.push([
                     {
-                        html: '<a href="' + payType.url + '" class="govuk-link govuk-link--no-visited-state">' + payType.name + '</a>'
+                        html: '<a href="' + payType.id + '/pay-overview" class="govuk-link govuk-link--no-visited-state">' + payType.description + '</a>'
                     }, {
                         text: payType.prisonerCount,
                         format: "numeric"
