@@ -21,3 +21,19 @@ export const initialiseName = (fullName?: string): string | null => {
   const array = fullName.split(' ')
   return `${array[0][0]}. ${array.reverse()[0]}`
 }
+
+export type FieldValidationError = {
+  field: string
+  message: string
+}
+
+export const findError = (array: FieldValidationError[], formFieldId: string) => {
+  if (!array) return null
+  const item = array.find(error => error.field === formFieldId)
+  if (item) {
+    return {
+      text: item.message,
+    }
+  }
+  return null
+}
