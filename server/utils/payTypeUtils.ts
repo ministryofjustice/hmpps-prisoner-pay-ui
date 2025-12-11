@@ -1,0 +1,17 @@
+import PayType from '../@types/payTypes'
+
+const payTypes = [
+  {
+    type: PayType.LONG_TERM_SICK,
+    description: 'Long-term Sick',
+    slug: 'long-term-sick',
+  },
+]
+
+export const getPayTypeBySlug = (slug: string) => {
+  return payTypes.find(payType => payType.slug === slug)
+}
+
+export const getAllPayTypes = () => {
+  return payTypes
+}

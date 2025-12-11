@@ -13,8 +13,8 @@ export default function Index({ orchestratorService }: Services): Router {
 
   get('/', dashboardHandler.GET)
 
-  get('/:payId/pay-overview', payOverviewHandler.GET)
-  post('/:payId/pay-overview', payOverviewHandler.POST)
+  get('/:payTypeSlug/pay-overview', payOverviewHandler.GET)
+  post('/:payTypeSlug/pay-overview', payOverviewHandler.POST)
 
   return router
 }

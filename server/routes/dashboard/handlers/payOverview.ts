@@ -1,12 +1,14 @@
 import { Request, Response } from 'express'
 import OrchestratorService from '../../../services/orchestratorService'
+import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 export default class PayOverviewHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
 
   GET = async (req: Request, res: Response) => {
-    const { payId } = req.params
-    const paySummary = this.orchestratorService.getPaySummaryById(Number(payId))
+    const { payTypeSlug } = req.params
+    const payType = getPayTypeBySlug(payTypeSlug)
+    const paySummary = this.orchestratorService.getPaySummaryByType(payType.type)
     return res.render('pages/dashboard/pay-overview', {
       payType: paySummary,
       records: paySummary.registeredPrisoners,

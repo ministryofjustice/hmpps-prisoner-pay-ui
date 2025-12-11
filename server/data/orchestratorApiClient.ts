@@ -20,11 +20,12 @@ export default class OrchestratorApiClient extends RestClient {
     ]
   }
 
-  getPaySummaryById(payId: number) {
+  getPaySummaryByType(searchType: string) {
     return [
       {
         id: 1,
         code: 'LTS',
+        type: 'LONG_TERM_SICK',
         description: 'Long-term Sick',
         dailyPayAmount: 65,
         registeredPrisoners: [
@@ -54,7 +55,7 @@ export default class OrchestratorApiClient extends RestClient {
           },
         ],
       },
-    ].find(payType => payType.id === payId)
+    ].find(payType => payType.type === searchType)
   }
 
   getLongTermSick() {
