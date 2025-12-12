@@ -23,16 +23,16 @@ export const initialiseName = (fullName?: string): string | null => {
 }
 
 export type FieldValidationError = {
-  field: string
-  message: string
+  href: string
+  text: string
 }
 
 export const findError = (array: FieldValidationError[], formFieldId: string) => {
   if (!array) return null
-  const item = array.find(error => error.field === formFieldId)
+  const item = array.find(error => error.href === `#${formFieldId}`)
   if (item) {
     return {
-      text: item.message,
+      text: item.text,
     }
   }
   return null

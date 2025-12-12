@@ -25,11 +25,10 @@ describe('AddPrisonerHandler', () => {
 
   describe('POST', () => {
     it('should redirect after processing', async () => {
+      req.body = { query: 'some query' }
       await handler.POST(req as Request, res as Response)
 
       expect(res.redirect).toHaveBeenCalled()
     })
   })
-
-  // TODO: Add more test cases
 })

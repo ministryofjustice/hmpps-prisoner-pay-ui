@@ -12,7 +12,7 @@
             <span class="govuk-caption-l">Long-term sick</span>
             <h1 class="govuk-heading-l">Who do you want to add?</h1>
 
-            <form method="POST" action="search-prisoner{{ '?preserveHistory=true' if preserveHistory else '' }}">
+            <form method="POST" action="">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-two-thirds">
@@ -25,8 +25,8 @@
                                         text: 'Search by name or prison number.'
                                     },
                                     type: "search",
-                                    value: defaultPrisonerNumber,
-                                    errorMessage: validationErrors | findError("query")
+                                    value: query,
+                                    errorMessage: errors | findError("query")
                                 }) }}
                                 {{ govukButton({
                                     text: "Search",
