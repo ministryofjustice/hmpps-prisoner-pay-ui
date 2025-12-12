@@ -1,0 +1,42 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = applicationName + " - Page name" %}
+{% set mainClasses = "govuk-body" %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <span class="govuk-caption-l">Long-term sick</span>
+            <h1 class="govuk-heading-l">Who do you want to add?</h1>
+
+            <form method="POST" action="">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-two-thirds">
+                        <div class="search-input {{ params.classes }}">
+                            <div class="search-input__form-inputs {{ params.formInputs.classes }}">
+                                {{ govukInput({
+                                    id: "query",
+                                    name: "query",
+                                    hint: {
+                                        text: 'Search by name or prison number.'
+                                    },
+                                    type: "search",
+                                    value: query,
+                                    errorMessage: errors | findError("query")
+                                }) }}
+                                {{ govukButton({
+                                    text: "Search",
+                                    type: "submit"
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

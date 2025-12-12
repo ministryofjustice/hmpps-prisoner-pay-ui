@@ -7,8 +7,8 @@ export default class OrchestratorService {
     return this.orchestratorApiClient.getPayTypes()
   }
 
-  getPaySummaryById(payId: number) {
-    return this.orchestratorApiClient.getPaySummaryById(payId)
+  getPaySummaryByType(searchType: string) {
+    return this.orchestratorApiClient.getPaySummaryByType(searchType)
   }
 
   getLongTermSick() {

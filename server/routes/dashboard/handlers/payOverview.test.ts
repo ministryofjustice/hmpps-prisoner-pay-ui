@@ -10,6 +10,7 @@ const orchestratorService = new OrchestratorService(null)
 const paySummary = {
   id: 1,
   code: 'LTS',
+  type: 'LONG_TERM_SICK',
   description: 'Long-term Sick',
   dailyPayAmount: 65,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,14 +25,14 @@ describe('PayOverviewHandler', () => {
   beforeEach(() => {
     handler = new PayOverviewHandler(orchestratorService)
     req = {
-      params: { payId: '1' },
+      params: { payTypeSlug: 'long-term-sick' },
     }
     res = {
       render: jest.fn(),
       redirect: jest.fn(),
     }
 
-    when(orchestratorService.getPaySummaryById).calledWith(1).mockReturnValue(paySummary)
+    when(orchestratorService.getPaySummaryByType).calledWith(expect.any(String)).mockReturnValue(paySummary)
   })
 
   describe('GET', () => {
@@ -42,6 +43,7 @@ describe('PayOverviewHandler', () => {
         payType: {
           id: 1,
           code: 'LTS',
+          type: 'LONG_TERM_SICK',
           description: 'Long-term Sick',
           dailyPayAmount: 65,
           registeredPrisoners: [],
