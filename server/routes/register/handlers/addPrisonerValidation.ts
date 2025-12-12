@@ -7,7 +7,7 @@ type AddPrisonerForm = {
 const errors: { [key: string]: FormError } = {
   MISSING_QUERY: {
     href: '#query',
-    text: 'Input a query',
+    text: 'Enter a search query',
   },
 }
 
