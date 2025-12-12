@@ -10,7 +10,6 @@ export default class AddPrisonerHandler {
 
   POST = async (req: Request, res: Response) => {
     const { query } = req.body
-    console.log(query)
 
     const errors = validateForm({ query })
     if (errors) return res.render('pages/register/add-prisoner', { errors: [errors], query })
