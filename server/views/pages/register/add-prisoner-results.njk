@@ -61,70 +61,72 @@
                                 {% endif %}
 
                                 {% set prisonerRows = (prisonerRows.push([
-                                {
-                                    attributes: {
-                                        id: 'prisoner-name',
-                                        "data-sort-value": prisoner | formatName(NameFormatStyle.lastCommaFirstMiddle, false)
-                                    },
-                                    html: prisonerName
-                                }, {
-                                    attributes: {
-                                        id: 'prisoner-number',
-                                        "data-sort-value": prisoner.prisonerNumber
-                                    },
-                                    text: prisoner.prisonerNumber
-                                }, {
-                                    attributes: {
-                                        id: 'prisoner-cell-location',
-                                        "data-sort-value": prisoner.cellLocation
-                                    },
-                                    text: prisoner.cellLocation
-                                }
-                            ]), prisonerRows) %}
-                        {% endfor %}
+                                    {
+                                        attributes: {
+                                            id: 'prisoner-name',
+                                            "data-sort-value": prisoner | formatName(NameFormatStyle.lastCommaFirstMiddle, false)
+                                        },
+                                        html: prisonerName
+                                    }, {
+                                        attributes: {
+                                            id: 'prisoner-number',
+                                            "data-sort-value": prisoner.prisonerNumber
+                                        },
+                                        text: prisoner.prisonerNumber
+                                    }, {
+                                        attributes: {
+                                            id: 'prisoner-cell-location',
+                                            "data-sort-value": prisoner.cellLocation
+                                        },
+                                        text: prisoner.cellLocation
+                                    }
+                                ]), prisonerRows) %}
+                            {% endfor %}
 
-                        {% if prisoners | length > 10 %}
-                            {{ govukButton({
-                                text: "Select and continue",
-                                id: "continue-button-above-results"
+                            {% if prisoners | length > 10 %}
+                                {{ govukButton({
+                                    text: "Select and continue",
+                                    id: "continue-button-above-results"
+                                }) }}
+                            {% endif %}
+
+                            {{ govukTable({
+                                attributes: {
+                                    'data-module': 'moj-sortable-table',
+                                    id: 'prisoner-search-list'
+                                },
+                                caption: "Prisoner search list",
+                                classes: "fixed-layout-table",
+                                captionClasses: "govuk-visually-hidden",
+                                head: [{
+                                    text: "Name",
+                                    attributes: {
+                                        "aria-sort": "ascending"
+                                    }
+                                }, {
+                                    text: "Prison number",
+                                    attributes: {
+                                        "aria-sort": "none"
+                                    }
+                                }, {
+                                    text: "Cell location",
+                                    attributes: {
+                                        "aria-sort": "none"
+                                    }
+                                }],
+                                rows: prisonerRows
                             }) }}
-                        {% endif %}
-
-                        {{ govukTable({
-                            attributes: {
-                                'data-module': 'moj-sortable-table',
-                                id: 'prisoner-search-list'
-                            },
-                            caption: "Prisoner search list",
-                            classes: "fixed-layout-table",
-                            captionClasses: "govuk-visually-hidden",
-                            head: [{
-                                text: "Name",
-                                attributes: {
-                                    "aria-sort": "ascending"
-                                }
-                            }, {
-                                text: "Prison number",
-                                attributes: {
-                                    "aria-sort": "none"
-                                }
-                            }, {
-                                text: "Cell location",
-                                attributes: {
-                                    "aria-sort": "none"
-                                }
-                            }],
-                            rows: prisonerRows
-                        }) }}
-
-                        {{ govukButton({
-                            text: "Select and continue" if prisoners | length > 1 else "Continue",
-                            id: "continue-button"
-                        }) }}
-                    </form>
+                            <div class="govuk-button-group">
+                                {{ govukButton({
+                                    text: "Select and continue" if prisoners | length > 1 else "Continue",
+                                    id: "continue-button"
+                                }) }}
+                                <a class="govuk-link" href="../pay-overview">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            <div>
-        {% endif %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -22,6 +22,7 @@
                                 {{ govukInput({
                                     id: "query",
                                     name: "query",
+                                    classes: "govuk-!-margin-bottom-2",
                                     hint: {
                                         text: 'Search by name or prison number.'
                                     },
@@ -29,10 +30,14 @@
                                     value: query,
                                     errorMessage: errors | findError("query")
                                 }) }}
-                                {{ govukButton({
-                                    text: "Search",
-                                    type: "submit"
-                                }) }}
+                                <div class="govuk-button-group">
+                                    {{ govukButton({
+                                        text: "Search",
+                                        type: "submit"
+                                    }) }}
+                                    
+                                    <a class="govuk-link" href="../pay-overview">Cancel</a>
+                                </div>
                             </div>
                         </div>
                     </div>
