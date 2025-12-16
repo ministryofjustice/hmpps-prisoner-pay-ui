@@ -6,6 +6,7 @@
 
 {% set pageTitle = applicationName + " - Add prisoner results" %}
 {% set mainClasses = "govuk-body" %}
+{% set backLinkHref = "./add-prisoner" %}
 
 {% block content %}
     <div class="govuk-grid-row">
@@ -13,7 +14,7 @@
             <span class="govuk-caption-l">Long-term sick</span>
             <h1 class="govuk-heading-l">Who do you want to add?</h1>
 
-            <form method="POST" action="">
+            <form method="POST" action="/long-term-sick/register/add-prisoner">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-two-thirds">
