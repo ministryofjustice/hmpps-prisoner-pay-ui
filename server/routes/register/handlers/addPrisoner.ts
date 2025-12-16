@@ -14,6 +14,6 @@ export default class AddPrisonerHandler {
     const errors = validateForm({ query })
     if (errors) return res.render('pages/register/add-prisoner', { errors: [errors], query })
 
-    return res.redirect('')
+    return res.redirect(`./add-prisoner-results?query=${encodeURIComponent(query)}`)
   }
 }

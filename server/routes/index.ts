@@ -8,6 +8,6 @@ export default function routes(services: Services): Router {
   const router = Router()
 
   router.use('/', DashboardRoutes(services))
-  router.use('/:payTypeSlug/register', RegisterRoutes())
+  router.use('/:payTypeSlug/register', RegisterRoutes(services))
   return router
 }

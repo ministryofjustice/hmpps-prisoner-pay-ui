@@ -1,3 +1,5 @@
+import { NameFormatStyle } from './helpers/nameFormatStyle'
+
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0].toUpperCase() + word.toLowerCase().slice(1) : word
 
@@ -37,3 +39,69 @@ export const findError = (array: FieldValidationError[], formFieldId: string) =>
   }
   return null
 }
+
+/**
+ * Format a person's name with proper capitalisation
+ *
+ * Correctly handles names with apostrophes, hyphens and spaces
+ *
+ * @param firstName - first name
+ * @param middleNames - middle names
+ * @param lastName - last name
+ * @param nameFormatStyle: how the name is to be formatted,
+ * @param boldLastName: whether the last name is bold
+ * @returns formatted name string
+ */
+export const formatName = (
+  firstName: string,
+  middleNames: string,
+  lastName: string,
+  nameFormatStyle: NameFormatStyle,
+  boldLastName: boolean = true,
+): string => {
+  const names = [firstName, middleNames, lastName]
+  if (nameFormatStyle === NameFormatStyle.lastCommaFirstMiddle) {
+    names.unshift(`${names.pop()},`)
+  } else if (nameFormatStyle === NameFormatStyle.lastCommaFirst) {
+    names.unshift(`${names.pop()},`)
+    names.pop() // Remove middleNames
+  } else if (nameFormatStyle === NameFormatStyle.firstLast) {
+    names.splice(1, 1)
+  }
+  const namesOrdered = names
+    .filter(s => s)
+    .map(s => s.toLowerCase().trim())
+    .join(' ')
+    .replace(/(^\w)|([\s'-]+\w)/g, letter => letter.toUpperCase())
+
+  if (
+    boldLastName &&
+    (nameFormatStyle === NameFormatStyle.lastCommaFirstMiddle || nameFormatStyle === NameFormatStyle.lastCommaFirst)
+  ) {
+    const [surname, ...rest] = namesOrdered.split(', ')
+    return `<strong>${surname}</strong>, ${rest.join(' ')}`
+  }
+
+  return namesOrdered
+}
+
+/**
+ * Clean wrapper for formatName that formats a name as "First Last" (i.e. first name and last name only).
+ *
+ * Correctly handles names with apostrophes, hyphens and spaces
+ *
+ * @param firstName - first name
+ * @param lastName - last name
+ * @returns formatted name string
+ */
+export const formatFirstLastName = (firstName: string, lastName: string): string =>
+  formatName(firstName, undefined, lastName, NameFormatStyle.firstLast, false)
+
+/**
+ * Clean wrapper for formatName that formats a string to title case
+ *
+ * @param input - string to be formatted
+ * @returns formatted string
+ */
+export const formatStringToTitleCase = (input: string): string =>
+  formatName(input, undefined, undefined, NameFormatStyle.firstLast, false)

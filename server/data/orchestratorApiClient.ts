@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { RestClient } from '@ministryofjustice/hmpps-rest-client'
 import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import config from '../config'
@@ -6,6 +7,55 @@ import logger from '../../logger'
 export default class OrchestratorApiClient extends RestClient {
   constructor(authenticationClient: AuthenticationClient) {
     super('orchestrator API', config.apis.exampleApi, logger, authenticationClient)
+  }
+
+  getPrisonerByPrisonerNumber(prisonerNumber: string) {
+    return {
+      prisonerNumber: 'G4529UP',
+      status: 'ACTIVE IN',
+      firstName: 'NICAIGH',
+      lastName: 'JOHNUSTINE',
+      cellLocation: 'COURT',
+      allocations: [] as string[],
+    }
+  }
+
+  searchPrisoners(query: string) {
+    return {
+      content: [
+        {
+          prisonerNumber: 'G4529UP',
+          status: 'ACTIVE IN',
+          firstName: 'NICAIGH',
+          lastName: 'JOHNUSTINE',
+          cellLocation: 'COURT',
+        },
+        {
+          prisonerNumber: 'G4701UT',
+          firstName: "YF'ERTOPER",
+          lastName: 'JOHNUSTINE',
+          status: 'ACTIVE IN',
+          cellLocation: 'E-S-2-018',
+        },
+      ],
+      pageable: {
+        pageNumber: 0,
+        pageSize: 50,
+        sort: { empty: true, sorted: false, unsorted: true },
+        offset: 0,
+        paged: true,
+        unpaged: false,
+      },
+      last: true,
+      totalElements: 2,
+      totalPages: 1,
+      size: 50,
+      number: 0,
+      first: true,
+      sort: { empty: true, sorted: false, unsorted: true },
+      numberOfElements: 2,
+      empty: false,
+    }
   }
 
   getPayTypes() {
