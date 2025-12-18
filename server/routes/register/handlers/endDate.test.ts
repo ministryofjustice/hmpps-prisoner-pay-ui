@@ -40,15 +40,13 @@ describe('EndDateHandler', () => {
       await handler.GET(req as Request, res as Response)
 
       expect(res.render).toHaveBeenCalledWith('pages/dashboard/end-date', {
-        payType: {
-          id: 1,
-          code: 'LTS',
-          description: 'Long-term Sick',
-          dailyPayAmount: 65,
-          registeredPrisoners: [],
-          type: 'LONG_TERM_SICK',
+        prisoner: {
+          cellLocation: 'COURT',
+          firstName: 'NICAIGH',
+          lastName: 'JOHNUSTINE',
+          prisonerNumber: 'G4529UP',
+          status: 'ACTIVE IN',
         },
-        records: [],
       })
     })
   })

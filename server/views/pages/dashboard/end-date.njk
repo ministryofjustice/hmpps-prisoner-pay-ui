@@ -4,14 +4,13 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from 'moj/components/date-picker/macro.njk' import mojDatePicker %}
 
-{% set pageTitle = applicationName + " - Page name" %}
+{% set pageTitle = applicationName + " - End date" %}
 {% set mainClasses = "govuk-body" %}
 
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <span class="govuk-caption-xl">{{ payType.description }}</span>
-            {# Following line needs to be made generic #}
+            <span class="govuk-caption-xl">Long-term sick</span>
 
             <form method="POST">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
@@ -20,7 +19,7 @@
                     name: "endDateOption",
                     fieldset: {
                         legend: {
-                            text: "Do you want to add an end date for " + records[0].prisonerName + " " + payType.description + "?",
+                            text: "Do you want to add an end date for " + prisoner.prisonerName + " long-term sickness?",
                             isPageHeading: true,
                             classes: "govuk-fieldset__legend--l"
                         }
