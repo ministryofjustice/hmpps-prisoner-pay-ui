@@ -3,7 +3,7 @@ import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
-import { findError, initialiseName } from './utils'
+import { findError, formatDate, initialiseName } from './utils'
 import config from '../config'
 import logger from '../../logger'
 
@@ -41,4 +41,6 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('findError', findError)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
+
+  njkEnv.addFilter('formatDate', formatDate)
 }
