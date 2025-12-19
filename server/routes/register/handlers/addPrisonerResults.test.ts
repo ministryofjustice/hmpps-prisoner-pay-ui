@@ -3,6 +3,7 @@ import { when } from 'jest-when'
 import AddPrisonerResultsHandler from './addPrisonerResults'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
+import PayType from '../../../@types/payTypes'
 
 jest.mock('../../../services/orchestratorService')
 
@@ -16,6 +17,7 @@ describe('AddPrisonerResultsHandler', () => {
   beforeEach(() => {
     handler = new AddPrisonerResultsHandler(orchestratorService)
     req = {
+      params: { payTypeSlug: 'long-term-sick' },
       query: {
         query: 'test',
       },
@@ -45,6 +47,11 @@ describe('AddPrisonerResultsHandler', () => {
       expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner-results', {
         prisoners: TestData.Prisoners(),
         query: 'test',
+        payType: {
+          type: PayType.LONG_TERM_SICK,
+          description: 'Long-term sick',
+          slug: 'long-term-sick',
+        },
       })
     })
   })

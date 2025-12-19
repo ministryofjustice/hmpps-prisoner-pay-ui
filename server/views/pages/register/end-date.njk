@@ -12,7 +12,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
 
-            <span class="govuk-caption-l">Long-term sick</span>
+            <span class="govuk-caption-l">{{ payType.description }}</span>
             <form method="POST">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 {{ govukRadios({
@@ -20,7 +20,7 @@
                     name: "endDateOption",
                     fieldset: {
                         legend: {
-                            text: "Do you want to add an end date for " + prisonerName + "'s long-term sickness?",
+                            text: "Do you want to add an end date for " + prisonerName + "'s " + payType.description + "?",
                             isPageHeading: true,
                             classes: "govuk-fieldset__legend--l"
                         }

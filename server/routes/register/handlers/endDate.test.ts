@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { when } from 'jest-when'
 import EndDateHandler from './endDate'
 import OrchestratorService from '../../../services/orchestratorService'
+import PayType from '../../../@types/payTypes'
 
 jest.mock('../../../services/orchestratorService')
 
@@ -47,6 +48,11 @@ describe('EndDateHandler', () => {
           lastName: 'JOHNUSTINE',
           prisonerNumber: 'G4529UP',
           status: 'ACTIVE IN',
+        },
+        payType: {
+          type: PayType.LONG_TERM_SICK,
+          description: 'Long-term sick',
+          slug: 'long-term-sick',
         },
       })
     })

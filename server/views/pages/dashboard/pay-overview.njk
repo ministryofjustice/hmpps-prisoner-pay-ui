@@ -13,9 +13,9 @@
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <h1>{{ payType.description }}</h1>
+            <h1 class="govuk-heading-l">{{ payType.description }}</h1>
             {# Following line needs to be made generic #}
-            <p class="govuk-body">People have been signed off for more than 4 weeks</p class="govuk-body"> 
+            <p class="govuk-body">People have been signed off for more than 4 weeks</p> 
             <p class="govuk-body">They're paid {{ payType.dailyPayAmount }}p per day (£{{ weekPay }} for a 5 day week)</p>
 
             {{ govukButton({

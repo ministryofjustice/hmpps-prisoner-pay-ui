@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import AddPrisonerHandler from './addPrisoner'
+import PayType from '../../../@types/payTypes'
 
 describe('AddPrisonerHandler', () => {
   let handler: AddPrisonerHandler
@@ -8,7 +9,9 @@ describe('AddPrisonerHandler', () => {
 
   beforeEach(() => {
     handler = new AddPrisonerHandler()
-    req = {}
+    req = {
+      params: { payTypeSlug: 'long-term-sick' },
+    }
     res = {
       render: jest.fn(),
       redirect: jest.fn(),
@@ -19,7 +22,13 @@ describe('AddPrisonerHandler', () => {
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner', {})
+      expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner', {
+        payType: {
+          type: PayType.LONG_TERM_SICK,
+          description: 'Long-term sick',
+          slug: 'long-term-sick',
+        },
+      })
     })
   })
 
