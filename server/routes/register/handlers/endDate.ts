@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import OrchestratorService from '../../../services/orchestratorService'
+import { formatFirstLastName } from '../../../utils/utils'
 
 export default class EndDateHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
@@ -14,6 +15,7 @@ export default class EndDateHandler {
     }
 
     return res.render('pages/register/end-date', {
+      prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
       prisoner,
     })
   }

@@ -40,6 +40,7 @@ describe('EndDateHandler', () => {
       await handler.GET(req as Request, res as Response)
 
       expect(res.render).toHaveBeenCalledWith('pages/register/end-date', {
+        prisonerName: 'Nicaigh Johnustine',
         prisoner: {
           cellLocation: 'COURT',
           firstName: 'NICAIGH',
