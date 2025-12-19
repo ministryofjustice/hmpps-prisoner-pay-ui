@@ -3,7 +3,7 @@ import PayType from '../@types/payTypes'
 const payTypes = [
   {
     type: PayType.LONG_TERM_SICK,
-    description: 'Long-term Sick',
+    description: 'Long-term sick',
     slug: 'long-term-sick',
   },
 ]

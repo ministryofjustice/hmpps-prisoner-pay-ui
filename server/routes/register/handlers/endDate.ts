@@ -1,20 +1,19 @@
 import { Request, Response } from 'express'
 import OrchestratorService from '../../../services/orchestratorService'
+import { formatFirstLastName } from '../../../utils/utils'
+import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 export default class EndDateHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
 
   GET = async (req: Request, res: Response) => {
-    const prisoner = {
-      prisonerNumber: 'G4529UP',
-      status: 'ACTIVE IN',
-      firstName: 'NICAIGH',
-      lastName: 'JOHNUSTINE',
-      cellLocation: 'COURT',
-    }
+    const payType = getPayTypeBySlug(req.params.payTypeSlug)
+    const prisoner = req.session!.selectedPrisoner
 
-    return res.render('pages/dashboard/end-date', {
+    return res.render('pages/register/end-date', {
+      prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
       prisoner,
+      payType,
     })
   }
 

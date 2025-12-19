@@ -4,6 +4,8 @@ export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
   interface SessionData {
     returnTo: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    selectedPrisoner: any
   }
 }
 

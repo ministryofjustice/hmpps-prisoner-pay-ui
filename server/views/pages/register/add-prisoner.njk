@@ -3,13 +3,14 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Page name" %}
+{% set pageTitle = applicationName + " - Add prisoner" %}
 {% set mainClasses = "govuk-body" %}
+{% set backLinkHref = "../pay-overview" %}
 
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <span class="govuk-caption-l">Long-term sick</span>
+            <span class="govuk-caption-l">{{ payType.description }}</span>
             <h1 class="govuk-heading-l">Who do you want to add?</h1>
 
             <form method="POST" action="">
@@ -21,6 +22,7 @@
                                 {{ govukInput({
                                     id: "query",
                                     name: "query",
+                                    classes: "govuk-!-margin-bottom-2",
                                     hint: {
                                         text: 'Search by name or prison number.'
                                     },
@@ -28,10 +30,14 @@
                                     value: query,
                                     errorMessage: errors | findError("query")
                                 }) }}
-                                {{ govukButton({
-                                    text: "Search",
-                                    type: "submit"
-                                }) }}
+                                <div class="govuk-button-group">
+                                    {{ govukButton({
+                                        text: "Search",
+                                        type: "submit"
+                                    }) }}
+                                    
+                                    <a class="govuk-link" href="../pay-overview">Cancel</a>
+                                </div>
                             </div>
                         </div>
                     </div>

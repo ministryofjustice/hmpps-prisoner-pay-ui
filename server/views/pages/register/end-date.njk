@@ -6,12 +6,13 @@
 
 {% set pageTitle = applicationName + " - End date" %}
 {% set mainClasses = "govuk-body" %}
+{% set backLinkHref = "./add-prisoner" %}
 
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <span class="govuk-caption-xl">Long-term sick</span>
 
+            <span class="govuk-caption-l">{{ payType.description }}</span>
             <form method="POST">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 {{ govukRadios({
@@ -19,7 +20,7 @@
                     name: "endDateOption",
                     fieldset: {
                         legend: {
-                            text: "Do you want to add an end date for " + prisoner.prisonerName + " long-term sickness?",
+                            text: "Do you want to add an end date for " + prisonerName + "'s " + payType.description + "?",
                             isPageHeading: true,
                             classes: "govuk-fieldset__legend--l"
                         }
