@@ -39,7 +39,7 @@ describe('EndDateHandler', () => {
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/dashboard/end-date', {
+      expect(res.render).toHaveBeenCalledWith('pages/register/end-date', {
         prisoner: {
           cellLocation: 'COURT',
           firstName: 'NICAIGH',

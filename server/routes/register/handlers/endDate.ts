@@ -13,7 +13,7 @@ export default class EndDateHandler {
       cellLocation: 'COURT',
     }
 
-    return res.render('pages/dashboard/end-date', {
+    return res.render('pages/register/end-date', {
       prisoner,
     })
   }
