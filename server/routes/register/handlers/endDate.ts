@@ -8,13 +8,7 @@ export default class EndDateHandler {
 
   GET = async (req: Request, res: Response) => {
     const payType = getPayTypeBySlug(req.params.payTypeSlug)
-    const prisoner = {
-      prisonerNumber: 'G4529UP',
-      status: 'ACTIVE IN',
-      firstName: 'NICAIGH',
-      lastName: 'JOHNUSTINE',
-      cellLocation: 'COURT',
-    }
+    const prisoner = req.session!.selectedPrisoner
 
     return res.render('pages/register/end-date', {
       prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),

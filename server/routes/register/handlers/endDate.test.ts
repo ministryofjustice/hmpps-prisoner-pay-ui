@@ -1,22 +1,12 @@
 import { Request, Response } from 'express'
-import { when } from 'jest-when'
 import EndDateHandler from './endDate'
 import OrchestratorService from '../../../services/orchestratorService'
 import PayType from '../../../@types/payTypes'
+import TestData from '../../../testutils/testData'
 
 jest.mock('../../../services/orchestratorService')
 
 const orchestratorService = new OrchestratorService(null)
-
-const paySummary = {
-  id: 1,
-  code: 'LTS',
-  type: 'LONG_TERM_SICK',
-  description: 'Long-term Sick',
-  dailyPayAmount: 65,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  registeredPrisoners: [] as any[],
-}
 
 describe('EndDateHandler', () => {
   let handler: EndDateHandler
@@ -27,13 +17,14 @@ describe('EndDateHandler', () => {
     handler = new EndDateHandler(orchestratorService)
     req = {
       params: { payTypeSlug: 'long-term-sick' },
-    }
+      session: {
+        selectedPrisoner: TestData.Prisoner(),
+      },
+    } as unknown as Request
     res = {
       render: jest.fn(),
       redirect: jest.fn(),
     }
-
-    when(orchestratorService.getPaySummaryByType).calledWith(expect.any(String)).mockReturnValue(paySummary)
   })
 
   describe('GET', () => {
@@ -42,13 +33,7 @@ describe('EndDateHandler', () => {
 
       expect(res.render).toHaveBeenCalledWith('pages/register/end-date', {
         prisonerName: 'Nicaigh Johnustine',
-        prisoner: {
-          cellLocation: 'COURT',
-          firstName: 'NICAIGH',
-          lastName: 'JOHNUSTINE',
-          prisonerNumber: 'G4529UP',
-          status: 'ACTIVE IN',
-        },
+        prisoner: TestData.Prisoner(),
         payType: {
           type: PayType.LONG_TERM_SICK,
           description: 'Long-term sick',
