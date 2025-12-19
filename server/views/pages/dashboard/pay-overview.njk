@@ -3,7 +3,7 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Page name" %}
+{% set pageTitle = applicationName + " - Pay Overview" %}
 {% set mainClasses = "govuk-body" %}
 {% set backLinkHref = "../../" %}
 
@@ -31,9 +31,9 @@
                     }, {
                         text: row.cellLocation
                     }, {
-                        text: row.startDate
+                        text: row.startDate | formatDate('d MMM yyyy')
                     }, {
-                        text: row.endDate
+                        text: row.endDate | formatDate('d MMM yyyy')
                     }, {
                         text: ''
                     }, {

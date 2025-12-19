@@ -1,0 +1,63 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from 'moj/components/date-picker/macro.njk' import mojDatePicker %}
+
+{% set pageTitle = applicationName + " - End date" %}
+{% set mainClasses = "govuk-body" %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <span class="govuk-caption-xl">Long-term sick</span>
+
+            <form method="POST">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                {{ govukRadios({
+                    classes: "govuk-radios",
+                    name: "endDateOption",
+                    fieldset: {
+                        legend: {
+                            text: "Do you want to add an end date for " + prisoner.prisonerName + " long-term sickness?",
+                            isPageHeading: true,
+                            classes: "govuk-fieldset__legend--l"
+                        }
+                    },
+                    items: 
+                    [
+                      {
+                          value: "yes",
+                          text: "Yes",
+                          checked: endDateOption == "yes",
+                          conditional: {
+                            html: mojDatePicker({
+                                id: 'endDate',
+                                name: 'endDate',
+                                leadingZeros: 'true',
+                                classes: 'moj-datepicker--fixed-width',
+                                label: {
+                                    text: 'endDate',
+                                    classes: 'govuk-visually-hidden'
+                                },
+                                value: formResponses.endDate
+                            })
+                          }
+                      },
+                      {
+                          value: "no",
+                          text: "No",
+                          checked: endDateOption == "no"
+                      }
+                    ]
+                }) }}
+
+                <div class="govuk-button-group">
+                    {{ govukButton({
+                        text: "Continue"
+                    }) }}
+                </div>
+            </form>  
+        </div>
+    </div>
+{% endblock %}

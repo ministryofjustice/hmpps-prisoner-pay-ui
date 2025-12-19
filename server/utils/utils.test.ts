@@ -1,5 +1,6 @@
+import { addDays, subDays } from 'date-fns'
 import { NameFormatStyle } from './helpers/nameFormatStyle'
-import { convertToTitleCase, formatFirstLastName, formatName, initialiseName } from './utils'
+import { convertToTitleCase, formatFirstLastName, formatName, formatDate, initialiseName, parseDate } from './utils'
 
 describe('convert to title case', () => {
   it.each([
@@ -165,5 +166,40 @@ describe('format first & lastName', () => {
     ['Sentence', 'John smith is here', undefined, 'John Smith Is Here'],
   ])('%s formatFirstLastName(%s, %s)', (_: string, a: string, b: string, expected: string) => {
     expect(formatFirstLastName(a, b)).toEqual(expected)
+  })
+})
+
+describe('parseDate', () => {
+  it.each([
+    ['2022-02-17', undefined, new Date(2022, 1, 17)],
+    ['17/02/2022', 'dd/MM/yyyy', new Date(2022, 1, 17)],
+  ])('%s parseDate(%s, %s)', (date: string, fmt: string, expected: Date) => {
+    expect(parseDate(date, fmt)).toEqual(expected)
+  })
+})
+
+describe('formatDate', () => {
+  it('formats a date to a long date with day', () => {
+    expect(formatDate(new Date(2022, 0, 1), 'cccc do LLLL y')).toEqual('Saturday 1st January 2022')
+  })
+
+  it('formats a date to a long date with day when inContext not available', () => {
+    expect(formatDate(new Date(2022, 0, 1), 'cccc do LLLL y', true)).toEqual('Saturday 1st January 2022')
+  })
+
+  it('formats todays date as "today"', () => {
+    expect(formatDate(new Date(), '', true)).toEqual('today')
+  })
+
+  it('formats yesterdays date as "yesterday"', () => {
+    expect(formatDate(subDays(new Date(), 1), '', true)).toEqual('yesterday')
+  })
+
+  it('formats tomorrows date as "tomorrow"', () => {
+    expect(formatDate(addDays(new Date(), 1), '', true)).toEqual('tomorrow')
+  })
+
+  it('formats a date in string format', () => {
+    expect(formatDate('2022-01-01', 'cccc do LLLL y')).toEqual('Saturday 1st January 2022')
   })
 })

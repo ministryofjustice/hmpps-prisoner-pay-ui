@@ -1,3 +1,4 @@
+import { format, isToday, isTomorrow, isYesterday, parse } from 'date-fns'
 import { NameFormatStyle } from './helpers/nameFormatStyle'
 
 const properCase = (word: string): string =>
@@ -105,3 +106,29 @@ export const formatFirstLastName = (firstName: string, lastName: string): string
  */
 export const formatStringToTitleCase = (input: string): string =>
   formatName(input, undefined, undefined, NameFormatStyle.firstLast, false)
+export const parseDate = (date: string, fromFormat = 'yyyy-MM-dd') => {
+  if (!date) return null
+  return parse(date, fromFormat, new Date())
+}
+
+export const formatDate = (date: unknown, fmt = 'EEEE, d MMMM yyyy', inContextName = false) => {
+  if (!date) return null
+
+  let richDate = date as Date
+  if (typeof date === 'string') {
+    richDate = parseDate(date as string)
+  }
+
+  if (inContextName) {
+    if (isToday(richDate)) {
+      return 'today'
+    }
+    if (isTomorrow(richDate)) {
+      return 'tomorrow'
+    }
+    if (isYesterday(richDate)) {
+      return 'yesterday'
+    }
+  }
+  return format(richDate, fmt)
+}
