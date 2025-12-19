@@ -1,25 +1,25 @@
 import { Request, Response } from 'express'
-import OrchestratorService from '../../../services/orchestratorService'
-import { formatFirstLastName } from '../../../utils/utils'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
+import { formatFirstLastName } from '../../../utils/utils'
 
-export default class EndDateHandler {
-  constructor(private readonly orchestratorService: OrchestratorService) {}
+export default class CheckHandler {
+  constructor() {}
 
   GET = async (req: Request, res: Response) => {
     const payType = getPayTypeBySlug(req.params.payTypeSlug)
     const prisoner = req.session!.selectedPrisoner
+    const { endDate } = req.session!
 
-    return res.render('pages/register/end-date', {
+    return res.render('pages/register/check', {
       prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
       prisoner,
       payType,
+      endDate,
     })
   }
 
   POST = async (req: Request, res: Response) => {
-    const { endDate } = req.body
-    req.session.endDate = endDate
-    return res.redirect('check')
+    // TODO: Implement POST logic
+    return res.redirect('')
   }
 }

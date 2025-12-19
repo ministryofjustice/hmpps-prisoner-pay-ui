@@ -1,27 +1,22 @@
 import { Request, Response } from 'express'
-import EndDateHandler from './endDate'
-import OrchestratorService from '../../../services/orchestratorService'
-import PayType from '../../../@types/payTypes'
+import CheckHandler from './check'
 import TestData from '../../../testutils/testData'
+import PayType from '../../../@types/payTypes'
 
-jest.mock('../../../services/orchestratorService')
-
-const orchestratorService = new OrchestratorService(null)
-
-describe('EndDateHandler', () => {
-  let handler: EndDateHandler
+describe('CheckHandler', () => {
+  let handler: CheckHandler
   let req: Partial<Request>
   let res: Partial<Response>
 
   beforeEach(() => {
-    handler = new EndDateHandler(orchestratorService)
+    handler = new CheckHandler()
     req = {
-      body: {},
       params: { payTypeSlug: 'long-term-sick' },
       session: {
         selectedPrisoner: TestData.Prisoner(),
+        endDate: '2025-01-01',
       },
-    } as unknown as Request
+    } as unknown as Partial<Request>
     res = {
       render: jest.fn(),
       redirect: jest.fn(),
@@ -32,7 +27,7 @@ describe('EndDateHandler', () => {
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/register/end-date', {
+      expect(res.render).toHaveBeenCalledWith('pages/register/check', {
         prisonerName: 'Nicaigh Johnustine',
         prisoner: TestData.Prisoner(),
         payType: {
@@ -40,14 +35,13 @@ describe('EndDateHandler', () => {
           description: 'Long-term sick',
           slug: 'long-term-sick',
         },
+        endDate: '2025-01-01',
       })
     })
   })
 
   describe('POST', () => {
     it('should redirect after processing', async () => {
-      req.body.endDate = '2025-01-01'
-
       await handler.POST(req as Request, res as Response)
 
       expect(res.redirect).toHaveBeenCalled()

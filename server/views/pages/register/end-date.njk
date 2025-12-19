@@ -10,7 +10,7 @@
 
 {% block content %}
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
+        <div class="govuk-grid-column-two-thirds">
 
             <span class="govuk-caption-l">{{ payType.description }}</span>
             <form method="POST">
@@ -57,6 +57,8 @@
                     {{ govukButton({
                         text: "Continue"
                     }) }}
+
+                    <a class="govuk-link" href="../pay-overview">Cancel</a>
                 </div>
             </form>  
         </div>
