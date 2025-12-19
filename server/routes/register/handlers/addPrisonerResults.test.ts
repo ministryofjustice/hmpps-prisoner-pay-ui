@@ -53,7 +53,7 @@ describe('AddPrisonerResultsHandler', () => {
     it('should redirect after processing', async () => {
       await handler.POST(req as Request, res as Response)
       expect(req.session!.selectedPrisoner).toStrictEqual({ ...TestData.Prisoner(), allocations: [] })
-      expect(res.redirect).toHaveBeenCalled()
+      expect(res.redirect).toHaveBeenCalledWith('end-date')
     })
   })
 })

@@ -14,6 +14,6 @@ export default class AddPrisonerResultsHandler {
     const { prisonerNumber } = req.body
     const prisoner = this.orchestratorService.getPrisonerByPrisonerNumber(prisonerNumber)
     req.session!.selectedPrisoner = prisoner
-    return res.redirect('../')
+    return res.redirect('end-date')
   }
 }
