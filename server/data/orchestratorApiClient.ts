@@ -9,6 +9,19 @@ export default class OrchestratorApiClient extends RestClient {
     super('orchestrator API', config.apis.exampleApi, logger, authenticationClient)
   }
 
+  getPayStatusPeriodById(payStatusId: string) {
+    return {
+      id: 'e6a19788-4f80-4923-8aff-1e5fe26a6139',
+      prisonCode: 'PVI',
+      prisonerNumber: 'A1234AA',
+      type: 'LONG_TERM_SICK',
+      startDate: '2025-07-23',
+      endDate: '2025-09-14',
+      createdBy: 'USER1',
+      createdDateTime: '2025-07-18T12:45:11',
+    }
+  }
+
   getPrisonerByPrisonerNumber(prisonerNumber: string) {
     return {
       prisonerNumber: 'G4529UP',
@@ -76,7 +89,7 @@ export default class OrchestratorApiClient extends RestClient {
         id: 1,
         code: 'LTS',
         type: 'LONG_TERM_SICK',
-        description: 'Long-term Sick',
+        description: 'Long-term sick',
         dailyPayAmount: 65,
         registeredPrisoners: [
           {

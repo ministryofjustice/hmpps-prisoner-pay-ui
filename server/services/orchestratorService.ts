@@ -3,6 +3,10 @@ import OrchestratorApiClient from '../data/orchestratorApiClient'
 export default class OrchestratorService {
   constructor(private readonly orchestratorApiClient: OrchestratorApiClient) {}
 
+  getPayStatusPeriodById(payStatusId: string) {
+    return this.orchestratorApiClient.getPayStatusPeriodById(payStatusId)
+  }
+
   getPrisonerByPrisonerNumber(prisonerNumber: string) {
     return this.orchestratorApiClient.getPrisonerByPrisonerNumber(prisonerNumber)
   }

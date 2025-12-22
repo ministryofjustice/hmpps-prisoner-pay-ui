@@ -49,4 +49,17 @@ export default class TestData {
       empty: false,
     }
   }
+
+  static PayStatusPeriod() {
+    return {
+      id: 'e6a19788-4f80-4923-8aff-1e5fe26a6139',
+      prisonCode: 'PVI',
+      prisonerNumber: 'A1234BC',
+      type: 'LONG_TERM_SICK',
+      startDate: '2025-07-23',
+      endDate: '2025-09-14',
+      createdBy: 'USER1',
+      createdDateTime: '2025-07-18T12:45:11',
+    }
+  }
 }
