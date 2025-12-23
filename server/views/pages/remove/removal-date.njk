@@ -1,0 +1,64 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from 'moj/components/date-picker/macro.njk' import mojDatePicker %}
+
+{% set pageTitle = applicationName + " - Removal date" %}
+{% set mainClasses = "govuk-body" %}
+{% set backLinkHref = "../../pay-overview" %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <span class="govuk-caption-l">{{ payType.description }}</span>
+            <form method="POST">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+                {{ govukRadios({
+                    classes: "govuk-radios",
+                    name: "removalDateOption",
+                    fieldset: {
+                        legend: {
+                            text: "When do you want to remove " + payStatusPeriod | formatName(NameFormatStyle.firstLast, false) + " from " + payType.description + "?",
+                            isPageHeading: true,
+                            classes: "govuk-fieldset__legend--l"
+                        }
+                    },
+                    items: 
+                    [
+                      {
+                          value: "today",
+                          text: "Today - " + now | formatDate('EEEE, d MMMM yyyy'),
+                          checked: removalDateOption == "today"
+                      },
+                      {
+                          value: "other",
+                          text: "A different date",
+                          checked: removalDateOption == "other",
+                          conditional: {
+                            html: mojDatePicker({
+                                id: 'removalDate',
+                                name: 'removalDate',
+                                leadingZeros: 'true',
+                                classes: 'moj-datepicker--fixed-width',
+                                label: {
+                                    text: 'removalDate',
+                                    classes: 'govuk-visually-hidden'
+                                },
+                                value: formResponses.removalDate
+                            })
+                          }
+                      }
+                    ]
+                }) }}
+
+                <div class="govuk-button-group">
+                    {{ govukButton({
+                        text: "Continue"
+                    }) }}
+                    <a class="govuk-link" href="../pay-overview">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

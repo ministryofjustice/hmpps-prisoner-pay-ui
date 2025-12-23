@@ -5,6 +5,7 @@ const payTypes = [
     type: PayType.LONG_TERM_SICK,
     description: 'Long-term sick',
     slug: 'long-term-sick',
+    dailyPayAmount: 65,
   },
 ]
 

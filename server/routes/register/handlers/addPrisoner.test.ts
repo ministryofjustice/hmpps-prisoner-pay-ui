@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import AddPrisonerHandler from './addPrisoner'
-import PayType from '../../../@types/payTypes'
+import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 describe('AddPrisonerHandler', () => {
   let handler: AddPrisonerHandler
@@ -23,11 +23,7 @@ describe('AddPrisonerHandler', () => {
       await handler.GET(req as Request, res as Response)
 
       expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner', {
-        payType: {
-          type: PayType.LONG_TERM_SICK,
-          description: 'Long-term sick',
-          slug: 'long-term-sick',
-        },
+        payType: getPayTypeBySlug('long-term-sick'),
       })
     })
   })

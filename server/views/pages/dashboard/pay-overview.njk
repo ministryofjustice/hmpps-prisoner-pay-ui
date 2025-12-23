@@ -27,7 +27,7 @@
             {% for row in records %}
                 {% set rows = (rows.push([
                     {
-                        text: row.prisonerName
+                        text: row | formatName(NameFormatStyle.firstLast, false)
                     }, {
                         text: row.cellLocation
                     }, {
@@ -37,7 +37,7 @@
                     }, {
                         text: ''
                     }, {
-                        html: '<a href="/">Remove from ' + payTypeDescriptionLower + '</a>'
+                        html: '<a href="./remove/' + row.id + '/removal-date">Remove from ' + payTypeDescriptionLower + '</a>'
                     }
                 ]), rows) %}
             {% endfor %}
