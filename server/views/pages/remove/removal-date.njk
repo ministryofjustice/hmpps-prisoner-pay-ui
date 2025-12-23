@@ -24,6 +24,7 @@
                             classes: "govuk-fieldset__legend--l"
                         }
                     },
+                    errorMessage: errors | findError("removalDateOption"),
                     items: 
                     [
                       {
@@ -45,7 +46,8 @@
                                     text: 'removalDate',
                                     classes: 'govuk-visually-hidden'
                                 },
-                                value: formResponses.removalDate
+                                value: formResponses.removalDate,
+                                errorMessage: errors | findError("removalDate")
                             })
                           }
                       }
