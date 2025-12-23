@@ -54,7 +54,10 @@ export default class TestData {
     return {
       id: 'e6a19788-4f80-4923-8aff-1e5fe26a6139',
       prisonCode: 'PVI',
-      prisonerNumber: 'A1234BC',
+      prisonerNumber: 'A1234AA',
+      firstName: 'Nicaigh',
+      lastName: 'Johnustine',
+      cellLocation: 'A-1-002',
       type: 'LONG_TERM_SICK',
       startDate: '2025-07-23',
       endDate: '2025-09-14',

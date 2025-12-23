@@ -8,12 +8,10 @@ export default class RemovalDateHandler {
   GET = async (req: Request, res: Response) => {
     const { payStatusId } = req.params
     const payStatusPeriod = await this.orchestratorService.getPayStatusPeriodById(payStatusId)
-    const prisoner = await this.orchestratorService.getPrisonerByPrisonerNumber(payStatusPeriod.prisonerNumber)
     const payType = getPayTypeBySlug(req.params.payTypeSlug)
 
     return res.render('pages/remove/removal-date', {
       payStatusPeriod,
-      prisoner,
       payType,
     })
   }

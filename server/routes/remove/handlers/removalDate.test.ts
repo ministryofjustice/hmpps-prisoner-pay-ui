@@ -23,9 +23,6 @@ describe('RemovalDateHandler', () => {
       redirect: jest.fn(),
     }
 
-    when(orchestratorService.getPrisonerByPrisonerNumber)
-      .calledWith('A1234BC')
-      .mockReturnValue({ ...TestData.Prisoner(), allocations: [] })
     when(orchestratorService.getPayStatusPeriodById).calledWith('123').mockReturnValue(TestData.PayStatusPeriod())
   })
 
@@ -35,7 +32,6 @@ describe('RemovalDateHandler', () => {
 
       expect(res.render).toHaveBeenCalledWith('pages/remove/removal-date', {
         payStatusPeriod: TestData.PayStatusPeriod(),
-        prisoner: { ...TestData.Prisoner(), allocations: [] },
         payType: {
           type: 'LONG_TERM_SICK',
           description: 'Long-term sick',
