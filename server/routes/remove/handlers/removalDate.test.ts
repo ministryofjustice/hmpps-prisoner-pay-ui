@@ -3,6 +3,7 @@ import { when } from 'jest-when'
 import RemovalDateHandler from './removalDate'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
+import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 jest.mock('../../../services/orchestratorService')
 
@@ -32,11 +33,7 @@ describe('RemovalDateHandler', () => {
 
       expect(res.render).toHaveBeenCalledWith('pages/remove/removal-date', {
         payStatusPeriod: TestData.PayStatusPeriod(),
-        payType: {
-          type: 'LONG_TERM_SICK',
-          description: 'Long-term sick',
-          slug: 'long-term-sick',
-        },
+        payType: getPayTypeBySlug('long-term-sick'),
       })
     })
   })

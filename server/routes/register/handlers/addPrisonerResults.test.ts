@@ -4,6 +4,7 @@ import AddPrisonerResultsHandler from './addPrisonerResults'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
 import PayType from '../../../@types/payTypes'
+import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 jest.mock('../../../services/orchestratorService')
 
@@ -47,11 +48,7 @@ describe('AddPrisonerResultsHandler', () => {
       expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner-results', {
         prisoners: TestData.Prisoners(),
         query: 'test',
-        payType: {
-          type: PayType.LONG_TERM_SICK,
-          description: 'Long-term sick',
-          slug: 'long-term-sick',
-        },
+        payType: getPayTypeBySlug('long-term-sick'),
       })
     })
   })
