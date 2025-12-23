@@ -23,10 +23,6 @@ export default class OrchestratorService {
     return this.orchestratorApiClient.getPayTypes()
   }
 
-  getPaySummaryByType(searchType: string) {
-    return this.orchestratorApiClient.getPaySummaryByType(searchType)
-  }
-
   getLongTermSick() {
     return this.orchestratorApiClient.getLongTermSick()
   }
