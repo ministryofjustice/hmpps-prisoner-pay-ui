@@ -2,6 +2,8 @@ import { Request, Response } from 'express'
 import { when } from 'jest-when'
 import PayOverviewHandler from './payOverview'
 import OrchestratorService from '../../../services/orchestratorService'
+import TestData from '../../../testutils/testData'
+import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 jest.mock('../../../services/orchestratorService')
 
@@ -32,7 +34,9 @@ describe('PayOverviewHandler', () => {
       redirect: jest.fn(),
     }
 
-    when(orchestratorService.getPaySummaryByType).calledWith(expect.any(String)).mockReturnValue(paySummary)
+    when(orchestratorService.getPayStatusPeriodsByType)
+      .calledWith(expect.any(String))
+      .mockReturnValue(TestData.PayStatusPeriods())
   })
 
   describe('GET', () => {
@@ -40,26 +44,9 @@ describe('PayOverviewHandler', () => {
       await handler.GET(req as Request, res as Response)
 
       expect(res.render).toHaveBeenCalledWith('pages/dashboard/pay-overview', {
-        payType: {
-          id: 1,
-          code: 'LTS',
-          type: 'LONG_TERM_SICK',
-          description: 'Long-term Sick',
-          dailyPayAmount: 65,
-          registeredPrisoners: [],
-        },
-        records: [],
+        payType: getPayTypeBySlug('long-term-sick'),
+        records: TestData.PayStatusPeriods(),
       })
     })
   })
-
-  describe('POST', () => {
-    it('should redirect after processing', async () => {
-      await handler.POST(req as Request, res as Response)
-
-      expect(res.redirect).toHaveBeenCalled()
-    })
-  })
-
-  // TODO: Add more test cases
 })

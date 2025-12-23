@@ -3,6 +3,7 @@ import { RestClient } from '@ministryofjustice/hmpps-rest-client'
 import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import config from '../config'
 import logger from '../../logger'
+import TestData from '../testutils/testData'
 
 export default class OrchestratorApiClient extends RestClient {
   constructor(authenticationClient: AuthenticationClient) {
@@ -10,37 +11,11 @@ export default class OrchestratorApiClient extends RestClient {
   }
 
   getPayStatusPeriods() {
-    return [
-      {
-        id: 'e6a19788-4f80-4923-8aff-1e5fe26a6139',
-        prisonCode: 'PVI',
-        prisonerNumber: 'A1234AA',
-        firstName: 'Nicaigh',
-        lastName: 'Johnustine',
-        cellLocation: 'A-1-002',
-        type: 'LONG_TERM_SICK',
-        startDate: '2025-07-23',
-        endDate: '2025-09-14',
-        createdBy: 'USER1',
-        createdDateTime: '2025-07-18T12:45:11',
-      },
-    ]
+    return TestData.PayStatusPeriods()
   }
 
   getPayStatusPeriodById(payStatusId: string) {
-    return {
-      id: 'e6a19788-4f80-4923-8aff-1e5fe26a6139',
-      prisonCode: 'PVI',
-      prisonerNumber: 'A1234AA',
-      firstName: 'Nicaigh',
-      lastName: 'Johnustine',
-      cellLocation: 'A-1-002',
-      type: 'LONG_TERM_SICK',
-      startDate: '2025-07-23',
-      endDate: '2025-09-14',
-      createdBy: 'USER1',
-      createdDateTime: '2025-07-18T12:45:11',
-    }
+    return TestData.PayStatusPeriod()
   }
 
   getPrisonerByPrisonerNumber(prisonerNumber: string) {
