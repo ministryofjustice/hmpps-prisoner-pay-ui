@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import EndDateHandler from './endDate'
 import OrchestratorService from '../../../services/orchestratorService'
-import PayType from '../../../@types/payTypes'
 import TestData from '../../../testutils/testData'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 

@@ -3,7 +3,6 @@ import { when } from 'jest-when'
 import AddPrisonerResultsHandler from './addPrisonerResults'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
-import PayType from '../../../@types/payTypes'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 jest.mock('../../../services/orchestratorService')

@@ -9,16 +9,6 @@ jest.mock('../../../services/orchestratorService')
 
 const orchestratorService = new OrchestratorService(null)
 
-const paySummary = {
-  id: 1,
-  code: 'LTS',
-  type: 'LONG_TERM_SICK',
-  description: 'Long-term Sick',
-  dailyPayAmount: 65,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  registeredPrisoners: [] as any[],
-}
-
 describe('PayOverviewHandler', () => {
   let handler: PayOverviewHandler
   let req: Partial<Request>

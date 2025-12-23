@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import AddPrisonerHandler from './addPrisoner'
-import PayType from '../../../@types/payTypes'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 describe('AddPrisonerHandler', () => {
