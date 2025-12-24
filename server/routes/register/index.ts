@@ -17,7 +17,6 @@ export default function Index(services: Services): Router {
   const endDateHandler = new EndDateHandler(services.orchestratorService)
   post('/end-date', endDateHandler.POST)
   get('/end-date', endDateHandler.GET)
-  post('/end-date', endDateHandler.POST)
 
   const checkHandler = new CheckHandler()
   get('/check', checkHandler.GET)

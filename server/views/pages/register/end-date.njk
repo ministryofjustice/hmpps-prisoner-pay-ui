@@ -17,7 +17,8 @@
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 {{ govukRadios({
                     classes: "govuk-radios",
-                    name: "endDateOption",
+                    id: "endDateSelection",
+                    name: "endDateSelection",
                     fieldset: {
                         legend: {
                             text: "Do you want to add an end date for " + prisonerName + "'s " + payType.description + "?",
@@ -30,7 +31,6 @@
                       {
                           value: "yes",
                           text: "Yes",
-                          checked: endDateOption == "yes",
                           conditional: {
                             html: mojDatePicker({
                                 id: 'endDate',
@@ -47,10 +47,10 @@
                       },
                       {
                           value: "no",
-                          text: "No",
-                          checked: endDateOption == "no"
+                          text: "No"
                       }
-                    ]
+                    ],
+                    errorMessage: errors | findError("endDateSelection")
                 }) }}
 
                 <div class="govuk-button-group">
