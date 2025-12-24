@@ -1,6 +1,7 @@
 import { RequestHandler, Router } from 'express'
 import AddPrisonerHandler from './handlers/addPrisoner'
 import AddPrisonerResultsHandler from './handlers/addPrisonerResults'
+import CheckHandler from './handlers/check'
 import EndDateHandler from './handlers/endDate'
 import { Services } from '../../services'
 
@@ -16,6 +17,10 @@ export default function Index(services: Services): Router {
   const endDateHandler = new EndDateHandler(services.orchestratorService)
   post('/end-date', endDateHandler.POST)
   get('/end-date', endDateHandler.GET)
+
+  const checkHandler = new CheckHandler()
+  get('/check', checkHandler.GET)
+  post('/check', checkHandler.POST)
 
   const addPrisonerResultsHandler = new AddPrisonerResultsHandler(services.orchestratorService)
   get('/add-prisoner-results', addPrisonerResultsHandler.GET)

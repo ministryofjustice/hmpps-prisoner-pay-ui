@@ -10,14 +10,15 @@
 
 {% block content %}
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
+        <div class="govuk-grid-column-two-thirds">
 
             <span class="govuk-caption-l">{{ payType.description }}</span>
             <form method="POST">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 {{ govukRadios({
                     classes: "govuk-radios",
-                    name: "endDateOption",
+                    id: "endDateSelection",
+                    name: "endDateSelection",
                     fieldset: {
                         legend: {
                             text: "Do you want to add an end date for " + prisonerName + "'s " + payType.description + "?",
@@ -30,7 +31,6 @@
                       {
                           value: "yes",
                           text: "Yes",
-                          checked: endDateOption == "yes",
                           conditional: {
                             html: mojDatePicker({
                                 id: 'endDate',
@@ -47,16 +47,18 @@
                       },
                       {
                           value: "no",
-                          text: "No",
-                          checked: endDateOption == "no"
+                          text: "No"
                       }
-                    ]
+                    ],
+                    errorMessage: errors | findError("endDateSelection")
                 }) }}
 
                 <div class="govuk-button-group">
                     {{ govukButton({
                         text: "Continue"
                     }) }}
+
+                    <a class="govuk-link" href="../pay-overview">Cancel</a>
                 </div>
             </form>  
         </div>
