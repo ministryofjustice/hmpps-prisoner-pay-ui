@@ -1,0 +1,54 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% set pageTitle = applicationName + " - Confirm removal date" %}
+{% set mainClasses = "govuk-body" %}
+{% set backLinkHref = "./removal-date" %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-xl">{{ payType.description }}</span>
+            <h1>Check and confirm details</h1>
+
+            {{ govukSummaryList({
+                  rows: [
+                      {
+                        key: { text: "Who you're removing" },
+                        value: { text: payStatusPeriod | formatName(NameFormatStyle.firstLast, false) },
+                        actions: {
+                          items: [{
+                              href: "../../pay-overview",
+                              classes: 'govuk-link--no-visited-state',
+                              text: "Change",
+                              visuallyHiddenText: "prisoner being removed"
+                          }]
+                        }
+                      },
+                      {
+                        key: { text: "Removal date" },
+                        value: { text: selectedDate | formatDate('EEEE, d MMMM yyyy') },
+                        actions: {
+                          items: [{
+                              href: "./removal-date",
+                              classes: 'govuk-link--no-visited-state',
+                              text: "Change",
+                              visuallyHiddenText: "removal date"
+                          }]
+                        }
+                      }
+                  ]
+            }) }}
+
+            <div class="govuk-button-group">
+                {{ govukButton({
+                    text: "Confirm and remove from " + payType.description
+                }) }}
+                <a class="govuk-link" href="../../pay-overview">Cancel</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
