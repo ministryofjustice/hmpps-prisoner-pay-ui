@@ -12,7 +12,10 @@ export default function Index(services: Services): Router {
   get('/removal-date', removalDateHandler.GET)
   post('/removal-date', removalDateHandler.POST)
 
-  const confirmRemovalDateHandler = new ConfirmRemovalDateHandler(services.orchestratorService)
+  const confirmRemovalDateHandler = new ConfirmRemovalDateHandler(
+    services.orchestratorService,
+    services.prisonerPayService,
+  )
   get('/confirm-removal-date', confirmRemovalDateHandler.GET)
   post('/confirm-removal-date', confirmRemovalDateHandler.POST)
 

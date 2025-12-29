@@ -1,10 +1,14 @@
 import { Request, Response } from 'express'
-import { parse } from 'date-fns'
+import { parse, format } from 'date-fns'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 import OrchestratorService from '../../../services/orchestratorService'
+import PrisonerPayService from '../../../services/prisonerPayService'
 
 export default class ConfirmRemovalDateHandler {
-  constructor(private readonly orchestratorService: OrchestratorService) {}
+  constructor(
+    private readonly orchestratorService: OrchestratorService,
+    private readonly prisonerPayService: PrisonerPayService,
+  ) {}
 
   GET = async (req: Request, res: Response) => {
     const payType = getPayTypeBySlug(req.params.payTypeSlug)
@@ -20,7 +24,13 @@ export default class ConfirmRemovalDateHandler {
   }
 
   POST = async (req: Request, res: Response) => {
-    // TODO: Implement POST logic
+    const { payStatusId } = req.params
+    const selectedDate = parse(req.session!.selectedDate, 'dd/MM/yyyy', new Date())
+
+    await this.prisonerPayService.patchPayStatusPeriod(payStatusId, {
+      removalDate: format(selectedDate, 'yyyy-MM-dd'),
+    })
+
     return res.redirect('')
   }
 }

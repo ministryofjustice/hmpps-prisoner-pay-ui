@@ -2,12 +2,15 @@ import { Request, Response } from 'express'
 import { when } from 'jest-when'
 import ConfirmRemovalDateHandler from './confirmRemovalDate'
 import OrchestratorService from '../../../services/orchestratorService'
+import PrisonerPayService from '../../../services/prisonerPayService'
 import TestData from '../../../testutils/testData'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 jest.mock('../../../services/orchestratorService')
+jest.mock('../../../services/prisonerPayService')
 
 const orchestratorService = new OrchestratorService(null)
+const prisonerPayService = new PrisonerPayService(null)
 
 describe('ConfirmRemovalDateHandler', () => {
   let handler: ConfirmRemovalDateHandler
@@ -15,7 +18,7 @@ describe('ConfirmRemovalDateHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
-    handler = new ConfirmRemovalDateHandler(orchestratorService)
+    handler = new ConfirmRemovalDateHandler(orchestratorService, prisonerPayService)
     req = {
       params: { payStatusId: '123', payTypeSlug: 'long-term-sick' },
       session: { selectedDate: '25/12/2025' },
@@ -26,6 +29,7 @@ describe('ConfirmRemovalDateHandler', () => {
     }
 
     when(orchestratorService.getPayStatusPeriodById).calledWith('123').mockReturnValue(TestData.PayStatusPeriod())
+    when(prisonerPayService.patchPayStatusPeriod).calledWith('123', expect.any(Object)).mockReturnValue({})
   })
 
   describe('GET', () => {
