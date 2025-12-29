@@ -36,6 +36,6 @@ export default class RemovalDateHandler {
     }
 
     req.session!.selectedDate = removalDateOption === 'today' ? format(new Date(), 'dd/MM/yyyy') : removalDate
-    return res.redirect('./confirm-removal-date')
+    return res.redirect('./check-removal-date')
   }
 }

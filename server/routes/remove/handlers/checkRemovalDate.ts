@@ -4,7 +4,7 @@ import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 import OrchestratorService from '../../../services/orchestratorService'
 import PrisonerPayService from '../../../services/prisonerPayService'
 
-export default class ConfirmRemovalDateHandler {
+export default class CheckRemovalDateHandler {
   constructor(
     private readonly orchestratorService: OrchestratorService,
     private readonly prisonerPayService: PrisonerPayService,
@@ -16,7 +16,7 @@ export default class ConfirmRemovalDateHandler {
     const { payStatusId } = req.params
     const payStatusPeriod = await this.orchestratorService.getPayStatusPeriodById(payStatusId)
 
-    return res.render('pages/remove/confirm-removal-date', {
+    return res.render('pages/remove/check-removal-date', {
       payStatusPeriod,
       selectedDate,
       payType,

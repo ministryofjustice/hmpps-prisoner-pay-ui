@@ -4,15 +4,15 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
-{% set pageTitle = applicationName + " - Confirm removal date" %}
+{% set pageTitle = applicationName + " - Check removal date" %}
 {% set mainClasses = "govuk-body" %}
 {% set backLinkHref = "./removal-date" %}
 
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <span class="govuk-caption-xl">{{ payType.description }}</span>
-            <h1>Check and confirm details</h1>
+            <span class="govuk-caption-l">{{ payType.description }}</span>
+            <h1 class="govuk-heading-l">Check and confirm details</h1>
 
             {{ govukSummaryList({
                   rows: [

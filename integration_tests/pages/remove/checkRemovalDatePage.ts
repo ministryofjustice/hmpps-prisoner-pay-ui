@@ -1,7 +1,7 @@
 import { type Locator, type Page } from '@playwright/test'
 import AbstractPage from '../abstractPage'
 
-export default class ConfirmRemovalDatePage extends AbstractPage {
+export default class CheckRemovalDatePage extends AbstractPage {
   readonly header: Locator
 
   private constructor(page: Page) {

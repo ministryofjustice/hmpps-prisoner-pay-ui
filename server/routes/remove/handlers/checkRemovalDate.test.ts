@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { when } from 'jest-when'
-import ConfirmRemovalDateHandler from './confirmRemovalDate'
+import CheckRemovalDateHandler from './checkRemovalDate'
 import OrchestratorService from '../../../services/orchestratorService'
 import PrisonerPayService from '../../../services/prisonerPayService'
 import TestData from '../../../testutils/testData'
@@ -12,13 +12,13 @@ jest.mock('../../../services/prisonerPayService')
 const orchestratorService = new OrchestratorService(null)
 const prisonerPayService = new PrisonerPayService(null)
 
-describe('ConfirmRemovalDateHandler', () => {
-  let handler: ConfirmRemovalDateHandler
+describe('CheckRemovalDateHandler', () => {
+  let handler: CheckRemovalDateHandler
   let req: Partial<Request>
   let res: Partial<Response>
 
   beforeEach(() => {
-    handler = new ConfirmRemovalDateHandler(orchestratorService, prisonerPayService)
+    handler = new CheckRemovalDateHandler(orchestratorService, prisonerPayService)
     req = {
       params: { payStatusId: '123', payTypeSlug: 'long-term-sick' },
       session: { selectedDate: '25/12/2025' },
@@ -37,7 +37,7 @@ describe('ConfirmRemovalDateHandler', () => {
       await handler.GET(req as Request, res as Response)
 
       expect(res.render).toHaveBeenCalledWith(
-        'pages/remove/confirm-removal-date',
+        'pages/remove/check-removal-date',
         expect.objectContaining({
           payStatusPeriod: TestData.PayStatusPeriod(),
           payType: getPayTypeBySlug('long-term-sick'),

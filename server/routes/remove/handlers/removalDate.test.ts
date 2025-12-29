@@ -47,7 +47,7 @@ describe('RemovalDateHandler', () => {
       await handler.POST(req as Request, res as Response)
 
       expect(req.session!.selectedDate).toBeDefined()
-      expect(res.redirect).toHaveBeenCalledWith('./confirm-removal-date')
+      expect(res.redirect).toHaveBeenCalledWith('./check-removal-date')
     })
 
     it('should redirect after processing with valid other option', async () => {
@@ -56,7 +56,7 @@ describe('RemovalDateHandler', () => {
       await handler.POST(req as Request, res as Response)
 
       expect(req.session!.selectedDate).toBe('25/12/2025')
-      expect(res.redirect).toHaveBeenCalledWith('./confirm-removal-date')
+      expect(res.redirect).toHaveBeenCalledWith('./check-removal-date')
     })
 
     it('should render form with error when removalDateOption is missing', async () => {
