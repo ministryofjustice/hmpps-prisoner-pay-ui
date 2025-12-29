@@ -1,7 +1,6 @@
 import nock from 'nock'
 import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import PrisonerPayApiClient from './prisonerPayApiClient'
-import config from '../config'
 
 describe('PrisonerPayApiClient', () => {
   let prisonerPayApiClient: PrisonerPayApiClient
