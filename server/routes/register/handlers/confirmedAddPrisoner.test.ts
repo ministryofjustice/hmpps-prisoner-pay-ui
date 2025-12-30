@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
 import ConfirmedAddPrisonerHandler from './confirmedAddPrisoner'
+import TestData from '../../../testutils/testData'
+import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 describe('ConfirmedAddPrisonerHandler', () => {
   let handler: ConfirmedAddPrisonerHandler
@@ -8,7 +10,13 @@ describe('ConfirmedAddPrisonerHandler', () => {
 
   beforeEach(() => {
     handler = new ConfirmedAddPrisonerHandler()
-    req = {}
+    req = {
+      params: { payTypeSlug: 'long-term-sick' },
+      session: {
+        selectedPrisoner: TestData.Prisoner(),
+        endDate: '2025-01-01',
+      },
+    } as unknown as Partial<Request>
     res = {
       render: jest.fn(),
       redirect: jest.fn(),
@@ -19,17 +27,14 @@ describe('ConfirmedAddPrisonerHandler', () => {
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/register/confirmed-add-prisoner', {})
+      expect(res.render).toHaveBeenCalledWith(
+        'pages/register/confirmed-add-prisoner',
+        expect.objectContaining({
+          prisoner: TestData.Prisoner(),
+          payType: getPayTypeBySlug('long-term-sick'),
+          endDate: '2025-01-01',
+        }),
+      )
     })
   })
-
-  describe('POST', () => {
-    it('should redirect after processing', async () => {
-      await handler.POST(req as Request, res as Response)
-
-      expect(res.redirect).toHaveBeenCalled()
-    })
-  })
-
-  // TODO: Add more test cases
 })

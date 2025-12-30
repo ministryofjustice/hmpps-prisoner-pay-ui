@@ -29,7 +29,6 @@ export default function Index(services: Services): Router {
 
   const confirmedAddPrisonerHandler = new ConfirmedAddPrisonerHandler()
   get('/confirmed-add-prisoner', confirmedAddPrisonerHandler.GET)
-  post('/confirmed-add-prisoner', confirmedAddPrisonerHandler.POST)
 
   return router
 }

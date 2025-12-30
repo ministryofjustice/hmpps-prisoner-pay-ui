@@ -1,14 +1,18 @@
 import { Request, Response } from 'express'
+import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 export default class ConfirmedAddPrisonerHandler {
   constructor() {}
 
   GET = async (req: Request, res: Response) => {
-    return res.render('pages/register/confirmed-add-prisoner', {})
-  }
+    const payType = getPayTypeBySlug(req.params.payTypeSlug)
+    const prisoner = req.session!.selectedPrisoner
+    const { endDate } = req.session!
 
-  POST = async (req: Request, res: Response) => {
-    // TODO: Implement POST logic
-    return res.redirect('')
+    return res.render('pages/register/confirmed-add-prisoner', {
+      prisoner,
+      payType,
+      endDate,
+    })
   }
 }
