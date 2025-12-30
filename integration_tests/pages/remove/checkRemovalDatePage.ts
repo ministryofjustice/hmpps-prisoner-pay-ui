@@ -6,6 +6,6 @@ export default class CheckRemovalDatePage extends AbstractPage {
 
   private constructor(page: Page) {
     super(page)
-    this.header = page.locator('h1', { hasText: 'Page header' })
+    this.header = page.locator('h1', { hasText: 'Check and confirm details' })
   }
 }

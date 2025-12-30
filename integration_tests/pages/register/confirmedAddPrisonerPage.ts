@@ -6,6 +6,6 @@ export default class ConfirmedAddPrisonerPage extends AbstractPage {
 
   private constructor(page: Page) {
     super(page)
-    this.header = page.locator('h1', { hasText: 'Page header' })
+    this.header = page.locator('h1', { hasText: 'will now be paid' })
   }
 }
