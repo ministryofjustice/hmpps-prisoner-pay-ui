@@ -3,7 +3,6 @@ import { when } from 'jest-when'
 import ConfirmedRemovalDateHandler from './confirmedRemovalDate'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
-import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 jest.mock('../../../services/orchestratorService')
 
@@ -35,7 +34,6 @@ describe('ConfirmedRemovalDateHandler', () => {
         'pages/remove/confirmed-removal-date',
         expect.objectContaining({
           payStatusPeriod: TestData.PayStatusPeriod(),
-          payType: getPayTypeBySlug('long-term-sick'),
           selectedDate: expect.any(Date),
         }),
       )

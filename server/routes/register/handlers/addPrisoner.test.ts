@@ -22,9 +22,7 @@ describe('AddPrisonerHandler', () => {
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner', {
-        payType: getPayTypeBySlug('long-term-sick'),
-      })
+      expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner', {})
     })
   })
 

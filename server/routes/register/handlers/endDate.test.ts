@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import EndDateHandler from './endDate'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
-import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 jest.mock('../../../services/orchestratorService')
 
@@ -35,7 +34,6 @@ describe('EndDateHandler', () => {
       expect(res.render).toHaveBeenCalledWith('pages/register/end-date', {
         prisonerName: 'Nicaigh Johnustine',
         prisoner: TestData.Prisoner(),
-        payType: getPayTypeBySlug('long-term-sick'),
       })
     })
   })

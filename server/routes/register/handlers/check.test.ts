@@ -3,7 +3,6 @@ import { when } from 'jest-when'
 import CheckHandler from './check'
 import PrisonerPayService from '../../../services/prisonerPayService'
 import TestData from '../../../testutils/testData'
-import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 jest.mock('../../../services/prisonerPayService')
 
@@ -38,7 +37,6 @@ describe('CheckHandler', () => {
       expect(res.render).toHaveBeenCalledWith('pages/register/check', {
         prisonerName: 'Nicaigh Johnustine',
         prisoner: TestData.Prisoner(),
-        payType: getPayTypeBySlug('long-term-sick'),
         endDate: '2025-01-01',
       })
     })

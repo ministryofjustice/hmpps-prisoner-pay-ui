@@ -4,7 +4,6 @@ import CheckRemovalDateHandler from './checkRemovalDate'
 import OrchestratorService from '../../../services/orchestratorService'
 import PrisonerPayService from '../../../services/prisonerPayService'
 import TestData from '../../../testutils/testData'
-import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 jest.mock('../../../services/orchestratorService')
 jest.mock('../../../services/prisonerPayService')
@@ -40,7 +39,6 @@ describe('CheckRemovalDateHandler', () => {
         'pages/remove/check-removal-date',
         expect.objectContaining({
           payStatusPeriod: TestData.PayStatusPeriod(),
-          payType: getPayTypeBySlug('long-term-sick'),
           selectedDate: expect.any(Date),
         }),
       )

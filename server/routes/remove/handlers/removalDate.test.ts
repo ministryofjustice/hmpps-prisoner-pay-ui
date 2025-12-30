@@ -35,7 +35,6 @@ describe('RemovalDateHandler', () => {
 
       expect(res.render).toHaveBeenCalledWith('pages/remove/removal-date', {
         payStatusPeriod: TestData.PayStatusPeriod(),
-        payType: getPayTypeBySlug('long-term-sick'),
       })
     })
   })

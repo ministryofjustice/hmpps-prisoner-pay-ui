@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import ConfirmedAddPrisonerHandler from './confirmedAddPrisoner'
 import TestData from '../../../testutils/testData'
-import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 describe('ConfirmedAddPrisonerHandler', () => {
   let handler: ConfirmedAddPrisonerHandler
@@ -31,7 +30,6 @@ describe('ConfirmedAddPrisonerHandler', () => {
         'pages/register/confirmed-add-prisoner',
         expect.objectContaining({
           prisoner: TestData.Prisoner(),
-          payType: getPayTypeBySlug('long-term-sick'),
           endDate: '2025-01-01',
         }),
       )

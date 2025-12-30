@@ -5,11 +5,14 @@ import AddPrisonerResultsHandler from './handlers/addPrisonerResults'
 import CheckHandler from './handlers/check'
 import EndDateHandler from './handlers/endDate'
 import { Services } from '../../services'
+import setPayType from '../../middleware/setPayType'
 
 export default function Index(services: Services): Router {
   const router = Router({ mergeParams: true })
   const get = (path: string, handler: RequestHandler) => router.get(path, handler)
   const post = (path: string, handler: RequestHandler) => router.post(path, handler)
+
+  router.use(setPayType)
 
   const addPrisonerHandler = new AddPrisonerHandler()
   get('/add-prisoner', addPrisonerHandler.GET)

@@ -8,14 +8,12 @@ export default class CheckHandler {
   constructor(private readonly prisonerPayService: PrisonerPayService) {}
 
   GET = async (req: Request, res: Response) => {
-    const payType = getPayTypeBySlug(req.params.payTypeSlug)
     const prisoner = req.session!.selectedPrisoner
     const { endDate } = req.session!
 
     return res.render('pages/register/check', {
       prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
       prisoner,
-      payType,
       endDate,
     })
   }
