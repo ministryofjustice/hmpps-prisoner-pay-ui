@@ -12,4 +12,8 @@ export default class PrisonerPayApiClient extends RestClient {
   patchPayStatusPeriod(payStatusId: string, body: Record<string, unknown>) {
     return {}
   }
+
+  postPayStatusPeriod(body: Record<string, unknown>) {
+    return {}
+  }
 }

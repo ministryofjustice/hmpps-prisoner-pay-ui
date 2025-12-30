@@ -6,4 +6,8 @@ export default class PrisonerPayService {
   patchPayStatusPeriod(payStatusId: string, body: Record<string, unknown>) {
     return this.prisonerPayApiClient.patchPayStatusPeriod(payStatusId, body)
   }
+
+  postPayStatusPeriod(body: Record<string, unknown>) {
+    return this.prisonerPayApiClient.postPayStatusPeriod(body)
+  }
 }

@@ -26,4 +26,12 @@ describe('PrisonerPayApiClient', () => {
       expect(response).toEqual({})
     })
   })
+
+  describe('postPayStatusPeriod', () => {
+    it('should return an empty object', () => {
+      const response = prisonerPayApiClient.postPayStatusPeriod({})
+
+      expect(response).toEqual({})
+    })
+  })
 })

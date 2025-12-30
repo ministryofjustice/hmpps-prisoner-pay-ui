@@ -1,9 +1,11 @@
 import { Request, Response } from 'express'
+import { format } from 'date-fns'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 import { formatFirstLastName } from '../../../utils/utils'
+import PrisonerPayService from '../../../services/prisonerPayService'
 
 export default class CheckHandler {
-  constructor() {}
+  constructor(private readonly prisonerPayService: PrisonerPayService) {}
 
   GET = async (req: Request, res: Response) => {
     const payType = getPayTypeBySlug(req.params.payTypeSlug)
@@ -19,7 +21,18 @@ export default class CheckHandler {
   }
 
   POST = async (req: Request, res: Response) => {
-    // TODO: Implement POST logic
-    return res.redirect('')
+    const now = new Date()
+    const prisoner = req.session!.selectedPrisoner
+    const payType = getPayTypeBySlug(req.params.payTypeSlug)
+    const { endDate } = req.session!
+
+    await this.prisonerPayService.postPayStatusPeriod({
+      prisonerNumber: prisoner.prisonerNumber,
+      type: payType.type,
+      startDate: format(now, 'yyyy-MM-dd'),
+      endDate,
+    })
+
+    return res.redirect('confirmed-add-prisoner')
   }
 }

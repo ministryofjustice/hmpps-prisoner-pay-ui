@@ -1,7 +1,13 @@
 import { Request, Response } from 'express'
+import { when } from 'jest-when'
 import CheckHandler from './check'
+import PrisonerPayService from '../../../services/prisonerPayService'
 import TestData from '../../../testutils/testData'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
+
+jest.mock('../../../services/prisonerPayService')
+
+const prisonerPayService = new PrisonerPayService(null)
 
 describe('CheckHandler', () => {
   let handler: CheckHandler
@@ -9,7 +15,7 @@ describe('CheckHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
-    handler = new CheckHandler()
+    handler = new CheckHandler(prisonerPayService)
     req = {
       params: { payTypeSlug: 'long-term-sick' },
       session: {
@@ -21,6 +27,8 @@ describe('CheckHandler', () => {
       render: jest.fn(),
       redirect: jest.fn(),
     }
+
+    when(prisonerPayService.postPayStatusPeriod).calledWith(expect.any(Object)).mockReturnValue({})
   })
 
   describe('GET', () => {
@@ -37,10 +45,23 @@ describe('CheckHandler', () => {
   })
 
   describe('POST', () => {
+    it('should call postPayStatusPeriod with correct parameters', async () => {
+      await handler.POST(req as Request, res as Response)
+
+      expect(prisonerPayService.postPayStatusPeriod).toHaveBeenCalledWith(
+        expect.objectContaining({
+          prisonerNumber: TestData.Prisoner().prisonerNumber,
+          type: 'LONG_TERM_SICK',
+          startDate: expect.any(String),
+          endDate: '2025-01-01',
+        }),
+      )
+    })
+
     it('should redirect after processing', async () => {
       await handler.POST(req as Request, res as Response)
 
-      expect(res.redirect).toHaveBeenCalled()
+      expect(res.redirect).toHaveBeenCalledWith('confirmed-add-prisoner')
     })
   })
 })

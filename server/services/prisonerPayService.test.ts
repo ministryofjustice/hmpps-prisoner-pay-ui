@@ -10,6 +10,7 @@ describe('PrisonerPayService', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     prisonerPayApiClientMock.patchPayStatusPeriod = jest.fn().mockReturnValue({})
+    prisonerPayApiClientMock.postPayStatusPeriod = jest.fn().mockReturnValue({})
     prisonerPayService = new PrisonerPayService(prisonerPayApiClientMock)
   })
 
@@ -22,6 +23,17 @@ describe('PrisonerPayService', () => {
 
       expect(prisonerPayApiClientMock.patchPayStatusPeriod).toHaveBeenCalledWith(payStatusId, body)
       expect(prisonerPayApiClientMock.patchPayStatusPeriod).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('postPayStatusPeriod', () => {
+    it('should call postPayStatusPeriod on the api client with correct parameters', () => {
+      const body = { prisonerId: '123', payType: 'long-term-sick' }
+
+      prisonerPayService.postPayStatusPeriod(body)
+
+      expect(prisonerPayApiClientMock.postPayStatusPeriod).toHaveBeenCalledWith(body)
+      expect(prisonerPayApiClientMock.postPayStatusPeriod).toHaveBeenCalledTimes(1)
     })
   })
 })
