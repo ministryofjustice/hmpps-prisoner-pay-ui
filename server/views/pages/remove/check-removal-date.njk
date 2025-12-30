@@ -42,13 +42,15 @@
                       }
                   ]
             }) }}
-
-            <div class="govuk-button-group">
-                {{ govukButton({
-                    text: "Confirm and remove from " + payType.description
-                }) }}
-                <a class="govuk-link" href="../../pay-overview">Cancel</a>
-            </div>
+            <form method="POST">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+                <div class="govuk-button-group">
+                    {{ govukButton({
+                        text: "Confirm and remove from " + payType.description
+                    }) }}
+                    <a class="govuk-link" href="../../pay-overview">Cancel</a>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}

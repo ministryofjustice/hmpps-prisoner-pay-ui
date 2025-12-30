@@ -31,6 +31,6 @@ export default class CheckRemovalDateHandler {
       removalDate: format(selectedDate, 'yyyy-MM-dd'),
     })
 
-    return res.redirect('')
+    return res.redirect('confirmed-removal-date')
   }
 }

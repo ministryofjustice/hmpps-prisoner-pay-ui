@@ -1,5 +1,6 @@
 import { RequestHandler, Router } from 'express'
 import RemovalDateHandler from './handlers/removalDate'
+import ConfirmedRemovalDateHandler from './handlers/confirmedRemovalDate'
 import CheckRemovalDateHandler from './handlers/checkRemovalDate'
 import { Services } from '../../services'
 
@@ -15,6 +16,9 @@ export default function Index(services: Services): Router {
   const checkRemovalDateHandler = new CheckRemovalDateHandler(services.orchestratorService, services.prisonerPayService)
   get('/check-removal-date', checkRemovalDateHandler.GET)
   post('/check-removal-date', checkRemovalDateHandler.POST)
+
+  const confirmedRemovalDateHandler = new ConfirmedRemovalDateHandler(services.orchestratorService)
+  get('/confirmed-removal-date', confirmedRemovalDateHandler.GET)
 
   return router
 }
