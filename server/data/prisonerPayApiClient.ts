@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { RestClient } from '@ministryofjustice/hmpps-rest-client'
 import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
+import { CreatePayStatusPeriodRequest, UpdatePayStatusPeriodRequest } from '../@types/prisonerPayAPI/types'
 import config from '../config'
 import logger from '../../logger'
 
@@ -9,11 +10,11 @@ export default class PrisonerPayApiClient extends RestClient {
     super('prisoner pay API', config.apis.exampleApi, logger, authenticationClient)
   }
 
-  patchPayStatusPeriod(payStatusId: string, body: Record<string, unknown>) {
+  patchPayStatusPeriod(payStatusId: string, request: UpdatePayStatusPeriodRequest) {
     return {}
   }
 
-  postPayStatusPeriod(body: Record<string, unknown>) {
+  postPayStatusPeriod(request: CreatePayStatusPeriodRequest) {
     return {}
   }
 }

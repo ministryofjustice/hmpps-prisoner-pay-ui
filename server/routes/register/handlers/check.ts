@@ -3,6 +3,7 @@ import { format } from 'date-fns'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 import { formatFirstLastName } from '../../../utils/utils'
 import PrisonerPayService from '../../../services/prisonerPayService'
+import { CreatePayStatusPeriodRequest } from '../../../@types/prisonerPayAPI/types'
 
 export default class CheckHandler {
   constructor(private readonly prisonerPayService: PrisonerPayService) {}
@@ -29,7 +30,7 @@ export default class CheckHandler {
       type: payType.type,
       startDate: format(now, 'yyyy-MM-dd'),
       endDate: selectedDate,
-    })
+    } as CreatePayStatusPeriodRequest)
 
     return res.redirect('confirmed-add-prisoner')
   }

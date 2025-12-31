@@ -25,7 +25,8 @@ export default class CheckRemovalDateHandler {
     const selectedDate = parse(req.session!.selectedDate, 'dd/MM/yyyy', new Date())
 
     await this.prisonerPayService.patchPayStatusPeriod(payStatusId, {
-      removalDate: format(selectedDate, 'yyyy-MM-dd'),
+      endDate: format(selectedDate, 'yyyy-MM-dd'),
+      removeEndDate: false,
     })
 
     return res.redirect('confirmed-removal-date')

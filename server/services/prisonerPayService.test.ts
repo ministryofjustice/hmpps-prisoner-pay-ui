@@ -1,3 +1,4 @@
+import { CreatePayStatusPeriodRequest } from '../@types/prisonerPayAPI/types'
 import PrisonerPayApiClient from '../data/prisonerPayApiClient'
 import PrisonerPayService from './prisonerPayService'
 
@@ -16,19 +17,24 @@ describe('PrisonerPayService', () => {
 
   describe('patchPayStatusPeriod', () => {
     it('should call patchPayStatusPeriod on the api client with correct parameters', () => {
-      const payStatusId = '123'
-      const body = { status: 'removed' }
+      const request = {
+        removeEndDate: true,
+      }
+      prisonerPayService.patchPayStatusPeriod('123', request)
 
-      prisonerPayService.patchPayStatusPeriod(payStatusId, body)
-
-      expect(prisonerPayApiClientMock.patchPayStatusPeriod).toHaveBeenCalledWith(payStatusId, body)
+      expect(prisonerPayApiClientMock.patchPayStatusPeriod).toHaveBeenCalledWith('123', request)
       expect(prisonerPayApiClientMock.patchPayStatusPeriod).toHaveBeenCalledTimes(1)
     })
   })
 
   describe('postPayStatusPeriod', () => {
     it('should call postPayStatusPeriod on the api client with correct parameters', () => {
-      const body = { prisonerId: '123', payType: 'long-term-sick' }
+      const body = {
+        prisonCode: 'MDI',
+        prisonerNumber: 'A1234BC',
+        type: 'LONG_TERM_SICK',
+        startDate: '2025-01-01',
+      } as CreatePayStatusPeriodRequest
 
       prisonerPayService.postPayStatusPeriod(body)
 

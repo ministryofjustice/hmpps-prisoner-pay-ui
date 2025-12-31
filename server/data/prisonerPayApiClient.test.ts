@@ -21,7 +21,9 @@ describe('PrisonerPayApiClient', () => {
 
   describe('patchPayStatusPeriod', () => {
     it('should return an empty object', () => {
-      const response = prisonerPayApiClient.patchPayStatusPeriod('123', {})
+      const response = prisonerPayApiClient.patchPayStatusPeriod('123', {
+        removeEndDate: false,
+      })
 
       expect(response).toEqual({})
     })
@@ -29,7 +31,12 @@ describe('PrisonerPayApiClient', () => {
 
   describe('postPayStatusPeriod', () => {
     it('should return an empty object', () => {
-      const response = prisonerPayApiClient.postPayStatusPeriod({})
+      const response = prisonerPayApiClient.postPayStatusPeriod({
+        prisonCode: '',
+        prisonerNumber: '',
+        type: 'LONG_TERM_SICK',
+        startDate: '',
+      })
 
       expect(response).toEqual({})
     })
