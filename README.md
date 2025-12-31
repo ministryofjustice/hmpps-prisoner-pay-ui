@@ -5,6 +5,14 @@
 
 This application is the frontend client for the prisoner pay service. The client is backed by [hmpps-prisoner-pay-orchestrator](https://github.com/ministryofjustice/hmpps-prisoner-pay-orchestrator-api) and [hmpps-prisoner-pay-api](https://github.com/ministryofjustice/hmpps-prisoner-pay-api)
 
+## Generating Open API Types
+
+There are various services which should have their types regenerated:
+
+```
+./generate-prisoner-pay-types.sh
+./generate-pay-orchestrator-types.sh
+```
 
 ## Oauth2 Credentials
 
