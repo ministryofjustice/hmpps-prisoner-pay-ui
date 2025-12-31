@@ -5,11 +5,11 @@ export default class ConfirmedAddPrisonerHandler {
 
   GET = async (req: Request, res: Response) => {
     const prisoner = req.session!.selectedPrisoner
-    const { endDate } = req.session!
+    const { selectedDate } = req.session!
 
     return res.render('pages/register/confirmed-add-prisoner', {
       prisoner,
-      endDate,
+      selectedDate,
     })
   }
 }

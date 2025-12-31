@@ -16,8 +16,8 @@ export default class EndDateHandler {
   }
 
   POST = async (req: Request, res: Response) => {
-    const { endDate, endDateSelection } = req.body
-    req.session.endDate = endDate
+    const { selectedDate, endDateSelection } = req.body
+    req.session.selectedDate = selectedDate
 
     const errors = validateForm(endDateSelection)
     if (errors) return res.render('pages/register/end-date', { errors: [errors], endDateSelection })

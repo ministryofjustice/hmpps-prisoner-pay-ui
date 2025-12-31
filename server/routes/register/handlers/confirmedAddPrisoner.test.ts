@@ -13,7 +13,7 @@ describe('ConfirmedAddPrisonerHandler', () => {
       params: { payTypeSlug: 'long-term-sick' },
       session: {
         selectedPrisoner: TestData.Prisoner(),
-        endDate: '2025-01-01',
+        selectedDate: '2025-01-01',
       },
     } as unknown as Partial<Request>
     res = {
@@ -30,7 +30,7 @@ describe('ConfirmedAddPrisonerHandler', () => {
         'pages/register/confirmed-add-prisoner',
         expect.objectContaining({
           prisoner: TestData.Prisoner(),
-          endDate: '2025-01-01',
+          selectedDate: '2025-01-01',
         }),
       )
     })

@@ -7,7 +7,6 @@ export declare module 'express-session' {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selectedPrisoner: any
     selectedDate: string
-    endDate: string
   }
 }
 

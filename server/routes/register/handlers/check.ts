@@ -9,12 +9,12 @@ export default class CheckHandler {
 
   GET = async (req: Request, res: Response) => {
     const prisoner = req.session!.selectedPrisoner
-    const { endDate } = req.session!
+    const { selectedDate } = req.session!
 
     return res.render('pages/register/check', {
       prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
       prisoner,
-      endDate,
+      selectedDate,
     })
   }
 
@@ -22,13 +22,13 @@ export default class CheckHandler {
     const now = new Date()
     const prisoner = req.session!.selectedPrisoner
     const payType = getPayTypeBySlug(req.params.payTypeSlug)
-    const { endDate } = req.session!
+    const { selectedDate } = req.session!
 
     await this.prisonerPayService.postPayStatusPeriod({
       prisonerNumber: prisoner.prisonerNumber,
       type: payType.type,
       startDate: format(now, 'yyyy-MM-dd'),
-      endDate,
+      endDate: selectedDate,
     })
 
     return res.redirect('confirmed-add-prisoner')

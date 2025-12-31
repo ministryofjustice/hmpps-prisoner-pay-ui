@@ -41,7 +41,7 @@ describe('EndDateHandler', () => {
   describe('POST', () => {
     it('should redirect after processing', async () => {
       req.body = {
-        endDate: '2025-01-01',
+        selectedDate: '2025-01-01',
         endDateSelection: 'yes',
       }
       await handler.POST(req as Request, res as Response)
