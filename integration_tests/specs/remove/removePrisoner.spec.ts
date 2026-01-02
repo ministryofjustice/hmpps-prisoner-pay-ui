@@ -12,6 +12,7 @@ test.describe('Remove Prisoner', () => {
   })
 
   test('Can remove a prisoner from a pay type', async ({ page }) => {
+    // TODO: Add proper api mocking when connection is made
     const type = 'Long-term sick'
     await login(page)
 
