@@ -28,7 +28,10 @@
                                     },
                                     type: "search",
                                     value: query,
-                                    errorMessage: errors | findError("query")
+                                    errorMessage: errors | findError("query"),
+                                    attributes: {
+                                        'data-qa': 'query'
+                                    }
                                 }) }}
                                 <div class="govuk-button-group">
                                     {{ govukButton({

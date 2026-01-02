@@ -28,7 +28,10 @@
                                     },
                                     type: "search",
                                     value: query,
-                                    errorMessage: errors | findError("query")
+                                    errorMessage: errors | findError("query"),
+                                    attributes: {
+                                        'data-qa': 'query'
+                                    }
                                 }) }}
                                 {{ govukButton({
                                     text: "Search",
@@ -93,7 +96,7 @@
                             {{ govukTable({
                                 attributes: {
                                     'data-module': 'moj-sortable-table',
-                                    id: 'prisoner-search-list'
+                                    'data-qa': 'prisoner-search-results-table'
                                 },
                                 caption: "Prisoner search list",
                                 classes: "fixed-layout-table",
