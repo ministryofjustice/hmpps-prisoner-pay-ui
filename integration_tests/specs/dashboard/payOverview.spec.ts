@@ -8,7 +8,7 @@ test.describe('Dashboard', () => {
     await resetStubs()
   })
 
-  test('Can visit the dashboard page', async ({ page }) => {
+  test('Can visit the pay overview page', async ({ page }) => {
     const type = 'Long-term sick'
     await login(page)
 

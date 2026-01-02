@@ -1,11 +1,21 @@
-import { type Locator, type Page } from '@playwright/test'
+import { expect, type Locator, type Page } from '@playwright/test'
 import AbstractPage from '../abstractPage'
 
 export default class CheckRemovalDatePage extends AbstractPage {
   readonly header: Locator
 
+  readonly confirmButton: Locator
+
   private constructor(page: Page) {
     super(page)
     this.header = page.locator('h1', { hasText: 'Check and confirm details' })
+    this.confirmButton = page.getByRole('button', { name: 'Confirm' })
+  }
+
+  static async verifyOnPage(page: Page): Promise<CheckRemovalDatePage> {
+    const checkRemovalDatePage = new CheckRemovalDatePage(page)
+    await expect(checkRemovalDatePage.header).toBeVisible()
+    await expect(checkRemovalDatePage.confirmButton).toBeVisible()
+    return checkRemovalDatePage
   }
 }

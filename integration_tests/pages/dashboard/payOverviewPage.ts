@@ -8,8 +8,11 @@ export default class PayOverviewPage extends AbstractPage {
 
   readonly payOverviewTable: Locator
 
+  readonly page: Page
+
   private constructor(page: Page, type: string) {
     super(page)
+    this.page = page
     this.header = page.locator('h1', { hasText: type })
     this.addPersonButton = page.getByTestId('add-to-pay-type-button')
     this.payOverviewTable = page.getByTestId('pay-overview-table')
@@ -21,5 +24,9 @@ export default class PayOverviewPage extends AbstractPage {
     await expect(payOverviewPage.addPersonButton).toBeVisible()
     await expect(payOverviewPage.payOverviewTable).toBeVisible()
     return payOverviewPage
+  }
+
+  getRemoveLink(type: string): Locator {
+    return this.page.getByRole('link', { name: `Remove from ${type}` })
   }
 }

@@ -13,7 +13,7 @@ test.describe('Dashboard', () => {
     await resetStubs()
   })
 
-  test('Can visit the dashboard page', async ({ page }) => {
+  test('Can add a prisoner to a pay type', async ({ page }) => {
     const type = 'Long-term sick'
     await login(page)
 
