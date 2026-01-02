@@ -5,19 +5,19 @@ describe('validateForm', () => {
     it('returns the expected response for a valid submit', () => {
       expect(
         validateForm({
-          prisonerNumber: 'A1234BC',
+          selectedPrisoner: 'A1234BC',
         }),
       ).toBeNull()
     })
   })
-  describe('prisonerNumber', () => {
+  describe('selectedPrisoner', () => {
     it('shows error if a prisoner number is not entered', () => {
       expect(
         validateForm({
-          prisonerNumber: '',
+          selectedPrisoner: '',
         }),
       ).toEqual({
-        href: '#prisonerNumber',
+        href: '#selectedPrisoner',
         text: 'Select a prisoner to add',
       })
     })

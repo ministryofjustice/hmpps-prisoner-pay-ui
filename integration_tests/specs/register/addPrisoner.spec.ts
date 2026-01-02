@@ -28,6 +28,7 @@ test.describe('Dashboard', () => {
     await addPrisonerPage.searchButton.click()
 
     const addPrisonerResultsPage = await AddPrisonerResultsPage.verifyOnPage(page)
+    await addPrisonerResultsPage.page.getByRole('radio', { name: 'Nicaigh Johnustine' }).check()
     await addPrisonerResultsPage.continueButton.click()
 
     const endDatePage = await EndDatePage.verifyOnPage(page)

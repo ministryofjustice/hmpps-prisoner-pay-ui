@@ -21,7 +21,7 @@ describe('AddPrisonerResultsHandler', () => {
         query: 'test',
       },
       body: {
-        prisonerNumber: 'A1234BC',
+        selectedPrisoner: 'A1234BC',
       },
       session: {},
     } as unknown as Partial<Request>

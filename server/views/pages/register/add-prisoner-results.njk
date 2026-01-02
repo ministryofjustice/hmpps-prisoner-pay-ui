@@ -93,11 +93,11 @@
                                 }) }}
                             {% endif %}
 
-                            {% set groupClasses = "govuk-form-group govuk-form-group--error" if errors | findError("prisonerNumber") else "govuk-form-group" %}
+                            {% set groupClasses = "govuk-form-group govuk-form-group--error" if errors | findError("selectedPrisoner") else "govuk-form-group" %}
                             <div class="{{ groupClasses }}">
-                                {% if errors | findError("prisonerNumber") %}
+                                {% if errors | findError("selectedPrisoner") %}
                                     <p id="query-error" class="govuk-error-message">
-                                        <span class="govuk-visually-hidden">Error:</span> {{ (errors | findError("prisonerNumber")).text }}
+                                        <span class="govuk-visually-hidden">Error:</span> {{ (errors | findError("selectedPrisoner")).text }}
                                     </p>
                                 {% endif %}
                                 {{ govukTable({
@@ -108,7 +108,7 @@
                                     caption: "Prisoner search list",
                                     classes: "fixed-layout-table",
                                     captionClasses: "govuk-visually-hidden",
-                                    errorMessage: errors | findError("prisonerNumber"),
+                                    errorMessage: errors | findError("selectedPrisoner"),
                                     head: [{
                                         text: "Name",
                                         attributes: {
