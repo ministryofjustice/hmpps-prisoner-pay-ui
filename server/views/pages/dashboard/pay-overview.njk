@@ -20,7 +20,10 @@
 
             {{ govukButton({
                 text: "Add someone to " + payTypeDescriptionLower,
-                href: './register/add-prisoner'
+                href: './register/add-prisoner',
+                attributes: {
+                    'data-qa': 'add-to-pay-type-button'
+                }
             }) }}
 
             {% set rows = [] %}
@@ -43,8 +46,9 @@
             {% endfor %}
             {{ govukTable({
                 attributes: {
-                        'data-module': 'moj-sortable-table',
-                        'data-table-fixed-rows': 'true'
+                    'data-module': 'moj-sortable-table',
+                    'data-table-fixed-rows': 'true',
+                    'data-qa': 'pay-overview-table'
                 },
                 caption: "Preview",
                 captionClasses: "govuk-visually-hidden",

@@ -33,6 +33,9 @@
             {{ govukTable({
                 caption: "Preview",
                 captionClasses: "govuk-visually-hidden",
+                attributes: {
+                    "data-qa": "pay-type-list-table"
+                },
                 head: [
                     {
                         text: "Status"
