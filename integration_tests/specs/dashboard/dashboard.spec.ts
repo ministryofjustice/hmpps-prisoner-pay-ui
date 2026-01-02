@@ -10,7 +10,8 @@ test.describe('Dashboard', () => {
   test('Can visit the dashboard page', async ({ page }) => {
     await login(page)
 
-    const examplePage = await DashboardPage.verifyOnPage(page)
-    expect(examplePage.header).toBeDefined()
+    const dashboardPage = await DashboardPage.verifyOnPage(page)
+    expect(dashboardPage.header).toBeDefined()
+    // TODO: Further tests once API properly integrated
   })
 })

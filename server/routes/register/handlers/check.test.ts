@@ -1,7 +1,12 @@
 import { Request, Response } from 'express'
+import { when } from 'jest-when'
 import CheckHandler from './check'
+import PrisonerPayService from '../../../services/prisonerPayService'
 import TestData from '../../../testutils/testData'
-import PayType from '../../../@types/payTypes'
+
+jest.mock('../../../services/prisonerPayService')
+
+const prisonerPayService = new PrisonerPayService(null)
 
 describe('CheckHandler', () => {
   let handler: CheckHandler
@@ -9,18 +14,20 @@ describe('CheckHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
-    handler = new CheckHandler()
+    handler = new CheckHandler(prisonerPayService)
     req = {
       params: { payTypeSlug: 'long-term-sick' },
       session: {
         selectedPrisoner: TestData.Prisoner(),
-        endDate: '2025-01-01',
+        selectedDate: '2025-01-01',
       },
     } as unknown as Partial<Request>
     res = {
       render: jest.fn(),
       redirect: jest.fn(),
     }
+
+    when(prisonerPayService.postPayStatusPeriod).calledWith(expect.any(Object)).mockReturnValue({})
   })
 
   describe('GET', () => {
@@ -30,21 +37,29 @@ describe('CheckHandler', () => {
       expect(res.render).toHaveBeenCalledWith('pages/register/check', {
         prisonerName: 'Nicaigh Johnustine',
         prisoner: TestData.Prisoner(),
-        payType: {
-          type: PayType.LONG_TERM_SICK,
-          description: 'Long-term sick',
-          slug: 'long-term-sick',
-        },
-        endDate: '2025-01-01',
+        selectedDate: '2025-01-01',
       })
     })
   })
 
   describe('POST', () => {
+    it('should call postPayStatusPeriod with correct parameters', async () => {
+      await handler.POST(req as Request, res as Response)
+
+      expect(prisonerPayService.postPayStatusPeriod).toHaveBeenCalledWith(
+        expect.objectContaining({
+          prisonerNumber: TestData.Prisoner().prisonerNumber,
+          type: 'LONG_TERM_SICK',
+          startDate: expect.any(String),
+          endDate: '2025-01-01',
+        }),
+      )
+    })
+
     it('should redirect after processing', async () => {
       await handler.POST(req as Request, res as Response)
 
-      expect(res.redirect).toHaveBeenCalled()
+      expect(res.redirect).toHaveBeenCalledWith('confirmed-add-prisoner')
     })
   })
 })

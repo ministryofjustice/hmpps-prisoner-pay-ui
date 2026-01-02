@@ -28,7 +28,10 @@
                                     },
                                     type: "search",
                                     value: query,
-                                    errorMessage: errors | findError("query")
+                                    errorMessage: errors | findError("query"),
+                                    attributes: {
+                                        'data-qa': 'query'
+                                    }
                                 }) }}
                                 {{ govukButton({
                                     text: "Search",
@@ -90,32 +93,41 @@
                                 }) }}
                             {% endif %}
 
-                            {{ govukTable({
-                                attributes: {
-                                    'data-module': 'moj-sortable-table',
-                                    id: 'prisoner-search-list'
-                                },
-                                caption: "Prisoner search list",
-                                classes: "fixed-layout-table",
-                                captionClasses: "govuk-visually-hidden",
-                                head: [{
-                                    text: "Name",
+                            {% set groupClasses = "govuk-form-group govuk-form-group--error" if errors | findError("selectedPrisoner") else "govuk-form-group" %}
+                            <div class="{{ groupClasses }}">
+                                {% if errors | findError("selectedPrisoner") %}
+                                    <p id="query-error" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span> {{ (errors | findError("selectedPrisoner")).text }}
+                                    </p>
+                                {% endif %}
+                                {{ govukTable({
                                     attributes: {
-                                        "aria-sort": "ascending"
-                                    }
-                                }, {
-                                    text: "Prison number",
-                                    attributes: {
-                                        "aria-sort": "none"
-                                    }
-                                }, {
-                                    text: "Cell location",
-                                    attributes: {
-                                        "aria-sort": "none"
-                                    }
-                                }],
-                                rows: prisonerRows
-                            }) }}
+                                        'data-module': 'moj-sortable-table',
+                                        'data-qa': 'prisoner-search-results-table'
+                                    },
+                                    caption: "Prisoner search list",
+                                    classes: "fixed-layout-table",
+                                    captionClasses: "govuk-visually-hidden",
+                                    errorMessage: errors | findError("selectedPrisoner"),
+                                    head: [{
+                                        text: "Name",
+                                        attributes: {
+                                            "aria-sort": "ascending"
+                                        }
+                                    }, {
+                                        text: "Prison number",
+                                        attributes: {
+                                            "aria-sort": "none"
+                                        }
+                                    }, {
+                                        text: "Cell location",
+                                        attributes: {
+                                            "aria-sort": "none"
+                                        }
+                                    }],
+                                    rows: prisonerRows
+                                }) }}
+                            </div>
                             <div class="govuk-button-group">
                                 {{ govukButton({
                                     text: "Select and continue" if prisoners | length > 1 else "Continue",

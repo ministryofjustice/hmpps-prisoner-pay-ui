@@ -3,7 +3,6 @@ import { when } from 'jest-when'
 import AddPrisonerResultsHandler from './addPrisonerResults'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
-import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 jest.mock('../../../services/orchestratorService')
 
@@ -22,7 +21,7 @@ describe('AddPrisonerResultsHandler', () => {
         query: 'test',
       },
       body: {
-        prisonerNumber: 'A1234BC',
+        selectedPrisoner: 'A1234BC',
       },
       session: {},
     } as unknown as Partial<Request>
@@ -47,7 +46,6 @@ describe('AddPrisonerResultsHandler', () => {
       expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner-results', {
         prisoners: TestData.Prisoners(),
         query: 'test',
-        payType: getPayTypeBySlug('long-term-sick'),
       })
     })
   })

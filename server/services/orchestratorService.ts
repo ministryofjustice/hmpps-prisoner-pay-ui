@@ -1,13 +1,14 @@
+import { PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
 import OrchestratorApiClient from '../data/orchestratorApiClient'
 
 export default class OrchestratorService {
   constructor(private readonly orchestratorApiClient: OrchestratorApiClient) {}
 
-  getPayStatusPeriodsByType(payType: string) {
+  getPayStatusPeriodsByType(payType: string): PayStatusPeriod[] {
     return this.orchestratorApiClient.getPayStatusPeriods().filter(period => period.type === payType)
   }
 
-  getPayStatusPeriodById(payStatusId: string) {
+  getPayStatusPeriodById(payStatusId: string): PayStatusPeriod {
     return this.orchestratorApiClient.getPayStatusPeriodById(payStatusId)
   }
 

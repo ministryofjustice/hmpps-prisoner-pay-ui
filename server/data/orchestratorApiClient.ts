@@ -4,17 +4,18 @@ import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients
 import config from '../config'
 import logger from '../../logger'
 import TestData from '../testutils/testData'
+import { PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
 
 export default class OrchestratorApiClient extends RestClient {
   constructor(authenticationClient: AuthenticationClient) {
     super('orchestrator API', config.apis.exampleApi, logger, authenticationClient)
   }
 
-  getPayStatusPeriods() {
+  getPayStatusPeriods(): PayStatusPeriod[] {
     return TestData.PayStatusPeriods()
   }
 
-  getPayStatusPeriodById(payStatusId: string) {
+  getPayStatusPeriodById(payStatusId: string): PayStatusPeriod {
     return TestData.PayStatusPeriod()
   }
 
