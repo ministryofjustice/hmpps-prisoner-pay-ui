@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import EndDateHandler from './endDate'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
-import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 jest.mock('../../../services/orchestratorService')
 
@@ -35,7 +34,6 @@ describe('EndDateHandler', () => {
       expect(res.render).toHaveBeenCalledWith('pages/register/end-date', {
         prisonerName: 'Nicaigh Johnustine',
         prisoner: TestData.Prisoner(),
-        payType: getPayTypeBySlug('long-term-sick'),
       })
     })
   })
@@ -43,7 +41,7 @@ describe('EndDateHandler', () => {
   describe('POST', () => {
     it('should redirect after processing', async () => {
       req.body = {
-        endDate: '2025-01-01',
+        selectedDate: '2025-01-01',
         endDateSelection: 'yes',
       }
       await handler.POST(req as Request, res as Response)

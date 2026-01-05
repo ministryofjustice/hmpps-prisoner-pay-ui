@@ -5,58 +5,14 @@
 
 This application is the frontend client for the prisoner pay service. The client is backed by [hmpps-prisoner-pay-orchestrator](https://github.com/ministryofjustice/hmpps-prisoner-pay-orchestrator-api) and [hmpps-prisoner-pay-api](https://github.com/ministryofjustice/hmpps-prisoner-pay-api)
 
+## Generating Open API Types
 
-## Oauth2 Credentials
+There are various services which should have their types regenerated:
 
-The template project is set up to run with two sets of credentials, each one support a different oauth2 flows.
-These need to be requested from the auth team by filling in
-this [template](https://dsdmoj.atlassian.net/browse/HAAR-140) and raising on their slack channel.
-
-### Auth Code flow
-
-These are used to allow authenticated users to access the application. After the user is redirected from auth back to
-the application, the typescript app will use the returned auth code to request a JWT token for that user containing the
-user's roles. The JWT token will be verified and then stored in the user's session.
-
-These credentials are configured using the following env variables:
-
-- AUTH_CODE_CLIENT_ID
-- AUTH_CODE_CLIENT_SECRET
-
-### Client Credentials flow
-
-These are used by the application to request tokens to make calls to APIs. These are system accounts that will have
-their own sets of roles.
-
-Most API calls that occur as part of the request/response cycle will be on behalf of a user.
-To make a call on behalf of a user, a username should be passed when requesting a system token. The username will then
-become part of the JWT and can be used downstream for auditing purposes.
-
-These tokens are cached until expiration.
-
-These credentials are configured using the following env variables:
-
-- CLIENT_CREDS_CLIENT_ID
-- CLIENT_CREDS_CLIENT_SECRET
-
-### Dependencies
-
-### HMPPS Auth
-
-To allow authenticated users to access your application you need to point it to a running instance of `hmpps-auth`.
-By default the application is configured to run against an instance running in docker that can be started
-via `docker-compose`.
-
-**NB:** It's common for developers to run against the instance of auth running in the development/T3 environment for
-local development.
-Most APIs don't have images with cached data that you can run with docker: setting up realistic stubbed data in sync
-across a variety of services is very difficult.
-
-### REDIS
-
-When deployed to an environment with multiple pods we run applications with an instance of REDIS/Elasticache to provide
-a distributed cache of sessions.
-The template app is, by default, configured not to use REDIS when running locally.
+```
+./generate-prisoner-pay-types.sh
+./generate-pay-orchestrator-types.sh
+```
 
 ## Running the app via docker-compose
 

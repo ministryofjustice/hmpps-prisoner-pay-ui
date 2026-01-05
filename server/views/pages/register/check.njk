@@ -11,46 +11,52 @@
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-             <span class="govuk-caption-xl">{{ payType.description }}</span>
-            <h1>Check and confirm details</h1> 
+            <span class="govuk-caption-l">{{ payType.description }}</span>
+            <h1 class="govuk-heading-l">Check and confirm details</h1>
 
             {{ govukSummaryList({
-                  rows: [
-                      {
+                rows: [
+                    {
                         key: { text: "Who you're adding" },
                         value: { text: prisonerName },
                         actions: {
-                          items: [{
-                              href: "add-prisoner",
-                              classes: 'govuk-link--no-visited-state',
-                              text: "Change",
-                              visuallyHiddenText: "change prisoner"
-                          }]
+                            items: [{
+                                href: "add-prisoner",
+                                classes: 'govuk-link--no-visited-state',
+                                text: "Change",
+                                visuallyHiddenText: "change prisoner"
+                            }]
                         }
-                      },
-                      {
+                    },
+                    {
                         key: { text: "End Date" },
-                        value: { text: endDate if endDate else 'None set' },
+                        value: { text: selectedDate if selectedDate else 'None set' },
                         actions: {
-                          items: [{
-                              href: "end-date",
-                              classes: 'govuk-link--no-visited-state',
-                              text: "Change",
-                              visuallyHiddenText: "change end date"
-                          }]
+                            items: [{
+                                href: "end-date",
+                                classes: 'govuk-link--no-visited-state',
+                                text: "Change",
+                                visuallyHiddenText: "change end date"
+                            }]
                         }
-                      }
-                  ]
+                    }
+                ]
             }) }}
 
+            {# TODO: This content needs to be dynamically generated #}
             {{ govukInsetText({
                 text: "2 activity allocations will be ended today with the reason health"
             }) }}
 
-            {{ govukButton({
-                text: "Confirm and add to long-term sick",
-                href: './register/check'
-            }) }}
+            <form method="POST">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+                <div class="govuk-button-group">
+                    {{ govukButton({
+                        text: "Confirm and add to " + payType.description | lower
+                    }) }}
+                    <a class="govuk-link" href="../../pay-overview">Cancel</a>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}

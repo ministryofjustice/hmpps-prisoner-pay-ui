@@ -1,6 +1,9 @@
 import { Request, Response } from 'express'
+import { when } from 'jest-when'
 import AddPrisonerHandler from './addPrisoner'
-import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
+import validateForm from './addPrisonerValidation'
+
+jest.mock('./addPrisonerValidation')
 
 describe('AddPrisonerHandler', () => {
   let handler: AddPrisonerHandler
@@ -8,9 +11,11 @@ describe('AddPrisonerHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
+    jest.clearAllMocks()
     handler = new AddPrisonerHandler()
     req = {
       params: { payTypeSlug: 'long-term-sick' },
+      body: {},
     }
     res = {
       render: jest.fn(),
@@ -22,18 +27,42 @@ describe('AddPrisonerHandler', () => {
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner', {
-        payType: getPayTypeBySlug('long-term-sick'),
-      })
+      expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner', {})
     })
   })
 
   describe('POST', () => {
-    it('should redirect after processing', async () => {
-      req.body = { query: 'some query' }
+    it('should redirect when validation passes', async () => {
+      req.body = { query: 'G4529UP' }
+      when(validateForm).calledWith({ query: 'G4529UP' }).mockReturnValue(null)
+
       await handler.POST(req as Request, res as Response)
 
-      expect(res.redirect).toHaveBeenCalled()
+      expect(res.redirect).toHaveBeenCalledWith('./add-prisoner-results?query=G4529UP')
+    })
+
+    it('should call validateForm with the query', async () => {
+      req.body = { query: 'G4529UP' }
+      when(validateForm).calledWith({ query: 'G4529UP' }).mockReturnValue(null)
+
+      await handler.POST(req as Request, res as Response)
+
+      expect(validateForm).toHaveBeenCalledWith({ query: 'G4529UP' })
+    })
+
+    it('should render the form with errors when validation fails', async () => {
+      req.body = { query: '' }
+      const error = { text: 'Required', href: '#query' }
+      when(validateForm).calledWith({ query: '' }).mockReturnValue(error)
+
+      await handler.POST(req as Request, res as Response)
+
+      expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner', {
+        errors: [error],
+        query: '',
+      })
+
+      expect(res.redirect).not.toHaveBeenCalled()
     })
   })
 })

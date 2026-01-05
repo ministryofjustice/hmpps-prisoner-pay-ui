@@ -1,3 +1,5 @@
+import { PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
+
 export default class TestData {
   static Prisoner() {
     return {
@@ -50,7 +52,7 @@ export default class TestData {
     }
   }
 
-  static PayStatusPeriod() {
+  static PayStatusPeriod(): PayStatusPeriod {
     return {
       id: 'a1a11111-1a11-1111-1a11-1a1aa11a1111',
       prisonCode: 'PVI',
@@ -66,7 +68,7 @@ export default class TestData {
     }
   }
 
-  static PayStatusPeriods() {
+  static PayStatusPeriods(): PayStatusPeriod[] {
     return [
       {
         id: 'a1a11111-1a11-1111-1a11-1a1aa11a1111',

@@ -1,0 +1,30 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% set pageTitle = applicationName + " - Removal date confirmation" %}
+{% set mainClasses = "govuk-body" %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {{ govukPanel({
+                titleText: "Removal complete",
+                html: payStatusPeriod | formatName(NameFormatStyle.firstLast, false) + " (" + payStatusPeriod.prisonerNumber + ") will not receive " + payType.description | lower + " pay after " + selectedDate | formatDate('d MMMM yyyy') + "."
+            }) }}
+
+            <h2 class="govuk-heading-m">What you can do next</h2>
+
+            <p class="govuk-body">You can:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>
+                    {# TODO: Service link up to A+A #}
+                    <a class="govuk-link" href="#">allocate {{ payStatusPeriod | formatName(NameFormatStyle.firstLast, false) }} to activities</a>
+                </li>
+                <li>
+                    <a class="govuk-link" href="../../pay-overview">review people who are on {{ payType.description | lower}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
