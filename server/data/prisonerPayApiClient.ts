@@ -7,7 +7,7 @@ import logger from '../../logger'
 
 export default class PrisonerPayApiClient extends RestClient {
   constructor(authenticationClient: AuthenticationClient) {
-    super('prisoner pay API', config.apis.exampleApi, logger, authenticationClient)
+    super('prisoner pay API', config.apis.prisonerPayApi, logger, authenticationClient)
   }
 
   patchPayStatusPeriod(payStatusId: string, request: UpdatePayStatusPeriodRequest) {
