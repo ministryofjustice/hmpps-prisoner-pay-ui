@@ -15,6 +15,8 @@ import setUpStaticResources from './middleware/setUpStaticResources'
 import setUpWebRequestParsing from './middleware/setupRequestParsing'
 import setUpWebSecurity from './middleware/setUpWebSecurity'
 import setUpWebSession from './middleware/setUpWebSession'
+import setUpDpsComponents from './middleware/setUpDpsComponents'
+import setUpCaseLoadData from './middleware/setUpCaseLoadData'
 
 import routes from './routes'
 import type { Services } from './services'
@@ -37,6 +39,8 @@ export default function createApp(services: Services): express.Application {
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
+  app.use(setUpDpsComponents())
+  app.use(setUpCaseLoadData())
 
   app.use(routes(services))
 
