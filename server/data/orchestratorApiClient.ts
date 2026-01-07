@@ -8,7 +8,7 @@ import { PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
 
 export default class OrchestratorApiClient extends RestClient {
   constructor(authenticationClient: AuthenticationClient) {
-    super('orchestrator API', config.apis.exampleApi, logger, authenticationClient)
+    super('orchestrator API', config.apis.payOrchestratorApi, logger, authenticationClient)
   }
 
   getPayStatusPeriods(): PayStatusPeriod[] {

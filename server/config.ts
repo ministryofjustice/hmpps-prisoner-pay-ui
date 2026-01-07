@@ -81,6 +81,15 @@ export default {
       },
       agent: new AgentConfig(Number(get('EXAMPLE_API_TIMEOUT_RESPONSE', 5000))),
     },
+    payOrchestratorApi: {
+      url: get('PAY_ORCHESTRATOR_API_URL', 'http://localhost:8081', requiredInProduction),
+      healthPath: '/health',
+      timeout: {
+        response: Number(get('PAY_ORCHESTRATOR_API_TIMEOUT_RESPONSE', 30000)),
+        deadline: Number(get('PAY_ORCHESTRATOR_API_TIMEOUT_DEADLINE', 30000)),
+      },
+      agent: new AgentConfig(Number(get('PAY_ORCHESTRATOR_API_TIMEOUT_RESPONSE', 30000))),
+    },
   },
   sqs: {
     audit: auditConfig(),
