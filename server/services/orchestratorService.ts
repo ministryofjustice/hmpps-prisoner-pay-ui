@@ -5,7 +5,7 @@ import OrchestratorApiClient from '../data/orchestratorApiClient'
 export default class OrchestratorService {
   constructor(private readonly orchestratorApiClient: OrchestratorApiClient) {}
 
-  getPayStatusPeriodsByType(latestStartDate: string, prisonCode: string): Promise<PayStatusPeriod[]> {
+  async getPayStatusPeriodsByType(latestStartDate: string, prisonCode: string): Promise<PayStatusPeriod[]> {
     return this.orchestratorApiClient.getPayStatusPeriods(latestStartDate, prisonCode)
   }
 
@@ -17,8 +17,8 @@ export default class OrchestratorService {
     return this.orchestratorApiClient.getPrisonerByPrisonerNumber(prisonerNumber)
   }
 
-  searchPrisoners(query: string) {
-    return this.orchestratorApiClient.searchPrisoners(query)
+  async searchPrisoners(query: string, prisonCode: string) {
+    return this.orchestratorApiClient.searchPrisoners(query, prisonCode)
   }
 
   getPayTypes() {

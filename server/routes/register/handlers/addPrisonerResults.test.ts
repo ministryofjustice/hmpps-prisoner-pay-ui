@@ -27,13 +27,16 @@ describe('AddPrisonerResultsHandler', () => {
     } as unknown as Partial<Request>
 
     res = {
+      locals: {
+        user: TestData.PrisonUser(),
+      },
       render: jest.fn(),
       redirect: jest.fn(),
     }
 
     when(orchestratorService.searchPrisoners)
-      .calledWith('test')
-      .mockReturnValue({ ...TestData.Pagination(), content: TestData.Prisoners() })
+      .calledWith('test', expect.any(String))
+      .mockResolvedValue(TestData.Prisoners())
     when(orchestratorService.getPrisonerByPrisonerNumber)
       .calledWith('A1234BC')
       .mockReturnValue({ ...TestData.Prisoner(), allocations: [] })

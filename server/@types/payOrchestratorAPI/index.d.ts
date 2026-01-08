@@ -4,6 +4,32 @@
  */
 
 export interface paths {
+  '/prison/{prisonCode}/candidate-search': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Retrieve a list prisoners based in search criteria
+     * @description Will return prisoners in the prison where the first or last names start with the search term or where the prisoner number is an exact match.
+     *
+     *           Will return up to 50 results.
+     *
+     *
+     *     Requires one of the following roles:
+     *     * ROLE_PRISONER_PAY__PRISONER_PAY_UI
+     */
+    get: operations['search']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/pay-status-periods': {
     parameters: {
       query?: never
@@ -11,8 +37,12 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    /** Retrieve a list of pay status periods ordered by start date */
-    get: operations['search']
+    /**
+     * Retrieve a list of pay status periods ordered by start date
+     * @description Requires one of the following roles:
+     *     * ROLE_PRISONER_PAY__PRISONER_PAY_UI
+     */
+    get: operations['search_1']
     put?: never
     post?: never
     delete?: never
@@ -25,6 +55,37 @@ export interface paths {
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
+    /** @description Prisoner */
+    Prisoner: {
+      /**
+       * @description The prisoner number (NOMIS ID)
+       * @example A1234AA
+       */
+      prisonerNumber: string
+      /**
+       * @description The prisoner's first name
+       * @example Joe
+       */
+      firstName: string
+      /**
+       * @description The prisoner's last name
+       * @example Bloggs
+       */
+      lastName: string
+      /**
+       * @description The prisoner's residential cell location when inside the prison
+       * @example A-1-002
+       */
+      cellLocation?: string
+    }
+    ErrorResponse: {
+      /** Format: int32 */
+      status: number
+      errorCode?: string
+      userMessage?: string
+      developerMessage?: string
+      moreInfo?: string
+    }
     /** @description Pay Status Period */
     PayStatusPeriod: {
       /**
@@ -88,14 +149,6 @@ export interface components {
        */
       createdDateTime: string
     }
-    ErrorResponse: {
-      /** Format: int32 */
-      status: number
-      errorCode?: string
-      userMessage?: string
-      developerMessage?: string
-      moreInfo?: string
-    }
   }
   responses: never
   parameters: never
@@ -106,6 +159,65 @@ export interface components {
 export type $defs = Record<string, never>
 export interface operations {
   search: {
+    parameters: {
+      query: {
+        /**
+         * @description The search term which
+         * @example Blo
+         */
+        searchTerm: string
+      }
+      header?: never
+      path: {
+        /**
+         * @description The prison code to search within
+         * @example PVI
+         */
+        prisonCode: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns the list of matched prisoners */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['Prisoner'][]
+        }
+      }
+      /** @description Invalid Request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  search_1: {
     parameters: {
       query: {
         /**
@@ -148,7 +260,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Unauthorized to access this endpoint */
+      /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
         headers: {
           [name: string]: unknown
@@ -157,7 +269,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Missing required role. Requires the <TODO> role with write scope. */
+      /** @description Forbidden, requires an appropriate role */
       403: {
         headers: {
           [name: string]: unknown

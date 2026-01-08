@@ -4,14 +4,14 @@ import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients
 import config from '../config'
 import logger from '../../logger'
 import TestData from '../testutils/testData'
-import { PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
+import { PayStatusPeriod, Prisoner } from '../@types/payOrchestratorAPI/types'
 
 export default class OrchestratorApiClient extends RestClient {
   constructor(authenticationClient: AuthenticationClient) {
     super('orchestrator API', config.apis.payOrchestratorApi, logger, authenticationClient)
   }
 
-  getPayStatusPeriods(latestStartDate: string, prisonCode: string): Promise<PayStatusPeriod[]> {
+  async getPayStatusPeriods(latestStartDate: string, prisonCode: string): Promise<PayStatusPeriod[]> {
     return this.get<PayStatusPeriod[]>(
       {
         path: '/pay-status-periods',
@@ -39,42 +39,16 @@ export default class OrchestratorApiClient extends RestClient {
     }
   }
 
-  searchPrisoners(query: string) {
-    return {
-      content: [
-        {
-          prisonerNumber: 'G4529UP',
-          status: 'ACTIVE IN',
-          firstName: 'NICAIGH',
-          lastName: 'JOHNUSTINE',
-          cellLocation: 'COURT',
+  async searchPrisoners(query: string, prisonCode: string) {
+    return this.get<Prisoner[]>(
+      {
+        path: `/prison/${prisonCode}/candidate-search`,
+        query: {
+          searchTerm: query,
         },
-        {
-          prisonerNumber: 'G4701UT',
-          firstName: "YF'ERTOPER",
-          lastName: 'JOHNUSTINE',
-          status: 'ACTIVE IN',
-          cellLocation: 'E-S-2-018',
-        },
-      ],
-      pageable: {
-        pageNumber: 0,
-        pageSize: 50,
-        sort: { empty: true, sorted: false, unsorted: true },
-        offset: 0,
-        paged: true,
-        unpaged: false,
       },
-      last: true,
-      totalElements: 2,
-      totalPages: 1,
-      size: 50,
-      number: 0,
-      first: true,
-      sort: { empty: true, sorted: false, unsorted: true },
-      numberOfElements: 2,
-      empty: false,
-    }
+      asSystem(),
+    )
   }
 
   getPayTypes() {
