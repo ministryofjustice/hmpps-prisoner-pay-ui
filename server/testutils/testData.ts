@@ -9,6 +9,7 @@ export default class TestData {
       firstName: 'NICAIGH',
       lastName: 'JOHNUSTINE',
       cellLocation: 'COURT',
+      allocations: [] as string[],
     }
   }
 
