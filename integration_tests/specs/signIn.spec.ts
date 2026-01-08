@@ -4,10 +4,12 @@ import exampleApi from '../mockApis/exampleApi'
 
 import { login, resetStubs } from '../testUtils'
 import DashboardPage from '../pages/dashboard/dashboardPage'
+import componentsApi from '../mockApis/componentsApi'
 
 test.describe('SignIn', () => {
   test.beforeEach(async () => {
     await exampleApi.stubExampleTime()
+    await componentsApi.stubFrontendComponents()
   })
 
   test.afterEach(async () => {
@@ -36,14 +38,6 @@ test.describe('SignIn', () => {
     await expect(dashboardPage.usersName).toHaveText('A. Testuser')
   })
 
-  test('Phase banner visible in header', async ({ page }) => {
-    await login(page)
-
-    const dashboardPage = await DashboardPage.verifyOnPage(page)
-
-    await expect(dashboardPage.phaseBanner).toHaveText('dev')
-  })
-
   test('User can sign out', async ({ page }) => {
     await login(page)
 
@@ -51,17 +45,6 @@ test.describe('SignIn', () => {
     await dashboardPage.signOut()
 
     await expect(page.getByRole('heading')).toHaveText('Sign in')
-  })
-
-  test('User can manage their details', async ({ page }) => {
-    await login(page, { name: 'A TestUser' })
-
-    await hmppsAuth.stubManageDetailsPage()
-
-    const dashboardPage = await DashboardPage.verifyOnPage(page)
-    await dashboardPage.clickManageUserDetails()
-
-    await expect(page.getByRole('heading')).toHaveText('Your account details')
   })
 
   test('Token verification failure takes user to sign in page', async ({ page }) => {
