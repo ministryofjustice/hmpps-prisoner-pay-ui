@@ -111,4 +111,17 @@ export default class TestData {
       },
     ]
   }
+
+  static ServiceUser() {
+    return {
+      userId: 'ABCD1234',
+      name: 'Test User',
+      displayName: 'Test User',
+      userRoles: ['ROLE_PRISONER_PAY'],
+      username: 'TEST_USER',
+      token: 'some-jwt-token',
+      authSource: 'nomis',
+      activeCaseLoadId: 'MDI',
+    }
+  }
 }

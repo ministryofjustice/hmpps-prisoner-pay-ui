@@ -1,11 +1,12 @@
+import { ServiceUser } from '../@types/express'
 import { PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
 import OrchestratorApiClient from '../data/orchestratorApiClient'
 
 export default class OrchestratorService {
   constructor(private readonly orchestratorApiClient: OrchestratorApiClient) {}
 
-  getPayStatusPeriodsByType(payType: string): PayStatusPeriod[] {
-    return this.orchestratorApiClient.getPayStatusPeriods().filter(period => period.type === payType)
+  getPayStatusPeriodsByType(payType: string, user: ServiceUser): Promise<PayStatusPeriod[]> {
+    return this.orchestratorApiClient.getPayStatusPeriods(user)
   }
 
   getPayStatusPeriodById(payStatusId: string): PayStatusPeriod {

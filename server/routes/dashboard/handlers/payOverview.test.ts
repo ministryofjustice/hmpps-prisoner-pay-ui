@@ -4,6 +4,7 @@ import PayOverviewHandler from './payOverview'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
+import { HmppsUser } from '../../../interfaces/hmppsUser'
 
 jest.mock('../../../services/orchestratorService')
 
@@ -20,13 +21,16 @@ describe('PayOverviewHandler', () => {
       params: { payTypeSlug: 'long-term-sick' },
     }
     res = {
+      locals: {
+        user: TestData.ServiceUser() as unknown as HmppsUser,
+      },
       render: jest.fn(),
       redirect: jest.fn(),
     }
 
     when(orchestratorService.getPayStatusPeriodsByType)
-      .calledWith(expect.any(String))
-      .mockReturnValue(TestData.PayStatusPeriods())
+      .calledWith(expect.any(String), TestData.ServiceUser())
+      .mockResolvedValue(TestData.PayStatusPeriods())
   })
 
   describe('GET', () => {
