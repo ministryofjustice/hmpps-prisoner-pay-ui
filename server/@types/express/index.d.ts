@@ -1,4 +1,4 @@
-import { HmppsUser } from '../../interfaces/hmppsUser'
+import { HmppsUser, PrisonUser } from '../../interfaces/hmppsUser'
 
 export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
@@ -25,7 +25,7 @@ export declare global {
     }
 
     interface Locals {
-      user: HmppsUser
+      user: PrisonUser
     }
   }
 }

@@ -1,32 +1,27 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { asUser, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { asSystem, RestClient } from '@ministryofjustice/hmpps-rest-client'
 import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import config from '../config'
 import logger from '../../logger'
 import TestData from '../testutils/testData'
 import { PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
-import { ServiceUser } from '../@types/express'
-
-const CASELOAD_HEADER = (caseloadId: string) => ({ 'Caseload-Id': caseloadId })
 
 export default class OrchestratorApiClient extends RestClient {
   constructor(authenticationClient: AuthenticationClient) {
     super('orchestrator API', config.apis.payOrchestratorApi, logger, authenticationClient)
   }
 
-  getPayStatusPeriods(user: ServiceUser): Promise<PayStatusPeriod[]> {
+  getPayStatusPeriods(latestStartDate: string, prisonCode: string): Promise<PayStatusPeriod[]> {
     return this.get<PayStatusPeriod[]>(
       {
         path: '/pay-status-periods',
-        headers: CASELOAD_HEADER(user.activeCaseLoadId),
+        query: {
+          latestStartDate,
+          prisonCode,
+        },
       },
-      asUser(user.token),
+      asSystem(),
     )
-    // return this.get({
-    //   path: '/pay-status-periods',
-    //   authToken: user.token,
-    //   headers: CASELOAD_HEADER(user.activeCaseLoadId),
-    // })
   }
 
   getPayStatusPeriodById(payStatusId: string): PayStatusPeriod {

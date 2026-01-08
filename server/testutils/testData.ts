@@ -1,4 +1,5 @@
 import { PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
+import { PrisonUser } from '../interfaces/hmppsUser'
 
 export default class TestData {
   static Prisoner() {
@@ -112,8 +113,9 @@ export default class TestData {
     ]
   }
 
-  static ServiceUser() {
+  static PrisonUser(): PrisonUser {
     return {
+      staffId: 12345,
       userId: 'ABCD1234',
       name: 'Test User',
       displayName: 'Test User',

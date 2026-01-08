@@ -22,14 +22,14 @@ describe('PayOverviewHandler', () => {
     }
     res = {
       locals: {
-        user: TestData.ServiceUser() as unknown as HmppsUser,
+        user: TestData.PrisonUser(),
       },
       render: jest.fn(),
       redirect: jest.fn(),
     }
 
     when(orchestratorService.getPayStatusPeriodsByType)
-      .calledWith(expect.any(String), TestData.ServiceUser())
+      .calledWith(expect.any(String), expect.any(String))
       .mockResolvedValue(TestData.PayStatusPeriods())
   })
 
