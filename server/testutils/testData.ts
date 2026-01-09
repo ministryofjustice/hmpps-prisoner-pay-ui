@@ -32,28 +32,6 @@ export default class TestData {
     ]
   }
 
-  static Pagination() {
-    return {
-      pageable: {
-        pageNumber: 0,
-        pageSize: 50,
-        sort: { empty: true, sorted: false, unsorted: true },
-        offset: 0,
-        paged: true,
-        unpaged: false,
-      },
-      last: true,
-      totalElements: 2,
-      totalPages: 1,
-      size: 50,
-      number: 0,
-      first: true,
-      sort: { empty: true, sorted: false, unsorted: true },
-      numberOfElements: 2,
-      empty: false,
-    }
-  }
-
   static PayStatusPeriod(): PayStatusPeriod {
     return {
       id: 'a1a11111-1a11-1111-1a11-1a1aa11a1111',
