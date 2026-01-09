@@ -21,7 +21,7 @@ describe('AddPrisonerResultsHandler', () => {
         query: 'test',
       },
       body: {
-        selectedPrisoner: 'A1234BC',
+        selectedPrisoner: 'G4529UP',
       },
       session: {},
     } as unknown as Partial<Request>
@@ -37,9 +37,6 @@ describe('AddPrisonerResultsHandler', () => {
     when(orchestratorService.searchPrisoners)
       .calledWith('test', expect.any(String))
       .mockResolvedValue(TestData.Prisoners())
-    when(orchestratorService.getPrisonerByPrisonerNumber)
-      .calledWith('A1234BC')
-      .mockReturnValue({ ...TestData.Prisoner(), allocations: [] })
   })
 
   describe('GET', () => {
@@ -56,7 +53,7 @@ describe('AddPrisonerResultsHandler', () => {
   describe('POST', () => {
     it('should redirect after processing', async () => {
       await handler.POST(req as Request, res as Response)
-      expect(req.session!.selectedPrisoner).toStrictEqual({ ...TestData.Prisoner(), allocations: [] })
+      expect(req.session!.selectedPrisoner).toStrictEqual(TestData.Prisoner())
       expect(res.redirect).toHaveBeenCalledWith('end-date')
     })
   })

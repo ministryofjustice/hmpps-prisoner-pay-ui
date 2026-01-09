@@ -14,11 +14,12 @@ export default class AddPrisonerResultsHandler {
 
   POST = async (req: Request, res: Response) => {
     const { activeCaseLoadId } = res.locals.user
-    const query = req.query.query as string
     const { selectedPrisoner } = req.body
+    const query = req.query.query as string
+    const prisonerResults = await this.orchestratorService.searchPrisoners(query, activeCaseLoadId)
+
     const errors = validateForm({ selectedPrisoner })
     if (errors) {
-      const prisonerResults = await this.orchestratorService.searchPrisoners(query, activeCaseLoadId)
       return res.render('pages/register/add-prisoner-results', {
         errors: [errors],
         selectedPrisoner,
@@ -27,7 +28,7 @@ export default class AddPrisonerResultsHandler {
       })
     }
 
-    const prisoner = this.orchestratorService.getPrisonerByPrisonerNumber(selectedPrisoner)
+    const prisoner = prisonerResults.find(p => p.prisonerNumber === selectedPrisoner)
     req.session!.selectedPrisoner = prisoner
     return res.redirect('end-date')
   }

@@ -88,16 +88,6 @@ describe('OrchestratorApiClient', () => {
       expect(result).toHaveProperty('firstName', 'NICAIGH')
       expect(result).toHaveProperty('lastName', 'JOHNUSTINE')
       expect(result).toHaveProperty('cellLocation', 'COURT')
-      expect(result).toHaveProperty('allocations')
-    })
-
-    it('should return allocations as an empty array', () => {
-      const prisonerNumber = 'G4529UP'
-
-      const result = orchestratorApiClient.getPrisonerByPrisonerNumber(prisonerNumber)
-
-      expect(Array.isArray(result.allocations)).toBe(true)
-      expect(result.allocations.length).toBe(0)
     })
   })
 

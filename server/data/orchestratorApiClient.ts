@@ -35,7 +35,6 @@ export default class OrchestratorApiClient extends RestClient {
       firstName: 'NICAIGH',
       lastName: 'JOHNUSTINE',
       cellLocation: 'COURT',
-      allocations: [] as string[],
     }
   }
 
