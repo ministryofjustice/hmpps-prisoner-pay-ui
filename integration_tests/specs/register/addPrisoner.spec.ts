@@ -7,6 +7,8 @@ import AddPrisonerResultsPage from '../../pages/register/addPrisonerResultsPage'
 import EndDatePage from '../../pages/register/endDatePage'
 import CheckPage from '../../pages/register/checkPage'
 import ConfirmedAddPrisonerPage from '../../pages/register/confirmedAddPrisonerPage'
+import payOrchestratorApi from '../../mockApis/payOrchestratorApi'
+import prisonerPayApi from '../../mockApis/prisonerPayApi'
 
 test.describe('Dashboard', () => {
   test.afterEach(async () => {
@@ -14,7 +16,10 @@ test.describe('Dashboard', () => {
   })
 
   test('Can add a prisoner to a pay type', async ({ page }) => {
-    // TODO: Add proper api mocking when connection is made
+    await payOrchestratorApi.stubGetPayStatusPeriods()
+    await payOrchestratorApi.stubSearchPrisoners()
+    await prisonerPayApi.stubPostPayStatusPeriod()
+
     const type = 'Long-term sick'
     await login(page)
 

@@ -9,7 +9,6 @@ test.describe('Dashboard', () => {
   })
 
   test('Can visit the pay overview page', async ({ page }) => {
-    // TODO: Add proper api mocking when connection is made
     const type = 'Long-term sick'
     await login(page)
 
