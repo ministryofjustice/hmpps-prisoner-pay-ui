@@ -23,11 +23,16 @@ describe('CheckHandler', () => {
       },
     } as unknown as Partial<Request>
     res = {
+      locals: {
+        user: TestData.PrisonUser(),
+      },
       render: jest.fn(),
       redirect: jest.fn(),
     }
 
-    when(prisonerPayService.postPayStatusPeriod).calledWith(expect.any(Object)).mockReturnValue({})
+    when(prisonerPayService.postPayStatusPeriod)
+      .calledWith(expect.any(Object))
+      .mockResolvedValue(TestData.PayStatusPeriod())
   })
 
   describe('GET', () => {
