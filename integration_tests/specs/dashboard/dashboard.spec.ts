@@ -12,6 +12,5 @@ test.describe('Dashboard', () => {
 
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     expect(dashboardPage.header).toBeDefined()
-    // TODO: Further tests once API properly integrated
   })
 })

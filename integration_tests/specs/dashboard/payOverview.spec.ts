@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test'
 import { login, resetStubs } from '../../testUtils'
 import DashboardPage from '../../pages/dashboard/dashboardPage'
 import PayOverviewPage from '../../pages/dashboard/payOverviewPage'
+import payOrchestratorApi from '../../mockApis/payOrchestratorApi'
 
 test.describe('Dashboard', () => {
   test.afterEach(async () => {
@@ -9,7 +10,8 @@ test.describe('Dashboard', () => {
   })
 
   test('Can visit the pay overview page', async ({ page }) => {
-    // TODO: Add proper api mocking when connection is made
+    await payOrchestratorApi.stubGetPayStatusPeriods()
+
     const type = 'Long-term sick'
     await login(page)
 

@@ -25,13 +25,15 @@ export default class CheckHandler {
     const payType = getPayTypeBySlug(req.params.payTypeSlug)
     const { selectedDate } = req.session!
 
-    await this.prisonerPayService.postPayStatusPeriod({
+    const postRequest: CreatePayStatusPeriodRequest = {
+      prisonCode: res.locals.user.activeCaseLoadId,
       prisonerNumber: prisoner.prisonerNumber,
       type: payType.type,
       startDate: format(now, 'yyyy-MM-dd'),
-      endDate: selectedDate,
-    } as CreatePayStatusPeriodRequest)
+      endDate: selectedDate ? format(new Date(selectedDate), 'yyyy-MM-dd') : undefined,
+    } as CreatePayStatusPeriodRequest
 
+    await this.prisonerPayService.postPayStatusPeriod(postRequest)
     return res.redirect('confirmed-add-prisoner')
   }
 }

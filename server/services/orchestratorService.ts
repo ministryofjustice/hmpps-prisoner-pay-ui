@@ -4,8 +4,8 @@ import OrchestratorApiClient from '../data/orchestratorApiClient'
 export default class OrchestratorService {
   constructor(private readonly orchestratorApiClient: OrchestratorApiClient) {}
 
-  getPayStatusPeriodsByType(payType: string): PayStatusPeriod[] {
-    return this.orchestratorApiClient.getPayStatusPeriods().filter(period => period.type === payType)
+  async getPayStatusPeriodsByType(latestStartDate: string, prisonCode: string): Promise<PayStatusPeriod[]> {
+    return this.orchestratorApiClient.getPayStatusPeriods(latestStartDate, prisonCode)
   }
 
   getPayStatusPeriodById(payStatusId: string): PayStatusPeriod {
@@ -16,15 +16,7 @@ export default class OrchestratorService {
     return this.orchestratorApiClient.getPrisonerByPrisonerNumber(prisonerNumber)
   }
 
-  searchPrisoners(query: string) {
-    return this.orchestratorApiClient.searchPrisoners(query)
-  }
-
-  getPayTypes() {
-    return this.orchestratorApiClient.getPayTypes()
-  }
-
-  getLongTermSick() {
-    return this.orchestratorApiClient.getLongTermSick()
+  async searchPrisoners(query: string, prisonCode: string) {
+    return this.orchestratorApiClient.searchPrisoners(query, prisonCode)
   }
 }

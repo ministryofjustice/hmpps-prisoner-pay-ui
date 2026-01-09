@@ -4,7 +4,7 @@ import { Router } from 'express'
 import { Strategy } from 'passport-oauth2'
 import { VerificationClient, AuthenticatedRequest } from '@ministryofjustice/hmpps-auth-clients'
 import config from '../config'
-import { HmppsUser } from '../interfaces/hmppsUser'
+import { PrisonUser } from '../interfaces/hmppsUser'
 import generateOauthClientToken from '../utils/clientCredentials'
 import logger from '../../logger'
 
@@ -83,7 +83,7 @@ export default function setupAuthentication() {
   })
 
   router.use((req, res, next) => {
-    res.locals.user = req.user as HmppsUser
+    res.locals.user = req.user as PrisonUser
     next()
   })
 

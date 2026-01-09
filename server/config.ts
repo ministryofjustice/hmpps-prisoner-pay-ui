@@ -81,6 +81,24 @@ export default {
       },
       agent: new AgentConfig(Number(get('EXAMPLE_API_TIMEOUT_RESPONSE', 5000))),
     },
+    payOrchestratorApi: {
+      url: get('PAY_ORCHESTRATOR_API_URL', 'http://localhost:8081', requiredInProduction),
+      healthPath: '/health',
+      timeout: {
+        response: Number(get('PAY_ORCHESTRATOR_API_TIMEOUT_RESPONSE', 30000)),
+        deadline: Number(get('PAY_ORCHESTRATOR_API_TIMEOUT_DEADLINE', 30000)),
+      },
+      agent: new AgentConfig(Number(get('PAY_ORCHESTRATOR_API_TIMEOUT_RESPONSE', 30000))),
+    },
+    prisonerPayApi: {
+      url: get('PRISONER_PAY_API_URL', 'http://localhost:8081', requiredInProduction),
+      healthPath: '/health',
+      timeout: {
+        response: Number(get('PRISONER_PAY_API_TIMEOUT_RESPONSE', 30000)),
+        deadline: Number(get('PRISONER_PAY_API_TIMEOUT_DEADLINE', 30000)),
+      },
+      agent: new AgentConfig(Number(get('PRISONER_PAY_API_TIMEOUT_RESPONSE', 30000))),
+    },
     componentApi: {
       url: get('COMPONENT_API_URL', 'http://localhost:8099', requiredInProduction),
       healthPath: '/health',

@@ -1,4 +1,5 @@
 import { PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
+import { PrisonUser } from '../interfaces/hmppsUser'
 
 export default class TestData {
   static Prisoner() {
@@ -28,28 +29,6 @@ export default class TestData {
         cellLocation: 'E-S-2-018',
       },
     ]
-  }
-
-  static Pagination() {
-    return {
-      pageable: {
-        pageNumber: 0,
-        pageSize: 50,
-        sort: { empty: true, sorted: false, unsorted: true },
-        offset: 0,
-        paged: true,
-        unpaged: false,
-      },
-      last: true,
-      totalElements: 2,
-      totalPages: 1,
-      size: 50,
-      number: 0,
-      first: true,
-      sort: { empty: true, sorted: false, unsorted: true },
-      numberOfElements: 2,
-      empty: false,
-    }
   }
 
   static PayStatusPeriod(): PayStatusPeriod {
@@ -110,5 +89,19 @@ export default class TestData {
         createdDateTime: '2025-07-18T12:45:11',
       },
     ]
+  }
+
+  static PrisonUser(): PrisonUser {
+    return {
+      staffId: 12345,
+      userId: 'ABCD1234',
+      name: 'Test User',
+      displayName: 'Test User',
+      userRoles: ['ROLE_PRISONER_PAY'],
+      username: 'TEST_USER',
+      token: 'some-jwt-token',
+      authSource: 'nomis',
+      activeCaseLoadId: 'MDI',
+    }
   }
 }

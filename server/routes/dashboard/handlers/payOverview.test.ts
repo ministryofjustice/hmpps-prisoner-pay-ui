@@ -20,13 +20,16 @@ describe('PayOverviewHandler', () => {
       params: { payTypeSlug: 'long-term-sick' },
     }
     res = {
+      locals: {
+        user: TestData.PrisonUser(),
+      },
       render: jest.fn(),
       redirect: jest.fn(),
     }
 
     when(orchestratorService.getPayStatusPeriodsByType)
-      .calledWith(expect.any(String))
-      .mockReturnValue(TestData.PayStatusPeriods())
+      .calledWith(expect.any(String), expect.any(String))
+      .mockResolvedValue(TestData.PayStatusPeriods())
   })
 
   describe('GET', () => {
