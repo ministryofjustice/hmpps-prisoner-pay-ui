@@ -29,7 +29,3 @@ export declare global {
     }
   }
 }
-
-export type ServiceUser = Express.User & {
-  activeCaseLoadId?: string
-}

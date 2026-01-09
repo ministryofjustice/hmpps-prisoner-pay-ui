@@ -4,7 +4,6 @@ import PayOverviewHandler from './payOverview'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
-import { HmppsUser } from '../../../interfaces/hmppsUser'
 
 jest.mock('../../../services/orchestratorService')
 

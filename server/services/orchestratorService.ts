@@ -1,4 +1,3 @@
-import { ServiceUser } from '../@types/express'
 import { PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
 import OrchestratorApiClient from '../data/orchestratorApiClient'
 
