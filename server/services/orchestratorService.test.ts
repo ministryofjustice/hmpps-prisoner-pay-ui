@@ -52,13 +52,13 @@ describe('OrchestratorService', () => {
   })
 
   describe('getPayStatusPeriodById', () => {
-    it('should call the API client with the correct pay status ID', () => {
+    it('should call the API client with the correct pay status ID', async () => {
       const payStatusId = '12345'
       const mockPayStatusPeriod = TestData.PayStatusPeriods()[0]
 
-      orchestratorApiClient.getPayStatusPeriodById.mockReturnValue(mockPayStatusPeriod)
+      orchestratorApiClient.getPayStatusPeriodById.mockResolvedValue(mockPayStatusPeriod)
 
-      const result = orchestratorService.getPayStatusPeriodById(payStatusId)
+      const result = await orchestratorService.getPayStatusPeriodById(payStatusId)
 
       expect(orchestratorApiClient.getPayStatusPeriodById).toHaveBeenCalledWith(payStatusId)
       expect(result).toEqual(mockPayStatusPeriod)
