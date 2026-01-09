@@ -5,6 +5,7 @@ import PayOverviewPage from '../../pages/dashboard/payOverviewPage'
 import RemovalDatePage from '../../pages/remove/removalDatePage'
 import CheckRemovalDatePage from '../../pages/remove/checkRemovalDatePage'
 import ConfirmedRemovalDatePage from '../../pages/remove/confirmedRemovalDatePage'
+import payOrchestratorApi from '../../mockApis/payOrchestratorApi'
 
 test.describe('Remove Prisoner', () => {
   test.afterEach(async () => {
@@ -12,7 +13,8 @@ test.describe('Remove Prisoner', () => {
   })
 
   test('Can remove a prisoner from a pay type', async ({ page }) => {
-    // TODO: Add proper api mocking when connection is made
+    await payOrchestratorApi.stubGetPayStatusPeriods()
+
     const type = 'Long-term sick'
     await login(page)
 

@@ -6,6 +6,8 @@ import componentsApi from '../mockApis/componentsApi'
 import prisonApi from '../mockApis/prisonApi'
 
 import { resetStubs } from '../testUtils'
+import payOrchestratorApi from '../mockApis/payOrchestratorApi'
+import prisonerPayApi from '../mockApis/prisonerPayApi'
 
 test.describe('Health', () => {
   test.afterEach(async () => {
@@ -20,6 +22,8 @@ test.describe('Health', () => {
         tokenVerification.stubPing(),
         componentsApi.stubComponentsHealthPing(),
         prisonApi.stubPrisonHealthPing(),
+        payOrchestratorApi.stubPayOrchestratorHealthPing(),
+        prisonerPayApi.stubPrisonerPayHealthPing(),
       ])
     })
 

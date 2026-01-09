@@ -7,7 +7,7 @@ export default {
     stubFor({
       request: {
         method: 'GET',
-        urlPattern: '/pay-orchestrator-api/health/ping',
+        urlPattern: '/pay-orchestrator-api/health',
       },
       response: {
         status: httpStatus,
