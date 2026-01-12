@@ -23,12 +23,21 @@ describe('PrisonerPayApiClient', () => {
   })
 
   describe('patchPayStatusPeriod', () => {
-    it('should return an empty object', () => {
-      const response = prisonerPayApiClient.patchPayStatusPeriod('123', {
+    it('should make a PATCH request with the correct payload and return a pay status period', async () => {
+      const payStatusId = '123'
+      const updateRequest = {
         removeEndDate: false,
-      })
+      }
+      const mockPayStatusPeriod = TestData.PayStatusPeriod()
 
-      expect(response).toEqual({})
+      nock(config.apis.prisonerPayApi.url)
+        .patch(`/pay-status-periods/${payStatusId}`, updateRequest)
+        .reply(200, mockPayStatusPeriod)
+
+      const response = await prisonerPayApiClient.patchPayStatusPeriod(payStatusId, updateRequest)
+
+      expect(response).toEqual(mockPayStatusPeriod)
+      expect(mockAuthenticationClient.getToken).toHaveBeenCalled()
     })
   })
 

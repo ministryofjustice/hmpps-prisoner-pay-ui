@@ -24,8 +24,13 @@ export default class OrchestratorApiClient extends RestClient {
     )
   }
 
-  getPayStatusPeriodById(payStatusId: string): PayStatusPeriod {
-    return TestData.PayStatusPeriod()
+  async getPayStatusPeriodById(payStatusId: string): Promise<PayStatusPeriod> {
+    return this.get<PayStatusPeriod>(
+      {
+        path: `/pay-status-periods/${payStatusId}`,
+      },
+      asSystem(),
+    )
   }
 
   getPrisonerByPrisonerNumber(prisonerNumber: string) {

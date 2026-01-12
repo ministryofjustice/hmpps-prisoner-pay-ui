@@ -6,6 +6,7 @@ import RemovalDatePage from '../../pages/remove/removalDatePage'
 import CheckRemovalDatePage from '../../pages/remove/checkRemovalDatePage'
 import ConfirmedRemovalDatePage from '../../pages/remove/confirmedRemovalDatePage'
 import payOrchestratorApi from '../../mockApis/payOrchestratorApi'
+import prisonerPayApi from '../../mockApis/prisonerPayApi'
 
 test.describe('Remove Prisoner', () => {
   test.afterEach(async () => {
@@ -14,6 +15,7 @@ test.describe('Remove Prisoner', () => {
 
   test('Can remove a prisoner from a pay type', async ({ page }) => {
     await payOrchestratorApi.stubGetPayStatusPeriods()
+    await prisonerPayApi.stubPatchPayStatusPeriod()
 
     const type = 'Long-term sick'
     await login(page)

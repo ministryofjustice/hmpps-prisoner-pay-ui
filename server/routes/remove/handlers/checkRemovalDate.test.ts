@@ -27,8 +27,10 @@ describe('CheckRemovalDateHandler', () => {
       redirect: jest.fn(),
     }
 
-    when(orchestratorService.getPayStatusPeriodById).calledWith('123').mockReturnValue(TestData.PayStatusPeriod())
-    when(prisonerPayService.patchPayStatusPeriod).calledWith('123', expect.any(Object)).mockReturnValue({})
+    when(orchestratorService.getPayStatusPeriodById).calledWith('123').mockResolvedValue(TestData.PayStatusPeriod())
+    when(prisonerPayService.patchPayStatusPeriod)
+      .calledWith('123', expect.any(Object))
+      .mockResolvedValue(TestData.PayStatusPeriod())
   })
 
   describe('GET', () => {

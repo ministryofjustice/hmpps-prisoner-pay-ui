@@ -8,7 +8,7 @@ export default class OrchestratorService {
     return this.orchestratorApiClient.getPayStatusPeriods(latestStartDate, prisonCode)
   }
 
-  getPayStatusPeriodById(payStatusId: string): PayStatusPeriod {
+  async getPayStatusPeriodById(payStatusId: string): Promise<PayStatusPeriod> {
     return this.orchestratorApiClient.getPayStatusPeriodById(payStatusId)
   }
 

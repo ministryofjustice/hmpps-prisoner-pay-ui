@@ -29,7 +29,7 @@ export default {
       },
     }),
 
-  stubPatchPayStatusPeriod: (payStatusId: string, httpStatus = 200): SuperAgentRequest =>
+  stubPatchPayStatusPeriod: (httpStatus = 200): SuperAgentRequest =>
     stubFor({
       request: {
         method: 'PATCH',

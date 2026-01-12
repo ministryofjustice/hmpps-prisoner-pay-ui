@@ -28,6 +28,11 @@
 
             {% set rows = [] %}
             {% for row in records %}
+                {% if row.endDate %}
+                    {% set changeLink = '<a href="./remove/' + row.id + '/removal-date">Change end date</a>' %}
+                {% else %}
+                    {% set changeLink = '<a href="./remove/' + row.id + '/removal-date">Remove from ' + payTypeDescriptionLower + '</a>' %}
+                {% endif %}
                 {% set rows = (rows.push([
                     {
                         text: row | formatName(NameFormatStyle.firstLast, false)
@@ -40,7 +45,7 @@
                     }, {
                         text: ''
                     }, {
-                        html: '<a href="./remove/' + row.id + '/removal-date">Remove from ' + payTypeDescriptionLower + '</a>'
+                        html: changeLink
                     }
                 ]), rows) %}
             {% endfor %}

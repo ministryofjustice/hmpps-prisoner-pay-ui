@@ -66,14 +66,24 @@ describe('OrchestratorApiClient', () => {
   })
 
   describe('getPayStatusPeriodById', () => {
-    it('should return a pay status period with the correct structure', () => {
+    it('should make a GET request to the correct endpoint', async () => {
       const payStatusId = '12345'
+      const mockPayStatusPeriod = TestData.PayStatusPeriod()
 
-      const result = orchestratorApiClient.getPayStatusPeriodById(payStatusId)
+      nock(config.apis.payOrchestratorApi.url).get(`/pay-status-periods/${payStatusId}`).reply(200, mockPayStatusPeriod)
 
-      expect(result).toEqual(TestData.PayStatusPeriod())
-      expect(result).toHaveProperty('type')
-      expect(result).toHaveProperty('prisonCode')
+      const result = await orchestratorApiClient.getPayStatusPeriodById(payStatusId)
+
+      expect(result).toEqual(mockPayStatusPeriod)
+      expect(mockAuthenticationClient.getToken).toHaveBeenCalled()
+    })
+
+    it('should handle 404 Not Found', async () => {
+      const payStatusId = 'invalid-id'
+
+      nock(config.apis.payOrchestratorApi.url).get(`/pay-status-periods/${payStatusId}`).reply(404)
+
+      await expect(orchestratorApiClient.getPayStatusPeriodById(payStatusId)).rejects.toThrow()
     })
   })
 

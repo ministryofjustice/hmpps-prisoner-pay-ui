@@ -23,7 +23,7 @@ describe('ConfirmedRemovalDateHandler', () => {
       render: jest.fn(),
     }
 
-    when(orchestratorService.getPayStatusPeriodById).calledWith('123').mockReturnValue(TestData.PayStatusPeriod())
+    when(orchestratorService.getPayStatusPeriodById).calledWith('123').mockResolvedValue(TestData.PayStatusPeriod())
   })
 
   describe('GET', () => {
