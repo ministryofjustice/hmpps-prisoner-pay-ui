@@ -28,7 +28,9 @@ describe('CheckRemovalDateHandler', () => {
     }
 
     when(orchestratorService.getPayStatusPeriodById).calledWith('123').mockResolvedValue(TestData.PayStatusPeriod())
-    when(prisonerPayService.patchPayStatusPeriod).calledWith('123', expect.any(Object)).mockReturnValue({})
+    when(prisonerPayService.patchPayStatusPeriod)
+      .calledWith('123', expect.any(Object))
+      .mockResolvedValue(TestData.PayStatusPeriod())
   })
 
   describe('GET', () => {
