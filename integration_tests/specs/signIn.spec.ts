@@ -5,11 +5,13 @@ import exampleApi from '../mockApis/exampleApi'
 import { login, resetStubs } from '../testUtils'
 import DashboardPage from '../pages/dashboard/dashboardPage'
 import componentsApi from '../mockApis/componentsApi'
+import payOrchestratorApi from '../mockApis/payOrchestratorApi'
 
 test.describe('SignIn', () => {
   test.beforeEach(async () => {
     await exampleApi.stubExampleTime()
     await componentsApi.stubFrontendComponents()
+    await payOrchestratorApi.stubGetPayStatusPeriods()
   })
 
   test.afterEach(async () => {
