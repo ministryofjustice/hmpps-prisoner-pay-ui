@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { format } from 'date-fns'
+import { format, parse } from 'date-fns'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 import { formatFirstLastName } from '../../../utils/utils'
 import PrisonerPayService from '../../../services/prisonerPayService'
@@ -30,7 +30,7 @@ export default class CheckHandler {
       prisonerNumber: prisoner.prisonerNumber,
       type: payType.type,
       startDate: format(now, 'yyyy-MM-dd'),
-      endDate: selectedDate ? format(new Date(selectedDate), 'yyyy-MM-dd') : undefined,
+      endDate: selectedDate ? format(parse(selectedDate, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd') : undefined,
     } as CreatePayStatusPeriodRequest
 
     await this.prisonerPayService.postPayStatusPeriod(postRequest)
