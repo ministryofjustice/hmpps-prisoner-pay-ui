@@ -1,4 +1,4 @@
-import AuditService, {Action, Page, SubjectType} from './auditService'
+import AuditService, { Action, Page, SubjectType } from './auditService'
 import HmppsAuditClient from '../data/hmppsAuditClient'
 
 jest.mock('../data/hmppsAuditClient')
