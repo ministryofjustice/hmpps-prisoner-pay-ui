@@ -87,20 +87,6 @@ describe('OrchestratorApiClient', () => {
     })
   })
 
-  describe('getPrisonerByPrisonerNumber', () => {
-    it('should return a prisoner with the correct structure', () => {
-      const prisonerNumber = 'G4529UP'
-
-      const result = orchestratorApiClient.getPrisonerByPrisonerNumber(prisonerNumber)
-
-      expect(result).toHaveProperty('prisonerNumber', 'G4529UP')
-      expect(result).toHaveProperty('status', 'ACTIVE IN')
-      expect(result).toHaveProperty('firstName', 'NICAIGH')
-      expect(result).toHaveProperty('lastName', 'JOHNUSTINE')
-      expect(result).toHaveProperty('cellLocation', 'COURT')
-    })
-  })
-
   describe('searchPrisoners', () => {
     it('should make a GET request to the candidate-search endpoint with the correct path and query', async () => {
       const query = 'Smith'

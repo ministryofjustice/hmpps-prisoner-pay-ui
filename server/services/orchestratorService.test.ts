@@ -65,20 +65,6 @@ describe('OrchestratorService', () => {
     })
   })
 
-  describe('getPrisonerByPrisonerNumber', () => {
-    it('should call the API client with the correct prisoner number', () => {
-      const prisonerNumber = 'G4529UP'
-      const mockPrisoner = TestData.Prisoner()
-
-      orchestratorApiClient.getPrisonerByPrisonerNumber.mockReturnValue(mockPrisoner)
-
-      const result = orchestratorService.getPrisonerByPrisonerNumber(prisonerNumber)
-
-      expect(orchestratorApiClient.getPrisonerByPrisonerNumber).toHaveBeenCalledWith(prisonerNumber)
-      expect(result).toEqual(mockPrisoner)
-    })
-  })
-
   describe('searchPrisoners', () => {
     it('should call the API client with the correct search query and prison code', async () => {
       const query = 'Smith'

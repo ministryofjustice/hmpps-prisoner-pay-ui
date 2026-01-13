@@ -33,16 +33,6 @@ export default class OrchestratorApiClient extends RestClient {
     )
   }
 
-  getPrisonerByPrisonerNumber(prisonerNumber: string) {
-    return {
-      prisonerNumber: 'G4529UP',
-      status: 'ACTIVE IN',
-      firstName: 'NICAIGH',
-      lastName: 'JOHNUSTINE',
-      cellLocation: 'COURT',
-    }
-  }
-
   async searchPrisoners(query: string, prisonCode: string) {
     return this.get<Prisoner[]>(
       {

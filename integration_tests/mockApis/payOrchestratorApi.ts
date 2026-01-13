@@ -42,19 +42,6 @@ export default {
       },
     }),
 
-  stubGetPrisonerByPrisonerNumber: (prisonerNumber: string, httpStatus = 200, prisoner = {}): SuperAgentRequest =>
-    stubFor({
-      request: {
-        method: 'GET',
-        urlPattern: `/pay-orchestrator-api/prisoners/${prisonerNumber}`,
-      },
-      response: {
-        status: httpStatus,
-        headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-        jsonBody: prisoner,
-      },
-    }),
-
   stubSearchPrisoners: (httpStatus = 200): SuperAgentRequest =>
     stubFor({
       request: {

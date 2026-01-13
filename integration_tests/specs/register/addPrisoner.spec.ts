@@ -15,7 +15,7 @@ test.describe('Dashboard', () => {
     await resetStubs()
   })
 
-  test('Can add a prisoner to a pay type', async ({ page }) => {
+  test('Can add a prisoner to a pay type - no end date', async ({ page }) => {
     await payOrchestratorApi.stubGetPayStatusPeriods()
     await payOrchestratorApi.stubSearchPrisoners()
     await prisonerPayApi.stubPostPayStatusPeriod()
@@ -39,6 +39,40 @@ test.describe('Dashboard', () => {
 
     const endDatePage = await EndDatePage.verifyOnPage(page)
     await endDatePage.noRadio.click()
+    await endDatePage.continueButton.click()
+
+    const checkPage = await CheckPage.verifyOnPage(page)
+    await checkPage.confirmButton.click()
+
+    const confirmedAddPrisonerPage = await ConfirmedAddPrisonerPage.verifyOnPage(page)
+    await expect(confirmedAddPrisonerPage.header).toBeVisible()
+  })
+
+  test('Can add a prisoner to a pay type - set end date', async ({ page }) => {
+    await payOrchestratorApi.stubGetPayStatusPeriods()
+    await payOrchestratorApi.stubSearchPrisoners()
+    await prisonerPayApi.stubPostPayStatusPeriod()
+
+    const type = 'Long-term sick'
+    await login(page)
+
+    const dashboardPage = await DashboardPage.verifyOnPage(page)
+    await dashboardPage.getTypeLink(type).click()
+
+    const payOverviewPage = await PayOverviewPage.verifyOnPage(page, type)
+    await payOverviewPage.addPersonButton.click()
+
+    const addPrisonerPage = await AddPrisonerPage.verifyOnPage(page)
+    await addPrisonerPage.searchBox.fill('A1234BC')
+    await addPrisonerPage.searchButton.click()
+
+    const addPrisonerResultsPage = await AddPrisonerResultsPage.verifyOnPage(page)
+    await addPrisonerResultsPage.page.getByRole('radio', { name: 'Nicaigh Johnustine' }).check()
+    await addPrisonerResultsPage.continueButton.click()
+
+    const endDatePage = await EndDatePage.verifyOnPage(page)
+    await endDatePage.yesRadio.click()
+    await endDatePage.endDateInput.fill('2025-12-31')
     await endDatePage.continueButton.click()
 
     const checkPage = await CheckPage.verifyOnPage(page)

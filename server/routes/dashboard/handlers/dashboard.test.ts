@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
+import { when } from 'jest-when'
 import DashboardHandler from './dashboard'
 import OrchestratorService from '../../../services/orchestratorService'
+import TestData from '../../../testutils/testData'
 
 jest.mock('../../../services/orchestratorService')
 jest.mock('../../../services/auditService')
@@ -14,8 +16,17 @@ describe('GET /dashboard', () => {
 
   beforeEach(() => {
     res = {
+      locals: {
+        user: {
+          activeCaseLoadId: 'MDI',
+        },
+      },
       render: jest.fn(),
     } as unknown as Response
+
+    when(orchestratorService.getPayStatusPeriodsByType)
+      .calledWith(expect.any(String), expect.any(String))
+      .mockResolvedValue(TestData.PayStatusPeriods())
   })
 
   afterEach(() => {

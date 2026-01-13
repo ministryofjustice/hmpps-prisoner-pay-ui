@@ -25,7 +25,7 @@
                         text: payType.prisonerCount,
                         format: "numeric"
                     }, {
-                        text: 0,
+                        text: (payType.prisonerCount / prisonPopulation) * 100 | round(2) ~ '%',
                         format: "numeric"
                     }
                 ]), rows) %}
