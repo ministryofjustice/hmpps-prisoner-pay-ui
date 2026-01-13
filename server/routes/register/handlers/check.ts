@@ -4,13 +4,30 @@ import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 import { formatFirstLastName } from '../../../utils/utils'
 import PrisonerPayService from '../../../services/prisonerPayService'
 import { CreatePayStatusPeriodRequest } from '../../../@types/prisonerPayAPI/types'
+import AuditService, { Action, Page, SubjectType } from '../../../services/auditService'
 
 export default class CheckHandler {
-  constructor(private readonly prisonerPayService: PrisonerPayService) {}
+  constructor(
+    private readonly prisonerPayService: PrisonerPayService,
+    private readonly auditService: AuditService,
+  ) {}
 
   GET = async (req: Request, res: Response) => {
+    const { username } = res.locals.user
     const prisoner = req.session!.selectedPrisoner
     const { selectedDate } = req.session!
+    const payType = getPayTypeBySlug(req.params.payTypeSlug)
+
+    await this.auditService.logPageView(Page.CHECK_PAGE, {
+      who: username,
+      what: Action.VIEW_CHECK_PAY_STATUS_PERIOD,
+      subjectType: SubjectType.NOT_APPLICABLE,
+      details: {
+        prisonerNumber: prisoner.prisonerNumber,
+        payType,
+        endDate: selectedDate,
+      },
+    })
 
     return res.render('pages/register/check', {
       prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),

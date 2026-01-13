@@ -14,23 +14,23 @@ export default function Index(services: Services): Router {
 
   router.use(setPayType)
 
-  const addPrisonerHandler = new AddPrisonerHandler()
+  const addPrisonerHandler = new AddPrisonerHandler(services.auditService)
   get('/add-prisoner', addPrisonerHandler.GET)
   post('/add-prisoner', addPrisonerHandler.POST)
 
-  const endDateHandler = new EndDateHandler(services.orchestratorService)
+  const endDateHandler = new EndDateHandler(services.orchestratorService, services.auditService)
   post('/end-date', endDateHandler.POST)
   get('/end-date', endDateHandler.GET)
 
-  const checkHandler = new CheckHandler(services.prisonerPayService)
+  const checkHandler = new CheckHandler(services.prisonerPayService, services.auditService)
   get('/check', checkHandler.GET)
   post('/check', checkHandler.POST)
 
-  const addPrisonerResultsHandler = new AddPrisonerResultsHandler(services.orchestratorService)
+  const addPrisonerResultsHandler = new AddPrisonerResultsHandler(services.orchestratorService, services.auditService)
   get('/add-prisoner-results', addPrisonerResultsHandler.GET)
   post('/add-prisoner-results', addPrisonerResultsHandler.POST)
 
-  const confirmedAddPrisonerHandler = new ConfirmedAddPrisonerHandler()
+  const confirmedAddPrisonerHandler = new ConfirmedAddPrisonerHandler(services.auditService)
   get('/confirmed-add-prisoner', confirmedAddPrisonerHandler.GET)
 
   return router

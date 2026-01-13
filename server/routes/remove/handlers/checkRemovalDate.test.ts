@@ -3,13 +3,16 @@ import { when } from 'jest-when'
 import CheckRemovalDateHandler from './checkRemovalDate'
 import OrchestratorService from '../../../services/orchestratorService'
 import PrisonerPayService from '../../../services/prisonerPayService'
+import AuditService from '../../../services/auditService'
 import TestData from '../../../testutils/testData'
 
 jest.mock('../../../services/orchestratorService')
 jest.mock('../../../services/prisonerPayService')
+jest.mock('../../../services/auditService')
 
 const orchestratorService = new OrchestratorService(null)
 const prisonerPayService = new PrisonerPayService(null)
+const auditService = new AuditService(null)
 
 describe('CheckRemovalDateHandler', () => {
   let handler: CheckRemovalDateHandler
@@ -17,7 +20,7 @@ describe('CheckRemovalDateHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
-    handler = new CheckRemovalDateHandler(orchestratorService, prisonerPayService)
+    handler = new CheckRemovalDateHandler(orchestratorService, prisonerPayService, auditService)
     req = {
       params: { payStatusId: '123', payTypeSlug: 'long-term-sick' },
       session: { selectedDate: '25/12/2025' },
@@ -25,6 +28,9 @@ describe('CheckRemovalDateHandler', () => {
     res = {
       render: jest.fn(),
       redirect: jest.fn(),
+      locals: {
+        user: TestData.PrisonUser(),
+      },
     }
 
     when(orchestratorService.getPayStatusPeriodById).calledWith('123').mockResolvedValue(TestData.PayStatusPeriod())

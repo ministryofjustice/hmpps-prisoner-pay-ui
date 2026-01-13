@@ -1,6 +1,11 @@
 import { Request, Response } from 'express'
 import ConfirmedAddPrisonerHandler from './confirmedAddPrisoner'
+import AuditService from '../../../services/auditService'
 import TestData from '../../../testutils/testData'
+
+jest.mock('../../../services/auditService')
+
+const auditService = new AuditService(null)
 
 describe('ConfirmedAddPrisonerHandler', () => {
   let handler: ConfirmedAddPrisonerHandler
@@ -8,7 +13,7 @@ describe('ConfirmedAddPrisonerHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
-    handler = new ConfirmedAddPrisonerHandler()
+    handler = new ConfirmedAddPrisonerHandler(auditService)
     req = {
       params: { payTypeSlug: 'long-term-sick' },
       session: {
@@ -19,6 +24,9 @@ describe('ConfirmedAddPrisonerHandler', () => {
     res = {
       render: jest.fn(),
       redirect: jest.fn(),
+      locals: {
+        user: TestData.PrisonUser(),
+      },
     }
   })
 
