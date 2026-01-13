@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { format } from 'date-fns'
 import OrchestratorService from '../../../services/orchestratorService'
-import { getAllPayTypes, getPayTypeBySlug } from '../../../utils/payTypeUtils'
+import { getAllPayTypes } from '../../../utils/payTypeUtils'
 
 export default class DashboardHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
