@@ -46,6 +46,9 @@
                                     text: 'removalDate',
                                     classes: 'govuk-visually-hidden'
                                 },
+                                attributes: {
+                                    'data-qa': 'removal-date-input'
+                                },
                                 value: formResponses.removalDate,
                                 errorMessage: errors | findError("removalDate")
                             })
