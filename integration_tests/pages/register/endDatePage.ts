@@ -17,7 +17,7 @@ export default class EndDatePage extends AbstractPage {
     this.header = page.locator('h1')
     this.yesRadio = page.getByLabel('Yes')
     this.noRadio = page.getByLabel('No')
-    this.endDateInput = page.getByRole('textbox', { name: 'selectedDate' })
+    this.endDateInput = page.getByRole('textbox')
     this.continueButton = page.getByRole('button', { name: 'Continue' })
   }
 
