@@ -72,7 +72,7 @@ test.describe('Dashboard', () => {
 
     const endDatePage = await EndDatePage.verifyOnPage(page)
     await endDatePage.yesRadio.click()
-    await endDatePage.endDateInput.fill('2025-12-31')
+    await endDatePage.endDateInput.fill('31/12/2025')
     await endDatePage.continueButton.click()
 
     const checkPage = await CheckPage.verifyOnPage(page)
