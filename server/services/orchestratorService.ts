@@ -12,10 +12,6 @@ export default class OrchestratorService {
     return this.orchestratorApiClient.getPayStatusPeriodById(payStatusId)
   }
 
-  getPrisonerByPrisonerNumber(prisonerNumber: string) {
-    return this.orchestratorApiClient.getPrisonerByPrisonerNumber(prisonerNumber)
-  }
-
   async searchPrisoners(query: string, prisonCode: string) {
     return this.orchestratorApiClient.searchPrisoners(query, prisonCode)
   }
