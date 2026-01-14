@@ -22,7 +22,7 @@ describe('CheckHandler', () => {
       params: { payTypeSlug: 'long-term-sick' },
       session: {
         selectedPrisoner: TestData.Prisoner(),
-        selectedDate: '2025-01-01',
+        selectedDate: '25/01/2025',
       },
     } as unknown as Partial<Request>
     res = {
@@ -45,7 +45,7 @@ describe('CheckHandler', () => {
       expect(res.render).toHaveBeenCalledWith('pages/register/check', {
         prisonerName: 'Nicaigh Johnustine',
         prisoner: TestData.Prisoner(),
-        selectedDate: '2025-01-01',
+        selectedDate: '25/01/2025',
       })
     })
   })
@@ -59,7 +59,7 @@ describe('CheckHandler', () => {
           prisonerNumber: TestData.Prisoner().prisonerNumber,
           type: 'LONG_TERM_SICK',
           startDate: expect.any(String),
-          endDate: '2025-01-01',
+          endDate: '2025-01-25',
         }),
       )
     })

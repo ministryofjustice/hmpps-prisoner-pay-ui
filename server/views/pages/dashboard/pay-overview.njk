@@ -15,7 +15,7 @@
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-l">{{ payType.description }}</h1>
             {# Following line needs to be made generic #}
-            <p class="govuk-body">People have been signed off for more than 4 weeks</p> 
+            <p class="govuk-body">People have been signed off for more than 4 weeks</p>
             <p class="govuk-body">They're paid {{ payType.dailyPayAmount }}p per day (£{{ weekPay }} for a 5 day week)</p>
 
             {{ govukButton({
@@ -28,6 +28,14 @@
 
             {% set rows = [] %}
             {% for row in records %}
+                {% set nameHTML %}
+                    <div {{ "class=" + options.classes if options.classes }} data-qa="prisoner-summary">
+                        <div data-qa="prisoner-name">
+                            {{ row | formatName(NameFormatStyle.firstLast, false) }}
+                        </div>
+                        <div class="govuk-body-s govuk-!-margin-0 secondary-text-colour" data-qa="prisoner-number">{{ row.prisonerNumber }}</div>
+                    </div>
+                {% endset %}
                 {% if row.endDate %}
                     {% set changeLink = '<a href="./remove/' + row.id + '/removal-date">Change end date</a>' %}
                 {% else %}
@@ -35,13 +43,13 @@
                 {% endif %}
                 {% set rows = (rows.push([
                     {
-                        text: row | formatName(NameFormatStyle.firstLast, false)
+                        html: nameHTML
                     }, {
                         text: row.cellLocation
                     }, {
-                        text: row.startDate | formatDate('d MMM yyyy')
+                        text: row.startDate | formatDate('d MMMM yyyy')
                     }, {
-                        text: row.endDate | formatDate('d MMM yyyy')
+                        text: row.endDate | formatDate('d MMMM yyyy')
                     }, {
                         text: ''
                     }, {

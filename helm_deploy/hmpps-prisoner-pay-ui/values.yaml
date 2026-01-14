@@ -1,6 +1,7 @@
 generic-service:
   nameOverride: hmpps-prisoner-pay-ui
-  serviceAccountName: hmpps-prisoner-pay-ui # required for HMPPS Audit
+
+  serviceAccountName: hmpps-prisoner-pay # required for HMPPS Audit
   productId: 'DPS028' # productId for the product that this belongs too, i.e. DPS001, see README.md for details
 
   # the IRSA service account name for accessing AWS resources
