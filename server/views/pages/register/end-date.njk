@@ -31,6 +31,7 @@
                       {
                           value: "yes",
                           text: "Yes",
+                          checked: endDateSelection == "yes",
                           conditional: {
                             html: mojDatePicker({
                                 id: 'selectedDate',
@@ -41,13 +42,15 @@
                                     text: 'Input the end date',
                                     classes: 'govuk-visually-hidden'
                                 },
-                                value: formResponses.selectedDate
+                                value: selectedDate,
+                                errorMessage: errors | findError("selectedDate")
                             })
                           }
                       },
                       {
-                          value: "no",
-                          text: "No"
+                            value: "no",
+                            text: "No",
+                            checked: endDateSelection == "no"
                       }
                     ],
                     errorMessage: errors | findError("endDateSelection")
