@@ -1,4 +1,4 @@
-import { isBefore, isDate, isValid, parse } from 'date-fns'
+import { isBefore, isValid, parse } from 'date-fns'
 import { FormError } from '../../../@types/template'
 
 const errors: { [key: string]: FormError } = {
