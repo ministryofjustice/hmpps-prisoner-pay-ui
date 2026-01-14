@@ -1,18 +1,23 @@
 import { Request, Response } from 'express'
 import { when } from 'jest-when'
 import AddPrisonerHandler from './addPrisoner'
+import AuditService from '../../../services/auditService'
 import validateForm from './addPrisonerValidation'
+import TestData from '../../../testutils/testData'
 
 jest.mock('./addPrisonerValidation')
+jest.mock('../../../services/auditService')
 
 describe('AddPrisonerHandler', () => {
   let handler: AddPrisonerHandler
   let req: Partial<Request>
   let res: Partial<Response>
+  let auditService: AuditService
 
   beforeEach(() => {
     jest.clearAllMocks()
-    handler = new AddPrisonerHandler()
+    auditService = new AuditService(null)
+    handler = new AddPrisonerHandler(auditService)
     req = {
       params: { payTypeSlug: 'long-term-sick' },
       body: {},
@@ -20,6 +25,9 @@ describe('AddPrisonerHandler', () => {
     res = {
       render: jest.fn(),
       redirect: jest.fn(),
+      locals: {
+        user: TestData.PrisonUser(),
+      },
     }
   })
 

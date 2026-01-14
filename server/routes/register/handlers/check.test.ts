@@ -2,11 +2,14 @@ import { Request, Response } from 'express'
 import { when } from 'jest-when'
 import CheckHandler from './check'
 import PrisonerPayService from '../../../services/prisonerPayService'
+import AuditService from '../../../services/auditService'
 import TestData from '../../../testutils/testData'
 
 jest.mock('../../../services/prisonerPayService')
+jest.mock('../../../services/auditService')
 
 const prisonerPayService = new PrisonerPayService(null)
+const auditService = new AuditService(null)
 
 describe('CheckHandler', () => {
   let handler: CheckHandler
@@ -14,7 +17,7 @@ describe('CheckHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
-    handler = new CheckHandler(prisonerPayService)
+    handler = new CheckHandler(prisonerPayService, auditService)
     req = {
       params: { payTypeSlug: 'long-term-sick' },
       session: {

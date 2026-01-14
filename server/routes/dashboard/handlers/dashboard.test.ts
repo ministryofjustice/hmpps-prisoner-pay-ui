@@ -3,23 +3,23 @@ import { when } from 'jest-when'
 import DashboardHandler from './dashboard'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
+import AuditService from '../../../services/auditService'
 
 jest.mock('../../../services/orchestratorService')
 jest.mock('../../../services/auditService')
 
 const orchestratorService = new OrchestratorService(null)
+const auditService = new AuditService(null)
 
 describe('GET /dashboard', () => {
-  const handler = new DashboardHandler(orchestratorService)
+  const handler = new DashboardHandler(orchestratorService, auditService)
   let req: Request
   let res: Response
 
   beforeEach(() => {
     res = {
       locals: {
-        user: {
-          activeCaseLoadId: 'MDI',
-        },
+        user: TestData.PrisonUser(),
       },
       render: jest.fn(),
     } as unknown as Response

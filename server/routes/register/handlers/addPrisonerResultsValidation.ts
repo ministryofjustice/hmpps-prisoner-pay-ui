@@ -11,6 +11,8 @@ const errors: { [key: string]: FormError } = {
   },
 }
 
+// TODO: Error is missing selector
+
 export default function validateForm({ selectedPrisoner }: AddPrisonerResultsForm): FormError | null {
   if (!selectedPrisoner) return errors.NONE_SELECTED
 

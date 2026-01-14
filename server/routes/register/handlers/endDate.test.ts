@@ -1,11 +1,14 @@
 import { Request, Response } from 'express'
 import EndDateHandler from './endDate'
 import OrchestratorService from '../../../services/orchestratorService'
+import AuditService from '../../../services/auditService'
 import TestData from '../../../testutils/testData'
 
 jest.mock('../../../services/orchestratorService')
+jest.mock('../../../services/auditService')
 
 const orchestratorService = new OrchestratorService(null)
+const auditService = new AuditService(null)
 
 describe('EndDateHandler', () => {
   let handler: EndDateHandler
@@ -13,7 +16,7 @@ describe('EndDateHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
-    handler = new EndDateHandler(orchestratorService)
+    handler = new EndDateHandler(orchestratorService, auditService)
     req = {
       body: {},
       params: { payTypeSlug: 'long-term-sick' },
@@ -24,6 +27,9 @@ describe('EndDateHandler', () => {
     res = {
       render: jest.fn(),
       redirect: jest.fn(),
+      locals: {
+        user: TestData.PrisonUser(),
+      },
     }
   })
 
