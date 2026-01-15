@@ -27,7 +27,17 @@ export default class AddPrisonerResultsHandler {
       },
     })
 
-    return res.render('pages/register/add-prisoner-results', { prisoners: prisonerResults, query })
+    const errors =
+      prisonerResults.length === 0
+        ? [
+            {
+              text: 'No people found matching that name or prison number',
+              href: '#query',
+            },
+          ]
+        : []
+
+    return res.render('pages/register/add-prisoner-results', { prisoners: prisonerResults, query, errors })
   }
 
   POST = async (req: Request, res: Response) => {
