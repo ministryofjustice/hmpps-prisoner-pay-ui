@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { format } from 'date-fns'
 import { login, resetStubs } from '../../testUtils'
 import DashboardPage from '../../pages/dashboard/dashboardPage'
 import PayOverviewPage from '../../pages/dashboard/payOverviewPage'
@@ -72,7 +73,11 @@ test.describe('Dashboard', () => {
 
     const endDatePage = await EndDatePage.verifyOnPage(page)
     await endDatePage.yesRadio.click()
-    await endDatePage.endDateInput.fill('31/12/2025')
+
+    const futureDate = new Date()
+    futureDate.setDate(futureDate.getDate() + 1)
+    const formattedDate = format(futureDate, 'dd/MM/yyyy')
+    await endDatePage.endDateInput.fill(formattedDate)
     await endDatePage.continueButton.click()
 
     const checkPage = await CheckPage.verifyOnPage(page)

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { format } from 'date-fns'
 import EndDateHandler from './endDate'
 import OrchestratorService from '../../../services/orchestratorService'
 import AuditService from '../../../services/auditService'
@@ -45,9 +46,22 @@ describe('EndDateHandler', () => {
   })
 
   describe('POST', () => {
-    it('should redirect after processing', async () => {
+    it('should redirect after processing with no date', async () => {
       req.body = {
-        selectedDate: '2025-01-01',
+        selectedDate: '',
+        endDateSelection: 'no',
+      }
+      await handler.POST(req as Request, res as Response)
+
+      expect(res.redirect).toHaveBeenCalled()
+    })
+
+    it('should redirect after processing with date', async () => {
+      const futureDate = new Date()
+      futureDate.setDate(futureDate.getDate() + 1)
+      const formattedDate = format(futureDate, 'dd/MM/yyyy')
+      req.body = {
+        selectedDate: formattedDate,
         endDateSelection: 'yes',
       }
       await handler.POST(req as Request, res as Response)
