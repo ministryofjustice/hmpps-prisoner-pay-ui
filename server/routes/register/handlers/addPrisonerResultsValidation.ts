@@ -7,7 +7,7 @@ type AddPrisonerResultsForm = {
 const errors: { [key: string]: FormError } = {
   NONE_SELECTED: {
     href: '#selectedPrisoner',
-    text: 'Select a prisoner to add',
+    text: 'You must select someone',
   },
 }
 
