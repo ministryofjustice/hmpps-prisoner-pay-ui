@@ -46,7 +46,7 @@
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                 <div class="govuk-button-group">
                     {{ govukButton({
-                        text: "Confirm and remove from " + payType.description
+                        text: "Confirm and remove from " + payType.description | lower
                     }) }}
                     <a class="govuk-link" href="../../pay-overview">Cancel</a>
                 </div>
