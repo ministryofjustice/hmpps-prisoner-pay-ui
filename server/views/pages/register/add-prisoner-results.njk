@@ -33,11 +33,18 @@
                                         'data-qa': 'query'
                                     }
                                 }) }}
-                                {{ govukButton({
-                                    text: "Search",
-                                    type: "submit",
-                                    classes: "govuk-button--secondary"
-                                }) }}
+                                {% if prisoners | length === 0 %}
+                                    {{ govukButton({
+                                        text: "Search",
+                                        type: "submit"
+                                    }) }}
+                                {% else %}
+                                    {{ govukButton({
+                                        text: "Search",
+                                        type: "submit",
+                                        classes: "govuk-button--secondary"
+                                    }) }}
+                                {% endif %}
                             </div>
                         </div>
                     </div>

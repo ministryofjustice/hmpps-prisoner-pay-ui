@@ -61,6 +61,7 @@ describe('AddPrisonerResultsHandler', () => {
       expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner-results', {
         prisoners: TestData.Prisoners(),
         query: 'test',
+        errors: [],
       })
     })
   })
