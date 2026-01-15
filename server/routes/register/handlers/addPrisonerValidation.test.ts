@@ -18,7 +18,7 @@ describe('validateForm', () => {
         }),
       ).toEqual({
         href: '#query',
-        text: 'Enter a search query',
+        text: 'You must enter a name or a prison number in the format A1234CD',
       })
     })
   })
