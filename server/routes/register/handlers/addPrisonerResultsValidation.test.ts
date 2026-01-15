@@ -18,7 +18,7 @@ describe('validateForm', () => {
         }),
       ).toEqual({
         href: '#selectedPrisoner',
-        text: 'Select a prisoner to add',
+        text: 'You must select someone',
       })
     })
   })
