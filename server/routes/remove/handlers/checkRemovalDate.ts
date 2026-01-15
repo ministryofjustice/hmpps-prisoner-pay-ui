@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { parse, format } from 'date-fns'
+import { parse, format, isToday } from 'date-fns'
 import OrchestratorService from '../../../services/orchestratorService'
 import PrisonerPayService from '../../../services/prisonerPayService'
 import AuditService, { Action, Page, SubjectType } from '../../../services/auditService'
@@ -15,6 +15,7 @@ export default class CheckRemovalDateHandler {
   GET = async (req: Request, res: Response) => {
     const { username } = res.locals.user
     const selectedDate = parse(req.session!.selectedDate, 'dd/MM/yyyy', new Date())
+    const formattedDate = format(selectedDate, 'EEEE, d MMMM yyyy')
     const { payStatusId } = req.params
     const payStatusPeriod = await this.orchestratorService.getPayStatusPeriodById(payStatusId)
     const payType = getPayTypeBySlug(req.params.payTypeSlug)
@@ -32,7 +33,7 @@ export default class CheckRemovalDateHandler {
 
     return res.render('pages/remove/check-removal-date', {
       payStatusPeriod,
-      selectedDate,
+      selectedDate: isToday(selectedDate) ? `Today - ${formattedDate}` : formattedDate,
     })
   }
 

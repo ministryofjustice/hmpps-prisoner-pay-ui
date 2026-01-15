@@ -47,7 +47,7 @@ describe('CheckRemovalDateHandler', () => {
         'pages/remove/check-removal-date',
         expect.objectContaining({
           payStatusPeriod: TestData.PayStatusPeriod(),
-          selectedDate: expect.any(Date),
+          selectedDate: expect.any(String),
         }),
       )
     })

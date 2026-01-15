@@ -10,7 +10,7 @@
         <div class="govuk-grid-column-two-thirds">
             {{ govukPanel({
                 titleText: "Removal complete",
-                html: payStatusPeriod | formatName(NameFormatStyle.firstLast, false) + " (" + payStatusPeriod.prisonerNumber + ") will not receive " + payType.description | lower + " pay after " + selectedDate | formatDate('d MMMM yyyy') + "."
+                html: payStatusPeriod | formatName(NameFormatStyle.firstLast, false) + " (" + payStatusPeriod.prisonerNumber + ") will not receive " + payType.description | lower + " pay after " + selectedDate + "."
             }) }}
 
             <h2 class="govuk-heading-m">What you can do next</h2>
