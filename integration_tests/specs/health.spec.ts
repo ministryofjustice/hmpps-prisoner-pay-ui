@@ -54,6 +54,8 @@ test.describe('Health', () => {
         tokenVerification.stubPing(500),
         componentsApi.stubComponentsHealthPing(),
         prisonApi.stubPrisonHealthPing(),
+        payOrchestratorApi.stubPayOrchestratorHealthPing(),
+        prisonerPayApi.stubPrisonerPayHealthPing(),
       ])
     })
 
