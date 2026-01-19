@@ -49,7 +49,6 @@ export default class AuditService {
       ...eventDetails,
       what: `PAGE_VIEW_${page}`,
     }
-    console.log('Logging audit VIEW:', event)
     await this.hmppsAuditClient.sendMessage(event)
   }
 }
