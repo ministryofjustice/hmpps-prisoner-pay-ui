@@ -20,6 +20,7 @@ export declare global {
 
     interface Request {
       verified?: boolean
+      auditService?: AuditService
       id: string
       logout(done: (err: unknown) => void): void
     }
