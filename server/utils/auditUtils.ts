@@ -3,7 +3,7 @@
 // Any page that simply involves viewing a page without any specific action being taken can use auditPageView
 // Any page that involves a specific action (e.g., searching for a prisoner) should use the auditPageAction
 
-import { Response } from 'express'
+import { Request } from 'express'
 import { Page, Action, SubjectType } from '../services/auditService'
 import { PayTypeConfig } from '../@types/payTypes'
 import { Prisoner, PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
@@ -14,37 +14,33 @@ import { Prisoner, PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
 // subjectId is the specific identifier of that thing (e.g., the actual prisoner number, or the search term used)
 
 export function auditPageView(
-  res: Response,
+  req: Request,
   page: Page,
   details: object,
   subjectType?: SubjectType,
   action?: Action,
   subjectId?: string,
 ) {
-  const { auditService } = res.locals
-  return auditService.logPageView(page, {
+  return req.auditService.logPageView(page, {
+    who: req.session.passport.user.username,
     what: action,
-    who: res.locals.user.username,
     subjectType: subjectType ?? SubjectType.NOT_APPLICABLE,
     details,
-    action: action ?? Action.VIEW,
     subjectId,
   })
 }
 
 export function auditPageAction(
-  res: Response,
+  req: Request,
   page: Page,
   action: Action,
   details: object,
   subjectType?: SubjectType,
   subjectId?: string,
 ) {
-  const { auditService } = res.locals
-  return auditService.logAuditEvent({
-    page,
-    who: res.locals.user.username,
-    action,
+  return req.auditService.logAuditEvent({
+    what: `ACTION_${page}_${action}`,
+    who: req.session.passport.user.username,
     subjectType: subjectType ?? SubjectType.NOT_APPLICABLE,
     subjectId,
     details,
