@@ -1,0 +1,63 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% set pageTitle = applicationName + " - Page name" %}
+{% set mainClasses = "govuk-body" %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Edit pay settings</span>
+            <h1 class="govuk-heading-l">Pay rates for people who are not in work</h1>
+
+            <h2 class="govuk-heading-m govuk-!-margin-top-6">Pay for people who are sick, retired or out at hospital</h2>
+            <p class="govuk-body">How much people are automatically paid if they're recorded as being sick, retired or out at hospital.</p>
+
+            {% for type in payTypes %}
+                {{ govukSummaryList({
+                card: {
+                    title: {
+                        text: type.description
+                    }
+                },
+                rows: [
+                    {
+                        key: {
+                            text: "Pay"
+                        },
+                        value: {
+                            html: "£" + type.dailyPayAmount / 100 + " per week"
+                        },
+                        actions: {
+                            items: [
+                                {
+                                    href: "#",
+                                    text: "Change",
+                                    visuallyHiddenText: "amount"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        key: {
+                            text: "People on " + type.description
+                        },
+                        value: {
+                            text: type.numberOfPrisoners
+                        },
+                        actions: {
+                            items: [
+                                {
+                                    href: "../" + type.slug + "/pay-overview",
+                                    text: "View, add and remove people"
+                                }
+                            ]
+                        }
+                    }
+                ]
+                }) }}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

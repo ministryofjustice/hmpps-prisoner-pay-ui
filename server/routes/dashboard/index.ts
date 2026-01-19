@@ -1,5 +1,6 @@
 import { RequestHandler, Router } from 'express'
 import DashboardHandler from './handlers/dashboard'
+import PayRatesHandler from './handlers/payRates'
 import PayOverviewHandler from './handlers/payOverview'
 import { Services } from '../../services'
 
@@ -12,6 +13,9 @@ export default function Index({ orchestratorService, auditService }: Services): 
 
   const payOverviewHandler = new PayOverviewHandler(orchestratorService, auditService)
   get('/:payTypeSlug/pay-overview', payOverviewHandler.GET)
+
+  const payRatesHandler = new PayRatesHandler(orchestratorService)
+  get('/pay-rates', payRatesHandler.GET)
 
   return router
 }
