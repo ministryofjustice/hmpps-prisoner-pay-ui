@@ -17,7 +17,7 @@ export default class CheckHandler {
     const { type: payType } = getPayTypeBySlug(req.params.payTypeSlug)
 
     await auditPageView(
-      res,
+      req,
       Page.CHECK_CONFIRM_PAY,
       { payType, endDate: selectedDate },
       SubjectType.PRISONER_ID,
@@ -50,7 +50,7 @@ export default class CheckHandler {
     await this.prisonerPayService.postPayStatusPeriod(postRequest)
 
     await auditPageAction(
-      res,
+      req,
       Page.CHECK_CONFIRM_PAY,
       Action.CREATE_STATUS_PERIOD,
       { payType, endDate: selectedDate },

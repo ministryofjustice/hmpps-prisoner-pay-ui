@@ -66,7 +66,7 @@ describe('AddPrisonerResultsHandler', () => {
       await handler.GET(req as Request, res as Response)
 
       expect(auditUtils.auditPageView).toHaveBeenCalledWith(
-        res,
+        req,
         Page.ADD_PRISONER_RESULTS,
         expect.any(Object),
         SubjectType.PRISONER_ID,
@@ -86,7 +86,7 @@ describe('AddPrisonerResultsHandler', () => {
       await handler.POST(req as Request, res as Response)
 
       expect(auditUtils.auditPageAction).toHaveBeenCalledWith(
-        res,
+        req,
         Page.ADD_PRISONER,
         Action.SEARCH_PRISONER,
         { query: 'test' },

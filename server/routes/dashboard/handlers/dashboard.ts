@@ -21,8 +21,7 @@ export default class DashboardHandler {
         prisonerCount: paySummary.filter(period => period.type === payType.type).length,
       }
     })
-
-    await auditPageView(res, Page.DASHBOARD, { payTypes, prisonPopulation })
+    await auditPageView(req, Page.DASHBOARD, { payTypes, prisonPopulation })
 
     return res.render('pages/dashboard/dashboard', {
       prisonPopulation,

@@ -48,7 +48,7 @@ describe('RemovalDateHandler', () => {
       await handler.GET(req as Request, res as Response)
 
       expect(auditUtils.auditPageView).toHaveBeenCalledWith(
-        res,
+        req,
         Page.SET_REMOVAL_DATE,
         {
           prisonerNumber: TestData.PayStatusPeriod().prisonerNumber,

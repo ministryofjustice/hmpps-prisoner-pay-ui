@@ -61,7 +61,7 @@ describe('PayOverviewHandler', () => {
     it('should log page view to audit service with correct parameters', async () => {
       await handler.GET(req as Request, res as Response)
       expect(auditUtils.auditPageView).toHaveBeenCalledWith(
-        res,
+        req,
         Page.PAY_OVERVIEW,
         {
           paySummaries: TestData.PayStatusPeriods().map(record => ({

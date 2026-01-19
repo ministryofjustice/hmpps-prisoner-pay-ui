@@ -60,7 +60,7 @@ describe('CheckRemovalDateHandler', () => {
       await handler.GET(req as Request, res as Response)
 
       expect(auditUtils.auditPageView).toHaveBeenCalledWith(
-        res,
+        req,
         Page.CHECK_REMOVE_PAY,
         {
           payType: 'LONG_TERM_SICK',
@@ -83,7 +83,7 @@ describe('CheckRemovalDateHandler', () => {
     it('should call audit page action with correct parameters', async () => {
       await handler.POST(req as Request, res as Response)
 
-      expect(auditUtils.auditPageAction).toHaveBeenCalledWith(res, Page.CHECK_REMOVE_PAY, Action.EDIT_STATUS_PERIOD, {
+      expect(auditUtils.auditPageAction).toHaveBeenCalledWith(req, Page.CHECK_REMOVE_PAY, Action.EDIT_STATUS_PERIOD, {
         payType: 'LONG_TERM_SICK',
         payStatusId: '123',
         selectedDate: expect.any(Date),

@@ -49,7 +49,7 @@ describe('ConfirmedRemovalDateHandler', () => {
       await handler.GET(req as Request, res as Response)
 
       expect(auditUtils.auditPageView).toHaveBeenCalledWith(
-        res,
+        req,
         Page.CONFIRMED_REMOVE_DATE,
         {
           endDate: TestData.PayStatusPeriod().endDate,

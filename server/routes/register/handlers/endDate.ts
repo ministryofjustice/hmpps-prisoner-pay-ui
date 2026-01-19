@@ -12,7 +12,7 @@ export default class EndDateHandler {
     const prisoner = req.session!.selectedPrisoner
     const { prisonerNumber } = prisoner
 
-    await auditPageView(res, Page.SET_END_DATE, {}, SubjectType.PRISONER_ID, null, prisonerNumber)
+    await auditPageView(req, Page.SET_END_DATE, {}, SubjectType.PRISONER_ID, null, prisonerNumber)
 
     return res.render('pages/register/end-date', {
       prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),

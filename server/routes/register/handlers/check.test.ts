@@ -57,7 +57,7 @@ describe('CheckHandler', () => {
       await handler.GET(req as Request, res as Response)
 
       expect(auditUtils.auditPageView).toHaveBeenCalledWith(
-        res,
+        req,
         Page.CHECK_CONFIRM_PAY,
         {
           payType: 'LONG_TERM_SICK',
@@ -94,7 +94,7 @@ describe('CheckHandler', () => {
       await handler.POST(req as Request, res as Response)
 
       expect(auditUtils.auditPageAction).toHaveBeenCalledWith(
-        res,
+        req,
         Page.CHECK_CONFIRM_PAY,
         Action.CREATE_STATUS_PERIOD,
         {

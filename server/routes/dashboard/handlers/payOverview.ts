@@ -16,7 +16,7 @@ export default class PayOverviewHandler {
       await this.orchestratorService.getPayStatusPeriodsByType(format(new Date(), 'yyyy-MM-dd'), activeCaseLoadId)
     ).filter(period => period.type === payType.type)
 
-    await auditPageView(res, Page.PAY_OVERVIEW, getDisplayedPaySummary(paySummary, payType), SubjectType.PRISONER_ID)
+    await auditPageView(req, Page.PAY_OVERVIEW, getDisplayedPaySummary(paySummary, payType), SubjectType.PRISONER_ID)
 
     return res.render('pages/dashboard/pay-overview', {
       payType,

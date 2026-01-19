@@ -15,7 +15,7 @@ export default class RemovalDateHandler {
     const { prisonerNumber, type } = payStatusPeriod
 
     await auditPageView(
-      res,
+      req,
       Page.SET_REMOVAL_DATE,
       { prisonerNumber, type },
       SubjectType.PRISONER_ID,

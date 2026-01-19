@@ -81,7 +81,7 @@ describe('AddPrisonerHandler', () => {
       await handler.POST(req as Request, res as Response)
 
       expect(auditUtils.auditPageAction).toHaveBeenCalledWith(
-        res,
+        req,
         Page.ADD_PRISONER,
         Action.SEARCH_PRISONER,
         { query: 'G4529UP' },

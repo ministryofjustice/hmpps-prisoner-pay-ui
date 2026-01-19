@@ -13,7 +13,7 @@ export default class AddPrisonerResultsHandler {
     const prisonerResults = await this.orchestratorService.searchPrisoners(query, activeCaseLoadId)
 
     await auditPageView(
-      res,
+      req,
       Page.ADD_PRISONER_RESULTS,
       getDisplayedResults(prisonerResults),
       SubjectType.PRISONER_ID,
@@ -38,8 +38,7 @@ export default class AddPrisonerResultsHandler {
     const { selectedPrisoner } = req.body
     const query = req.query.query as string
     const prisonerResults = await this.orchestratorService.searchPrisoners(query, activeCaseLoadId)
-
-    await auditPageAction(res, Page.ADD_PRISONER, Action.SEARCH_PRISONER, { query }, SubjectType.SEARCH_TERM)
+    await auditPageAction(req, Page.ADD_PRISONER, Action.SEARCH_PRISONER, { query }, SubjectType.SEARCH_TERM)
 
     const errors = validateForm({ selectedPrisoner })
     if (errors) {

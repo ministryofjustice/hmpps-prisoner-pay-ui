@@ -9,7 +9,7 @@ export default class ConfirmedAddPrisonerHandler {
     const { selectedPrisoner: prisoner, selectedDate } = req.session!
     const { prisonerNumber } = prisoner
 
-    await auditPageView(res, Page.CONFIRMED_ADD_DATE, {}, SubjectType.PRISONER_ID, null, prisonerNumber)
+    await auditPageView(req, Page.CONFIRMED_ADD_DATE, {}, SubjectType.PRISONER_ID, null, prisonerNumber)
 
     return res.render('pages/register/confirmed-add-prisoner', {
       prisoner,

@@ -42,7 +42,7 @@ describe('GET /dashboard', () => {
 
   it('should log page view to audit service with correct parameters', async () => {
     await handler.GET(req, res)
-    expect(auditUtils.auditPageView).toHaveBeenCalledWith(res, Page.DASHBOARD, {
+    expect(auditUtils.auditPageView).toHaveBeenCalledWith(req, Page.DASHBOARD, {
       payTypes: expect.any(Array),
       prisonPopulation: 1000,
     })

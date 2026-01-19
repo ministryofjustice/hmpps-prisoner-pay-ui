@@ -49,7 +49,7 @@ describe('ConfirmedAddPrisonerHandler', () => {
       await handler.GET(req as Request, res as Response)
 
       expect(auditUtils.auditPageView).toHaveBeenCalledWith(
-        res,
+        req,
         Page.CONFIRMED_ADD_DATE,
         {},
         SubjectType.PRISONER_ID,

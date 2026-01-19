@@ -21,7 +21,7 @@ export default class CheckRemovalDateHandler {
     const { type: payType } = getPayTypeBySlug(req.params.payTypeSlug)
 
     await auditPageView(
-      res,
+      req,
       Page.CHECK_REMOVE_PAY,
       { payType, selectedDate },
       SubjectType.PRISONER_ID,
@@ -45,7 +45,7 @@ export default class CheckRemovalDateHandler {
       removeEndDate: false,
     })
 
-    await auditPageAction(res, Page.CHECK_REMOVE_PAY, Action.EDIT_STATUS_PERIOD, { payType, payStatusId, selectedDate })
+    await auditPageAction(req, Page.CHECK_REMOVE_PAY, Action.EDIT_STATUS_PERIOD, { payType, payStatusId, selectedDate })
 
     return res.redirect('confirmed-removal-date')
   }

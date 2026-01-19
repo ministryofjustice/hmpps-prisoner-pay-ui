@@ -51,7 +51,7 @@ describe('EndDateHandler', () => {
       await handler.GET(req as Request, res as Response)
 
       expect(auditUtils.auditPageView).toHaveBeenCalledWith(
-        res,
+        req,
         Page.SET_END_DATE,
         {},
         SubjectType.PRISONER_ID,
