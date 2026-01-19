@@ -1,23 +1,22 @@
 import { Request, Response } from 'express'
 import { when } from 'jest-when'
 import AddPrisonerHandler from './addPrisoner'
-import AuditService from '../../../services/auditService'
+import * as auditUtils from '../../../utils/auditUtils'
 import validateForm from './addPrisonerValidation'
 import TestData from '../../../testutils/testData'
+import { Page, Action, SubjectType } from '../../../services/auditService'
 
 jest.mock('./addPrisonerValidation')
-jest.mock('../../../services/auditService')
+jest.mock('../../../utils/auditUtils')
 
 describe('AddPrisonerHandler', () => {
   let handler: AddPrisonerHandler
   let req: Partial<Request>
   let res: Partial<Response>
-  let auditService: AuditService
 
   beforeEach(() => {
     jest.clearAllMocks()
-    auditService = new AuditService(null)
-    handler = new AddPrisonerHandler(auditService)
+    handler = new AddPrisonerHandler()
     req = {
       params: { payTypeSlug: 'long-term-sick' },
       body: {},
@@ -29,6 +28,8 @@ describe('AddPrisonerHandler', () => {
         user: TestData.PrisonUser(),
       },
     }
+
+    jest.mocked(auditUtils.auditPageAction).mockResolvedValue(undefined)
   })
 
   describe('GET', () => {
@@ -71,6 +72,21 @@ describe('AddPrisonerHandler', () => {
       })
 
       expect(res.redirect).not.toHaveBeenCalled()
+    })
+
+    it('should call audit service with correct parameters', async () => {
+      req.body = { query: 'G4529UP' }
+      when(validateForm).calledWith({ query: 'G4529UP' }).mockReturnValue(null)
+
+      await handler.POST(req as Request, res as Response)
+
+      expect(auditUtils.auditPageAction).toHaveBeenCalledWith(
+        res,
+        Page.ADD_PRISONER,
+        Action.SEARCH_PRISONER,
+        { query: 'G4529UP' },
+        SubjectType.SEARCH_TERM,
+      )
     })
   })
 })

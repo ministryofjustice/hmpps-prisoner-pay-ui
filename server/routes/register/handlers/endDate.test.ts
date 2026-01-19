@@ -2,14 +2,14 @@ import { Request, Response } from 'express'
 import { format } from 'date-fns'
 import EndDateHandler from './endDate'
 import OrchestratorService from '../../../services/orchestratorService'
-import AuditService from '../../../services/auditService'
+import * as auditUtils from '../../../utils/auditUtils'
 import TestData from '../../../testutils/testData'
+import { Page, SubjectType } from '../../../services/auditService'
 
 jest.mock('../../../services/orchestratorService')
-jest.mock('../../../services/auditService')
+jest.mock('../../../utils/auditUtils')
 
 const orchestratorService = new OrchestratorService(null)
-const auditService = new AuditService(null)
 
 describe('EndDateHandler', () => {
   let handler: EndDateHandler
@@ -17,7 +17,8 @@ describe('EndDateHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
-    handler = new EndDateHandler(orchestratorService, auditService)
+    jest.clearAllMocks()
+    handler = new EndDateHandler(orchestratorService)
     req = {
       body: {},
       params: { payTypeSlug: 'long-term-sick' },
@@ -32,6 +33,8 @@ describe('EndDateHandler', () => {
         user: TestData.PrisonUser(),
       },
     }
+
+    jest.mocked(auditUtils.auditPageView).mockResolvedValue(undefined)
   })
 
   describe('GET', () => {
@@ -42,6 +45,19 @@ describe('EndDateHandler', () => {
         prisonerName: 'Nicaigh Johnustine',
         prisoner: TestData.Prisoner(),
       })
+    })
+
+    it('should call audit page view with correct parameters', async () => {
+      await handler.GET(req as Request, res as Response)
+
+      expect(auditUtils.auditPageView).toHaveBeenCalledWith(
+        res,
+        Page.SET_END_DATE,
+        {},
+        SubjectType.PRISONER_ID,
+        null,
+        TestData.Prisoner().prisonerNumber,
+      )
     })
   })
 

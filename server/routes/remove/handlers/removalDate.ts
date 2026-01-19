@@ -3,6 +3,8 @@ import { format } from 'date-fns'
 import OrchestratorService from '../../../services/orchestratorService'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 import validateForm from './removalDateValidation'
+import { auditPageView } from '../../../utils/auditUtils'
+import { Page, SubjectType } from '../../../services/auditService'
 
 export default class RemovalDateHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
@@ -10,6 +12,16 @@ export default class RemovalDateHandler {
   GET = async (req: Request, res: Response) => {
     const { payStatusId } = req.params
     const payStatusPeriod = await this.orchestratorService.getPayStatusPeriodById(payStatusId)
+    const { prisonerNumber, type } = payStatusPeriod
+
+    await auditPageView(
+      res,
+      Page.SET_REMOVAL_DATE,
+      { prisonerNumber, type },
+      SubjectType.PRISONER_ID,
+      null,
+      prisonerNumber,
+    )
 
     return res.render('pages/remove/removal-date', {
       payStatusPeriod,

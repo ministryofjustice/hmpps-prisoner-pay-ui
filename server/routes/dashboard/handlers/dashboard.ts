@@ -2,16 +2,14 @@ import { Request, Response } from 'express'
 import { format } from 'date-fns'
 import OrchestratorService from '../../../services/orchestratorService'
 import { getAllPayTypes } from '../../../utils/payTypeUtils'
-import AuditService, { Action, Page, SubjectType } from '../../../services/auditService'
+import { auditPageView } from '../../../utils/auditUtils'
+import { Page } from '../../../services/auditService'
 
 export default class DashboardHandler {
-  constructor(
-    private readonly orchestratorService: OrchestratorService,
-    private readonly auditService: AuditService,
-  ) {}
+  constructor(private readonly orchestratorService: OrchestratorService) {}
 
   GET = async (req: Request, res: Response) => {
-    const { activeCaseLoadId, username } = res.locals.user
+    const { activeCaseLoadId } = res.locals.user
     const prisonPopulation = 1000
     const paySummary = await this.orchestratorService.getPayStatusPeriodsByType(
       format(new Date(), 'yyyy-MM-dd'),
@@ -24,15 +22,7 @@ export default class DashboardHandler {
       }
     })
 
-    await this.auditService.logPageView(Page.DASHBOARD, {
-      who: username,
-      what: Action.VIEW,
-      subjectType: SubjectType.NOT_APPLICABLE,
-      details: {
-        payTypes,
-        prisonPopulation,
-      },
-    })
+    await auditPageView(res, Page.DASHBOARD, { payTypes, prisonPopulation })
 
     return res.render('pages/dashboard/dashboard', {
       prisonPopulation,

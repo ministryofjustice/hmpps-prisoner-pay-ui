@@ -2,10 +2,13 @@ import { Request, Response } from 'express'
 import { when } from 'jest-when'
 import RemovalDateHandler from './removalDate'
 import OrchestratorService from '../../../services/orchestratorService'
+import * as auditUtils from '../../../utils/auditUtils'
 import TestData from '../../../testutils/testData'
+import { Page, SubjectType } from '../../../services/auditService'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 jest.mock('../../../services/orchestratorService')
+jest.mock('../../../utils/auditUtils')
 
 const orchestratorService = new OrchestratorService(null)
 
@@ -15,6 +18,7 @@ describe('RemovalDateHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
+    jest.clearAllMocks()
     handler = new RemovalDateHandler(orchestratorService)
     req = {
       params: { payStatusId: '123', payTypeSlug: 'long-term-sick' },
@@ -27,6 +31,8 @@ describe('RemovalDateHandler', () => {
     }
 
     when(orchestratorService.getPayStatusPeriodById).calledWith('123').mockResolvedValue(TestData.PayStatusPeriod())
+
+    jest.mocked(auditUtils.auditPageView).mockResolvedValue(undefined)
   })
 
   describe('GET', () => {
@@ -36,6 +42,22 @@ describe('RemovalDateHandler', () => {
       expect(res.render).toHaveBeenCalledWith('pages/remove/removal-date', {
         payStatusPeriod: TestData.PayStatusPeriod(),
       })
+    })
+
+    it('should call audit page view with correct parameters', async () => {
+      await handler.GET(req as Request, res as Response)
+
+      expect(auditUtils.auditPageView).toHaveBeenCalledWith(
+        res,
+        Page.SET_REMOVAL_DATE,
+        {
+          prisonerNumber: TestData.PayStatusPeriod().prisonerNumber,
+          type: TestData.PayStatusPeriod().type,
+        },
+        SubjectType.PRISONER_ID,
+        null,
+        TestData.PayStatusPeriod().prisonerNumber,
+      )
     })
   })
 
