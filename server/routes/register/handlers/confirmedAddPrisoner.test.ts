@@ -1,11 +1,10 @@
 import { Request, Response } from 'express'
 import ConfirmedAddPrisonerHandler from './confirmedAddPrisoner'
-import AuditService from '../../../services/auditService'
+import * as auditUtils from '../../../utils/auditUtils'
 import TestData from '../../../testutils/testData'
+import { Page, SubjectType } from '../../../services/auditService'
 
-jest.mock('../../../services/auditService')
-
-const auditService = new AuditService(null)
+jest.mock('../../../utils/auditUtils')
 
 describe('ConfirmedAddPrisonerHandler', () => {
   let handler: ConfirmedAddPrisonerHandler
@@ -13,7 +12,8 @@ describe('ConfirmedAddPrisonerHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
-    handler = new ConfirmedAddPrisonerHandler(auditService)
+    jest.clearAllMocks()
+    handler = new ConfirmedAddPrisonerHandler()
     req = {
       params: { payTypeSlug: 'long-term-sick' },
       session: {
@@ -28,6 +28,8 @@ describe('ConfirmedAddPrisonerHandler', () => {
         user: TestData.PrisonUser(),
       },
     }
+
+    jest.mocked(auditUtils.auditPageView).mockResolvedValue(undefined)
   })
 
   describe('GET', () => {
@@ -40,6 +42,19 @@ describe('ConfirmedAddPrisonerHandler', () => {
           prisoner: TestData.Prisoner(),
           selectedDate: '2025-01-01',
         }),
+      )
+    })
+
+    it('should call audit page view with correct parameters', async () => {
+      await handler.GET(req as Request, res as Response)
+
+      expect(auditUtils.auditPageView).toHaveBeenCalledWith(
+        req,
+        Page.CONFIRMED_ADD_DATE,
+        {},
+        SubjectType.PRISONER_ID,
+        null,
+        TestData.Prisoner().prisonerNumber,
       )
     })
   })

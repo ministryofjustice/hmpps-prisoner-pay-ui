@@ -1,31 +1,24 @@
 import { Request, Response } from 'express'
 import OrchestratorService from '../../../services/orchestratorService'
 import validateForm from './addPrisonerResultsValidation'
-import AuditService, { Action, Page, SubjectType } from '../../../services/auditService'
+import { Action, Page, SubjectType } from '../../../services/auditService'
+import { auditPageAction, auditPageView, getDisplayedResults } from '../../../utils/auditUtils'
 
 export default class AddPrisonerResultsHandler {
-  constructor(
-    private readonly orchestratorService: OrchestratorService,
-    private readonly auditService: AuditService,
-  ) {}
+  constructor(private readonly orchestratorService: OrchestratorService) {}
 
   GET = async (req: Request, res: Response) => {
-    const { activeCaseLoadId, username } = res.locals.user
+    const { activeCaseLoadId } = res.locals.user
     const query = req.query.query as string
     const prisonerResults = await this.orchestratorService.searchPrisoners(query, activeCaseLoadId)
 
-    await this.auditService.logPageView(Page.ADD_PRISONER_RESULTS, {
-      who: username,
-      what: Action.VIEW_SEARCH_RESULT,
-      subjectType: SubjectType.PRISONER_ID,
-      details: {
-        // TODO: Check if content is needed to map over
-        searchResults: prisonerResults.map(prisoner => ({
-          prisonerNumber: prisoner.prisonerNumber,
-          cellLocation: prisoner.cellLocation,
-        })),
-      },
-    })
+    await auditPageView(
+      req,
+      Page.ADD_PRISONER_RESULTS,
+      getDisplayedResults(prisonerResults),
+      SubjectType.PRISONER_ID,
+      Action.VIEW_SEARCH_RESULT,
+    )
 
     const errors =
       prisonerResults.length === 0
@@ -45,6 +38,7 @@ export default class AddPrisonerResultsHandler {
     const { selectedPrisoner } = req.body
     const query = req.query.query as string
     const prisonerResults = await this.orchestratorService.searchPrisoners(query, activeCaseLoadId)
+    await auditPageAction(req, Page.ADD_PRISONER, Action.SEARCH_PRISONER, { query }, SubjectType.SEARCH_TERM)
 
     const errors = validateForm({ selectedPrisoner })
     if (errors) {

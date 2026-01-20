@@ -1,12 +1,23 @@
 import { PrisonUser } from '../../interfaces/hmppsUser'
+import AuditService from '../../services/auditService'
 
 export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
   interface SessionData {
     returnTo: string
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    selectedPrisoner: any
+    selectedPrisoner: {
+      prisonerNumber: string
+      firstName: string
+      lastName: string
+      cellLocation?: string
+      status?: string
+    }
     selectedDate: string
+    passport: {
+      user: {
+        username: string
+      }
+    }
   }
 }
 
@@ -20,6 +31,7 @@ export declare global {
 
     interface Request {
       verified?: boolean
+      auditService?: AuditService
       id: string
       logout(done: (err: unknown) => void): void
     }

@@ -20,6 +20,7 @@ import setUpCaseLoadData from './middleware/setUpCaseLoadData'
 
 import routes from './routes'
 import type { Services } from './services'
+import setUpAuditService from './middleware/setUpAuditService'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -41,6 +42,7 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpCurrentUser())
   app.use(setUpDpsComponents())
   app.use(setUpCaseLoadData())
+  app.use(setUpAuditService(services.auditService))
 
   app.use(routes(services))
 

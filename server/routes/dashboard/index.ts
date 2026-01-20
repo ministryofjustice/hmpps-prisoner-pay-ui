@@ -4,14 +4,14 @@ import PayRatesHandler from './handlers/payRates'
 import PayOverviewHandler from './handlers/payOverview'
 import { Services } from '../../services'
 
-export default function Index({ orchestratorService, auditService }: Services): Router {
+export default function Index({ orchestratorService }: Services): Router {
   const router = Router({ mergeParams: true })
   const get = (path: string, handler: RequestHandler) => router.get(path, handler)
 
-  const dashboardHandler = new DashboardHandler(orchestratorService, auditService)
+  const dashboardHandler = new DashboardHandler(orchestratorService)
   get('/', dashboardHandler.GET)
 
-  const payOverviewHandler = new PayOverviewHandler(orchestratorService, auditService)
+  const payOverviewHandler = new PayOverviewHandler(orchestratorService)
   get('/:payTypeSlug/pay-overview', payOverviewHandler.GET)
 
   const payRatesHandler = new PayRatesHandler(orchestratorService)

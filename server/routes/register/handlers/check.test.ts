@@ -2,14 +2,14 @@ import { Request, Response } from 'express'
 import { when } from 'jest-when'
 import CheckHandler from './check'
 import PrisonerPayService from '../../../services/prisonerPayService'
-import AuditService from '../../../services/auditService'
+import * as auditUtils from '../../../utils/auditUtils'
 import TestData from '../../../testutils/testData'
+import { Action, Page, SubjectType } from '../../../services/auditService'
 
 jest.mock('../../../services/prisonerPayService')
-jest.mock('../../../services/auditService')
+jest.mock('../../../utils/auditUtils')
 
 const prisonerPayService = new PrisonerPayService(null)
-const auditService = new AuditService(null)
 
 describe('CheckHandler', () => {
   let handler: CheckHandler
@@ -17,7 +17,8 @@ describe('CheckHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
-    handler = new CheckHandler(prisonerPayService, auditService)
+    jest.clearAllMocks()
+    handler = new CheckHandler(prisonerPayService)
     req = {
       params: { payTypeSlug: 'long-term-sick' },
       session: {
@@ -36,6 +37,9 @@ describe('CheckHandler', () => {
     when(prisonerPayService.postPayStatusPeriod)
       .calledWith(expect.any(Object))
       .mockResolvedValue(TestData.PayStatusPeriod())
+
+    jest.mocked(auditUtils.auditPageView).mockResolvedValue(undefined)
+    jest.mocked(auditUtils.auditPageAction).mockResolvedValue(undefined)
   })
 
   describe('GET', () => {
@@ -47,6 +51,22 @@ describe('CheckHandler', () => {
         prisoner: TestData.Prisoner(),
         selectedDate: '25/01/2025',
       })
+    })
+
+    it('should call audit page view with correct parameters', async () => {
+      await handler.GET(req as Request, res as Response)
+
+      expect(auditUtils.auditPageView).toHaveBeenCalledWith(
+        req,
+        Page.CHECK_CONFIRM_PAY,
+        {
+          payType: 'LONG_TERM_SICK',
+          endDate: '25/01/2025',
+        },
+        SubjectType.PRISONER_ID,
+        null,
+        TestData.Prisoner().prisonerNumber,
+      )
     })
   })
 
@@ -68,6 +88,22 @@ describe('CheckHandler', () => {
       await handler.POST(req as Request, res as Response)
 
       expect(res.redirect).toHaveBeenCalledWith('confirmed-add-prisoner')
+    })
+
+    it('should call audit page action with correct parameters', async () => {
+      await handler.POST(req as Request, res as Response)
+
+      expect(auditUtils.auditPageAction).toHaveBeenCalledWith(
+        req,
+        Page.CHECK_CONFIRM_PAY,
+        Action.CREATE_STATUS_PERIOD,
+        {
+          payType: 'LONG_TERM_SICK',
+          endDate: '25/01/2025',
+        },
+        SubjectType.PRISONER_ID,
+        TestData.Prisoner().prisonerNumber,
+      )
     })
   })
 })

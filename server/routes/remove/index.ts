@@ -16,11 +16,7 @@ export default function Index(services: Services): Router {
   get('/removal-date', removalDateHandler.GET)
   post('/removal-date', removalDateHandler.POST)
 
-  const checkRemovalDateHandler = new CheckRemovalDateHandler(
-    services.orchestratorService,
-    services.prisonerPayService,
-    services.auditService,
-  )
+  const checkRemovalDateHandler = new CheckRemovalDateHandler(services.orchestratorService, services.prisonerPayService)
   get('/check-removal-date', checkRemovalDateHandler.GET)
   post('/check-removal-date', checkRemovalDateHandler.POST)
 
