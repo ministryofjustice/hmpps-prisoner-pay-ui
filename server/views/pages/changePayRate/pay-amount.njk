@@ -11,7 +11,8 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <span class="govuk-caption-l">{{ payType.description }} pay</span>
-            <form method="post" novalidate>
+            <form method="POST" action="">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                 {{ govukInput({
                     id: "payAmount",
                     name: "payAmount",
@@ -30,7 +31,9 @@
                         text: "per day"
                     },
                     classes: "govuk-input--width-5",
-                    spellcheck: false
+                    spellcheck: false,
+                    errorMessage: errors | findError("payAmount"),
+                    value: payAmount
                 }) }}
 
                 <div class="govuk-button-group">
