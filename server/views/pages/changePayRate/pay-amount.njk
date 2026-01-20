@@ -1,0 +1,47 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = applicationName + " - Set pay amount" %}
+{% set mainClasses = "govuk-body" %}
+{% set backLinkHref = "../../pay-rates" %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <span class="govuk-caption-l">{{ payType.description }} pay</span>
+            <form method="post" novalidate>
+                {{ govukInput({
+                    id: "payAmount",
+                    name: "payAmount",
+                    label: {
+                        text: "Enter the new amount",
+                        classes: "govuk-label--l",
+                        isPageHeading: true
+                    },
+                    hint: {
+                        text: payType.description + " pay must be at least £" + (payType.dailyPayAmount / 100) + " per day (£" + ((payType.dailyPayAmount * 5) / 100) + " per week)."
+                    },
+                    prefix: {
+                        text: "£"
+                    },
+                    suffix: {
+                        text: "per day"
+                    },
+                    classes: "govuk-input--width-5",
+                    spellcheck: false
+                }) }}
+
+                <div class="govuk-button-group">
+                    {{ govukButton({
+                        text: "Continue",
+                        type: "submit"
+                    }) }}
+
+                    <a class="govuk-link" href="../../pay-rates">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
