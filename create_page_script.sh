@@ -128,7 +128,12 @@ cat > "$VIEW_PATH" << 'EOF'
 {% set mainClasses = "govuk-body" %}
 
 {% block content %}
-  {# TODO: Add page content #}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l">Page header</h1>        
+            {# TODO: Add page content #}
+        </div>
+    </div>
 {% endblock %}
 EOF
 
