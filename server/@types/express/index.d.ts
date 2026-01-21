@@ -4,6 +4,12 @@ import AuditService from '../../services/auditService'
 export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
   interface SessionData {
+    feComponents?: {
+      header: string
+      footer: string
+      cssIncludes: string[]
+      jsIncludes: string[]
+    }
     returnTo: string
     selectedPrisoner: {
       prisonerNumber: string
