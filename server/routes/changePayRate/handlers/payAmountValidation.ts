@@ -18,12 +18,12 @@ export default function validateForm(
 ): FormError | null {
   if (!payAmount) return errors.MISSING_PAY_AMOUNT
 
-  const amount = parseFloat(payAmount)
+  const amount = parseFloat(payAmount) * 100
 
   if (amount <= 0 || amount < minimumAmount) {
     return {
       href: '#payAmount',
-      text: `${payTypeDescription} pay cannot be less than £${minimumAmount} per day`,
+      text: `${payTypeDescription} pay cannot be less than £${minimumAmount / 100} per day`,
     }
   }
 

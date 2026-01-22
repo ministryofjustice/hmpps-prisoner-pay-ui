@@ -13,6 +13,7 @@ export declare module 'express-session' {
       status?: string
     }
     selectedDate: string
+    payAmount: string
     passport: {
       user: {
         username: string

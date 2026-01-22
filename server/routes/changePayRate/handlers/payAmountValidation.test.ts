@@ -2,7 +2,7 @@ import validateForm from './payAmountValidation'
 
 describe('payAmountValidation', () => {
   describe('validateForm', () => {
-    const minimumAmount = 0.65
+    const minimumAmount = 65
     const payTypeDescription = 'Long-term sick'
 
     it('should return null when payAmount is valid and above minimum', () => {
@@ -64,7 +64,7 @@ describe('payAmountValidation', () => {
     })
 
     it('should use dynamic minimumAmount in error message', () => {
-      const customMinimum = 1.5
+      const customMinimum = 150
       const result = validateForm({ payAmount: '1.00' }, customMinimum, payTypeDescription)
 
       expect(result).toEqual({

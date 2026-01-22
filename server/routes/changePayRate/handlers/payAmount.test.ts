@@ -17,7 +17,8 @@ describe('PayAmountHandler', () => {
       body: {
         payAmount: '1.00',
       },
-    }
+      session: {},
+    } as Partial<Request>
     res = {
       locals: {
         payType: {
