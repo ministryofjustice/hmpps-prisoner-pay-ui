@@ -10,6 +10,8 @@ export default class EndDatePage extends AbstractPage {
 
   readonly endDateInput: Locator
 
+  readonly cancelLink: Locator
+
   readonly continueButton: Locator
 
   private constructor(page: Page) {
@@ -18,6 +20,7 @@ export default class EndDatePage extends AbstractPage {
     this.yesRadio = page.getByLabel('Yes')
     this.noRadio = page.getByLabel('No')
     this.endDateInput = page.getByRole('textbox')
+    this.cancelLink = page.getByRole('link', { name: 'Cancel' })
     this.continueButton = page.getByRole('button', { name: 'Continue' })
   }
 
@@ -26,6 +29,7 @@ export default class EndDatePage extends AbstractPage {
     await expect(endDatePage.header).toBeVisible()
     await expect(endDatePage.yesRadio).toBeVisible()
     await expect(endDatePage.noRadio).toBeVisible()
+    await expect(endDatePage.cancelLink).toBeVisible()
     await expect(endDatePage.continueButton).toBeVisible()
     return endDatePage
   }
