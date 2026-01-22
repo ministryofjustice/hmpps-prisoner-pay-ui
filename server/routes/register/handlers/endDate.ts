@@ -11,6 +11,8 @@ export default class EndDateHandler {
   GET = async (req: Request, res: Response) => {
     const prisoner = req.session!.selectedPrisoner
     const { prisonerNumber } = prisoner
+    const returnTo = 'end-date'
+    req.session.returnTo = returnTo
 
     await auditPageView(req, Page.SET_END_DATE, {}, SubjectType.PRISONER_ID, null, prisonerNumber)
 
@@ -34,7 +36,7 @@ export default class EndDateHandler {
         prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
         prisoner,
       })
-
+    req.session.returnTo = null
     return res.redirect('check')
   }
 }

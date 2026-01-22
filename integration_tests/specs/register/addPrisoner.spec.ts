@@ -6,6 +6,7 @@ import PayOverviewPage from '../../pages/dashboard/payOverviewPage'
 import AddPrisonerPage from '../../pages/register/addPrisonerPage'
 import AddPrisonerResultsPage from '../../pages/register/addPrisonerResultsPage'
 import EndDatePage from '../../pages/register/endDatePage'
+import CancelPage from '../../pages/register/cancelPage'
 import CheckPage from '../../pages/register/checkPage'
 import ConfirmedAddPrisonerPage from '../../pages/register/confirmedAddPrisonerPage'
 import payOrchestratorApi from '../../mockApis/payOrchestratorApi'
@@ -39,6 +40,13 @@ test.describe('Dashboard', () => {
     await addPrisonerResultsPage.continueButton.click()
 
     const endDatePage = await EndDatePage.verifyOnPage(page)
+    await endDatePage.cancelLink.click()
+
+    const cancelPage = await CancelPage.verifyOnPage(page)
+    await cancelPage.noRadio.click()
+    await cancelPage.confirmButton.click()
+
+    await EndDatePage.verifyOnPage(page)
     await endDatePage.noRadio.click()
     await endDatePage.continueButton.click()
 
@@ -81,9 +89,84 @@ test.describe('Dashboard', () => {
     await endDatePage.continueButton.click()
 
     const checkPage = await CheckPage.verifyOnPage(page)
+    await checkPage.cancelLink.click()
+
+    const cancelPage = await CancelPage.verifyOnPage(page)
+    await cancelPage.noRadio.click()
+    await cancelPage.confirmButton.click()
+
+    await CheckPage.verifyOnPage(page)
     await checkPage.confirmButton.click()
 
     const confirmedAddPrisonerPage = await ConfirmedAddPrisonerPage.verifyOnPage(page)
     await expect(confirmedAddPrisonerPage.header).toBeVisible()
+  })
+
+  test('Can cancel a prisoner to a pay type - End date page', async ({ page }) => {
+    await payOrchestratorApi.stubGetPayStatusPeriods()
+    await payOrchestratorApi.stubSearchPrisoners()
+    await prisonerPayApi.stubPostPayStatusPeriod()
+
+    const type = 'Long-term sick'
+    await login(page)
+
+    const dashboardPage = await DashboardPage.verifyOnPage(page)
+    await dashboardPage.getTypeLink(type).click()
+
+    const payOverviewPage = await PayOverviewPage.verifyOnPage(page, type)
+    await payOverviewPage.addPersonButton.click()
+
+    const addPrisonerPage = await AddPrisonerPage.verifyOnPage(page)
+    await addPrisonerPage.searchBox.fill('A1234BC')
+    await addPrisonerPage.searchButton.click()
+
+    const addPrisonerResultsPage = await AddPrisonerResultsPage.verifyOnPage(page)
+    await addPrisonerResultsPage.page.getByRole('radio', { name: 'Nicaigh Johnustine' }).check()
+    await addPrisonerResultsPage.continueButton.click()
+
+    const endDatePage = await EndDatePage.verifyOnPage(page)
+    await endDatePage.cancelLink.click()
+
+    const cancelPage = await CancelPage.verifyOnPage(page)
+    await cancelPage.yesRadio.click()
+    await cancelPage.confirmButton.click()
+
+    await DashboardPage.verifyOnPage(page)
+  })
+
+  test('Can cancel a prisoner to a pay type - Check page', async ({ page }) => {
+    await payOrchestratorApi.stubGetPayStatusPeriods()
+    await payOrchestratorApi.stubSearchPrisoners()
+    await prisonerPayApi.stubPostPayStatusPeriod()
+
+    const type = 'Long-term sick'
+    await login(page)
+
+    const dashboardPage = await DashboardPage.verifyOnPage(page)
+    await dashboardPage.getTypeLink(type).click()
+
+    const payOverviewPage = await PayOverviewPage.verifyOnPage(page, type)
+    await payOverviewPage.addPersonButton.click()
+
+    const addPrisonerPage = await AddPrisonerPage.verifyOnPage(page)
+    await addPrisonerPage.searchBox.fill('A1234BC')
+    await addPrisonerPage.searchButton.click()
+
+    const addPrisonerResultsPage = await AddPrisonerResultsPage.verifyOnPage(page)
+    await addPrisonerResultsPage.page.getByRole('radio', { name: 'Nicaigh Johnustine' }).check()
+    await addPrisonerResultsPage.continueButton.click()
+
+    const endDatePage = await EndDatePage.verifyOnPage(page)
+    await endDatePage.noRadio.click()
+    await endDatePage.continueButton.click()
+
+    const checkPage = await CheckPage.verifyOnPage(page)
+    await checkPage.cancelLink.click()
+
+    const cancelPage = await CancelPage.verifyOnPage(page)
+    await cancelPage.yesRadio.click()
+    await cancelPage.confirmButton.click()
+
+    await DashboardPage.verifyOnPage(page)
   })
 })

@@ -15,6 +15,8 @@ export default class CheckHandler {
     const { prisonerNumber } = prisoner
     const { selectedDate } = req.session!
     const { type: payType } = getPayTypeBySlug(req.params.payTypeSlug)
+    const returnTo = 'check'
+    req.session.returnTo = returnTo
 
     await auditPageView(
       req,
