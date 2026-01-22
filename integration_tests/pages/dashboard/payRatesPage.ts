@@ -9,7 +9,7 @@ export default class PayRatesPage extends AbstractPage {
   private constructor(page: Page) {
     super(page)
     this.header = page.locator('h1', { hasText: 'Pay rates for people who are not in work' })
-    this.payTypeSummaryCards = page.locator('[class*="govuk-summary-list"]')
+    this.payTypeSummaryCards = page.locator('[class="govuk-summary-card"]')
   }
 
   static async verifyOnPage(page: Page): Promise<PayRatesPage> {
