@@ -8,6 +8,8 @@ export default class PayOverviewPage extends AbstractPage {
 
   readonly payOverviewTable: Locator
 
+  readonly changePayRateLink: Locator
+
   readonly page: Page
 
   private constructor(page: Page, type: string) {
@@ -16,6 +18,7 @@ export default class PayOverviewPage extends AbstractPage {
     this.header = page.locator('h1', { hasText: type })
     this.addPersonButton = page.getByTestId('add-to-pay-type-button')
     this.payOverviewTable = page.getByTestId('pay-overview-table')
+    this.changePayRateLink = page.getByRole('link', { name: 'Change pay rate' })
   }
 
   static async verifyOnPage(page: Page, type: string): Promise<PayOverviewPage> {
@@ -23,6 +26,7 @@ export default class PayOverviewPage extends AbstractPage {
     await expect(payOverviewPage.header).toBeVisible()
     await expect(payOverviewPage.addPersonButton).toBeVisible()
     await expect(payOverviewPage.payOverviewTable).toBeVisible()
+    await expect(payOverviewPage.changePayRateLink).toBeVisible()
     return payOverviewPage
   }
 

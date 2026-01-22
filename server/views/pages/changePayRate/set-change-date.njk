@@ -1,0 +1,66 @@
+{% extends "layout.njk" %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from 'moj/components/date-picker/macro.njk' import mojDatePicker %}
+
+{% set pageTitle = applicationName + " - Set change date" %}
+{% set mainClasses = "govuk-body" %}
+{% set backLinkHref = "./pay-amount" %}
+
+{% block content %}
+   <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <span class="govuk-caption-l">{{ payType.description }}</span>
+            <form method="POST">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+                {{ govukRadios({
+                    classes: "govuk-radios",
+                    name: "changeDateOption",
+                    fieldset: {
+                        legend: {
+                            text: "When do you want the change to take effect?",
+                            isPageHeading: true,
+                            classes: "govuk-fieldset__legend--l"
+                        }
+                    },
+                    errorMessage: errors | findError("changeDateOption"),
+                    items: 
+                    [
+                      {
+                          value: "tomorrow",
+                          text: "Tomorrow - " + tomorrow | formatDate('EEEE, d MMMM yyyy'),
+                          checked: changeDateOption == "tomorrow"
+                      },
+                      {
+                          value: "other",
+                          text: "On another date",
+                          checked: changeDateOption == "other",
+                          conditional: {
+                            html: mojDatePicker({
+                                id: 'changeDate',
+                                name: 'changeDate',
+                                leadingZeros: 'true',
+                                classes: 'moj-datepicker--fixed-width',
+                                label: {
+                                    text: 'Input the removal date',
+                                    classes: 'govuk-visually-hidden'
+                                },
+                                value: formResponses.changeDate,
+                                errorMessage: errors | findError("changeDate")
+                            })
+                          }
+                      }
+                    ]
+                }) }}
+
+                <div class="govuk-button-group">
+                    {{ govukButton({
+                        text: "Continue"
+                    }) }}
+                    <a class="govuk-link" href="../../pay-overview">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
