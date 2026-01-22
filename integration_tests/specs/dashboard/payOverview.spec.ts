@@ -20,5 +20,6 @@ test.describe('Dashboard', () => {
     await dashboardPage.getTypeLink(type).click()
 
     const payOverviewPage = await PayOverviewPage.verifyOnPage(page, type)
+    expect(payOverviewPage.header).toBeDefined()
   })
 })
