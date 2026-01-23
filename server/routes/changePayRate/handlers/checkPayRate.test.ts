@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import { format, parse } from 'date-fns'
 import CheckPayRateHandler from './checkPayRate'
 import TestData from '../../../testutils/testData'
-import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 describe('CheckPayRateHandler', () => {
   let handler: CheckPayRateHandler

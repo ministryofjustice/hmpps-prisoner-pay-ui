@@ -13,14 +13,9 @@ export default class CheckPayRateHandler {
   }
 
   POST = async (req: Request, res: Response) => {
-    const { payAmount, selectedDate } = req.session!
+    const { selectedDate } = req.session!
     const { payType } = res.locals
     const parsedDate = parse(selectedDate, 'dd/MM/yyyy', new Date())
-
-    const payRateChange = {
-      payAmount: parseFloat(payAmount),
-      effectiveDate: parsedDate,
-    }
 
     // TODO: Add request to submit the pay rate change
     // For now, just redirect to the pay rates page
