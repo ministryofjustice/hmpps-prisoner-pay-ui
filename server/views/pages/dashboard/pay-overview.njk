@@ -38,9 +38,9 @@
                     </div>
                 {% endset %}
                 {% if row.endDate %}
-                    {% set changeLink = '<a href="./remove/' + row.id + '/removal-date">Change end date</a>' %}
+                    {% set changeLink = '<a class="govuk-link--no-visited-state" href="./remove/' + row.id + '/removal-date">Change end date</a>' %}
                 {% else %}
-                    {% set changeLink = '<a href="./remove/' + row.id + '/removal-date">Remove from ' + payTypeDescriptionLower + '</a>' %}
+                    {% set changeLink = '<a class="govuk-link--no-visited-state" href="./remove/' + row.id + '/removal-date">Remove from ' + payTypeDescriptionLower + '</a>' %}
                 {% endif %}
                 {% set rows = (rows.push([
                     {
