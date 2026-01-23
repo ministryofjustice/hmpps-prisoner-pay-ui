@@ -14,6 +14,7 @@ generic-service:
     COMPONENT_API_URL: "https://frontend-components-dev.hmpps.service.justice.gov.uk"
     PRISON_API_URL: "https://prison-api-dev.prison.service.justice.gov.uk"
     DIGITAL_PRISON_SERVICE_URL: "https://digital-dev.prison.service.justice.gov.uk"
+    ACTIVITIES_UI_URL: "https://activities-dev.prison.service.justice.gov.uk/activities"
     EXAMPLE_API_URL: 'https://template-kotlin-dev.hmpps.service.justice.gov.uk'
     PAY_ORCHESTRATOR_API_URL: "https://prisoner-pay-orchestrator-api-dev.hmpps.service.justice.gov.uk"
     PRISONER_PAY_API_URL: "https://prisoner-pay-api-dev.hmpps.service.justice.gov.uk"

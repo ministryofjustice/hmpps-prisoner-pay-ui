@@ -13,6 +13,7 @@ export default function nunjucksSetup(app: express.Express): void {
   app.locals.asset_path = '/assets/'
   app.locals.applicationName = 'Prisoner Pay'
   app.locals.environmentName = config.environmentName
+  app.locals.activitiesUiUrl = config.activitiesUiUrl
   app.locals.environmentNameColour = config.environmentName === 'PRE-PRODUCTION' ? 'govuk-tag--green' : ''
   let assetManifest: Record<string, string> = {}
 
@@ -49,4 +50,6 @@ export default function nunjucksSetup(app: express.Express): void {
 
   njkEnv.addFilter('formatDate', formatDate)
   njkEnv.addFilter('toFixed', toFixed)
+
+  njkEnv.addGlobal('activitiesUiUrl', config.activitiesUiUrl)
 }
