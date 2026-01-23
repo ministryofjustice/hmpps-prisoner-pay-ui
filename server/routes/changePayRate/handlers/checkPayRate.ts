@@ -1,4 +1,4 @@
-import { parse } from 'date-fns'
+import { format, parse } from 'date-fns'
 import { Request, Response } from 'express'
 
 export default class CheckPayRateHandler {
@@ -13,7 +13,19 @@ export default class CheckPayRateHandler {
   }
 
   POST = async (req: Request, res: Response) => {
-    // TODO: Implement POST logic
-    return res.redirect('')
+    const { payAmount, selectedDate } = req.session!
+    const { payType } = res.locals
+    const parsedDate = parse(selectedDate, 'dd/MM/yyyy', new Date())
+
+    const payRateChange = {
+      payAmount: parseFloat(payAmount),
+      effectiveDate: parsedDate,
+    }
+
+    // TODO: Add request to submit the pay rate change
+    // For now, just redirect to the pay rates page
+
+    const successMessage = `You've updated the pay for ${payType.description}. The change will take effect from ${format(parsedDate, 'd MMMM yyyy')}.`
+    return res.redirectWithSuccess('../../pay-rates', 'Pay rate updated', successMessage)
   }
 }

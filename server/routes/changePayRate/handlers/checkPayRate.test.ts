@@ -1,5 +1,8 @@
 import { Request, Response } from 'express'
+import { format, parse } from 'date-fns'
 import CheckPayRateHandler from './checkPayRate'
+import TestData from '../../../testutils/testData'
+import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 
 describe('CheckPayRateHandler', () => {
   let handler: CheckPayRateHandler
@@ -15,29 +18,39 @@ describe('CheckPayRateHandler', () => {
       },
     } as Partial<Request>
     res = {
+      locals: {
+        payType: {
+          dailyPayAmount: 0.65,
+          description: 'Long-term sick',
+        },
+        user: TestData.PrisonUser(),
+      },
       render: jest.fn(),
-      redirect: jest.fn(),
+      redirectWithSuccess: jest.fn(),
     }
   })
 
   describe('GET', () => {
-    it('should render the correct view', async () => {
+    it('should render the correct view with parsed date', async () => {
       await handler.GET(req as Request, res as Response)
+
+      const expectedDate = parse('15/08/2024', 'dd/MM/yyyy', new Date())
 
       expect(res.render).toHaveBeenCalledWith('pages/changePayRate/check-pay-rate', {
         payAmount: '1.00',
-        selectedDate: expect.any(Date),
+        selectedDate: expectedDate,
       })
     })
   })
 
   describe('POST', () => {
-    it('should redirect after processing', async () => {
+    it('should redirect with success message after processing', async () => {
       await handler.POST(req as Request, res as Response)
 
-      expect(res.redirect).toHaveBeenCalled()
+      const expectedDate = parse('15/08/2024', 'dd/MM/yyyy', new Date())
+      const successMessage = `You've updated the pay for Long-term sick. The change will take effect from ${format(expectedDate, 'd MMMM yyyy')}.`
+
+      expect(res.redirectWithSuccess).toHaveBeenCalledWith('../../pay-rates', 'Pay rate updated', successMessage)
     })
   })
-
-  // TODO: Add more test cases
 })

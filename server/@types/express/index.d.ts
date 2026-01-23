@@ -28,6 +28,12 @@ export declare module 'express-session' {
   }
 }
 
+declare module 'express-serve-static-core' {
+  interface Response {
+    redirectWithSuccess?(path: string, successHeading: string, message?: string): void
+  }
+}
+
 export declare global {
   namespace Express {
     interface User {
