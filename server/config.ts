@@ -121,6 +121,11 @@ export default {
   sqs: {
     audit: auditConfig(),
   },
+  activitiesUiUrl: get(
+    'ACTIVITIES_UI_URL',
+    'https://activities-dev.prison.service.justice.gov.uk/activities',
+    requiredInProduction,
+  ),
   digitalPrisonServiceUrl: get('DIGITAL_PRISON_SERVICE_URL', 'http://localhost:3002', requiredInProduction),
   ingressUrl: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
   environmentName: get('ENVIRONMENT_NAME', ''),

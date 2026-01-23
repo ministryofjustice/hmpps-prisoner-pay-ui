@@ -18,11 +18,10 @@
             <p class="govuk-body">You can:</p>
             <ul class="govuk-list govuk-list--bullet">
                 <li>
-                    {# TODO: Service link up to A+A #}
-                    <a class="govuk-link" href="#">allocate {{ payStatusPeriod | formatName(NameFormatStyle.firstLast, false) }} to activities</a>
+                    <a class="govuk-link--no-visited-state" href="{{ activitiesUiUrl }}/prisoner-allocations/{{ payStatusPeriod.prisonerNumber }}">allocate {{ payStatusPeriod | formatName(NameFormatStyle.firstLast, false) }} to activities</a>
                 </li>
                 <li>
-                    <a class="govuk-link" href="../../pay-overview">review people who are on {{ payType.description | lower}}</a>
+                    <a class="govuk-link--no-visited-state" href="../../pay-overview">review people who are on {{ payType.description | lower}}</a>
                 </li>
             </ul>
         </div>
