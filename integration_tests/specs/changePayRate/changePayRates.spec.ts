@@ -4,8 +4,11 @@ import DashboardPage from '../../pages/dashboard/dashboardPage'
 import PayRatesPage from '../../pages/dashboard/payRatesPage'
 import payOrchestratorApi from '../../mockApis/payOrchestratorApi'
 import PayOverviewPage from '../../pages/dashboard/payOverviewPage'
+import PayAmountPage from '../../pages/changePayRate/payAmountPage'
+import SetChangeDatePage from '../../pages/changePayRate/setChangeDatePage'
+import CheckPayRatePage from '../../pages/changePayRate/checkPayRatePage'
 
-test.describe('Dashboard', () => {
+test.describe('Change Pay Rate', () => {
   test.afterEach(async () => {
     await resetStubs()
   })
@@ -22,9 +25,18 @@ test.describe('Dashboard', () => {
     await dashboardPage.getTypeLink(type).click()
 
     const payOverviewPage = await PayOverviewPage.verifyOnPage(page, type)
+    expect(payOverviewPage.header).toBeDefined()
     await payOverviewPage.changePayRateLink.click()
 
-    const payRatesPage = await PayRatesPage.verifyOnPage(page)
-    expect(payRatesPage.header).toBeDefined()
+    const payAmountPage = await PayAmountPage.verifyOnPage(page)
+    await payAmountPage.enterPayAmount('2.00')
+    await payAmountPage.clickContinue()
+
+    const setChangeDatePage = await SetChangeDatePage.verifyOnPage(page)
+    await setChangeDatePage.selectTomorrow()
+    await setChangeDatePage.clickContinue()
+
+    const checkPayRatePage = await CheckPayRatePage.verifyOnPage(page)
+    expect(checkPayRatePage.header).toBeDefined()
   })
 })
