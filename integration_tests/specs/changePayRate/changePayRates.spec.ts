@@ -28,6 +28,9 @@ test.describe('Change Pay Rate', () => {
     expect(payOverviewPage.header).toBeDefined()
     await payOverviewPage.changePayRateLink.click()
 
+    const payRatesPage = await PayRatesPage.verifyOnPage(page)
+    await payRatesPage.payTypeSummaryCards.nth(0).locator('a', { hasText: 'Change pay rate' }).click()
+
     const payAmountPage = await PayAmountPage.verifyOnPage(page)
     await payAmountPage.enterPayAmount('2.00')
     await payAmountPage.clickContinue()
