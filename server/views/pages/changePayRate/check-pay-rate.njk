@@ -3,39 +3,38 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
-{% set pageTitle = applicationName + " - Check removal date" %}
+{% set pageTitle = applicationName + " - Check pay rate" %}
 {% set mainClasses = "govuk-body" %}
-{% set backLinkHref = "./removal-date" %}
+{% set backLinkHref = "./set-change-date" %}
 
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <span class="govuk-caption-l">{{ payType.description }}</span>
-            <h1 class="govuk-heading-l">Check and confirm details</h1>
-
+            <h1 class="govuk-heading-l">Check and confirm the pay change</h1>        
             {{ govukSummaryList({
                   rows: [
                       {
-                        key: { text: "Who you're removing" },
-                        value: { text: payStatusPeriod | formatName(NameFormatStyle.firstLast, false) },
+                        key: { text: "Pay amount" },
+                        value: { text: "£" + payAmount | float | toFixed(2) + " per session" },
                         actions: {
                           items: [{
-                              href: "../../pay-overview",
+                              href: "./pay-amount",
                               classes: 'govuk-link--no-visited-state',
                               text: "Change",
-                              visuallyHiddenText: "prisoner being removed"
+                              visuallyHiddenText: "pay amount"
                           }]
                         }
                       },
                       {
-                        key: { text: "Removal date" },
-                        value: { text: selectedDate },
+                        key: { text: "Date the change takes effect" },
+                        value: { text: selectedDate | formatDate("EEEE, d MMMM yyyy") },
                         actions: {
                           items: [{
-                              href: "./removal-date",
+                              href: "./set-change-date",
                               classes: 'govuk-link--no-visited-state',
                               text: "Change",
-                              visuallyHiddenText: "removal date"
+                              visuallyHiddenText: "pay rate change date"
                           }]
                         }
                       }
@@ -45,9 +44,9 @@
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                 <div class="govuk-button-group">
                     {{ govukButton({
-                        text: "Confirm and remove from " + payType.description | lower
+                        text: "Confirm pay change"
                     }) }}
-                    <a class="govuk-link" href="../../pay-overview">Cancel</a>
+                    <a class="govuk-link" href="../pay-overview">Cancel</a>
                 </div>
             </form>
         </div>
