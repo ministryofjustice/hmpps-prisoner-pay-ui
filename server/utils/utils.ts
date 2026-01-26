@@ -132,3 +132,8 @@ export const formatDate = (date: unknown, fmt = 'EEEE, d MMMM yyyy', inContextNa
   }
   return format(richDate, fmt)
 }
+
+export const toFixed = (num: number, decimals = 2) => {
+  if (!num && num !== 0) return null
+  return num.toFixed(decimals)
+}

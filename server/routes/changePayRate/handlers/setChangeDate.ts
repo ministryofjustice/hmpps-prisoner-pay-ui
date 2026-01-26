@@ -1,4 +1,4 @@
-import { addDays } from 'date-fns'
+import { addDays, format } from 'date-fns'
 import { Request, Response } from 'express'
 import validateForm from './setChangeDateValidation'
 
@@ -25,7 +25,8 @@ export default class SetChangeDateHandler {
       })
     }
 
-    // TODO: Implement POST logic
-    return res.redirect('')
+    req.session!.selectedDate =
+      changeDateOption === 'tomorrow' ? format(addDays(new Date(), 1), 'dd/MM/yyyy') : changeDate
+    return res.redirect('./check-pay-rate')
   }
 }

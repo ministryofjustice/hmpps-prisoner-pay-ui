@@ -1,5 +1,6 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
 {% if backLinkHref %}
     <nav class="govuk-!-display-none-print">
@@ -17,6 +18,26 @@
                 titleText: "There is a problem",
                 errorList: errors,
                 classes: 'govuk-!-margin-top-3 govuk-!-margin-bottom-0'
+            }) }}
+        </div>
+    </div>
+{% endif %}
+
+{% if successMessage | length %}
+    {% set successHtml %}
+        <h3 class="govuk-notification-banner__heading">{{ successMessage.heading }}</h3>
+
+        {% if successMessage.message %}
+            <p class="govuk-body">{{ successMessage.message }}</p>
+        {% endif %}
+    {% endset %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {{ govukNotificationBanner({
+                type: 'success',
+                html: successHtml,
+                classes: 'govuk-!-margin-top-3 govuk-!-margin-bottom-0 govuk-!-display-none-print'
             }) }}
         </div>
     </div>

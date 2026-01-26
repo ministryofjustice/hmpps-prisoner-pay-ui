@@ -15,10 +15,11 @@ describe('SetChangeDateHandler', () => {
   beforeEach(() => {
     handler = new SetChangeDateHandler()
     req = {
+      session: {},
       body: {
         changeDateOption: 'tomorrow',
       },
-    }
+    } as Partial<Request>
     res = {
       render: jest.fn(),
       redirect: jest.fn(),

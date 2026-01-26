@@ -6,11 +6,13 @@ import RegisterRoutes from './register'
 import RemoveRoutes from './remove'
 import ChangePayRateRoutes from './changePayRate'
 import timeNowMiddleware from '../middleware/timeNowMiddleware'
+import checkForSuccessMessages from '../middleware/checkForSuccessMessages'
 
 export default function routes(services: Services): Router {
   const router = Router()
 
   router.use(timeNowMiddleware())
+  router.use(checkForSuccessMessages())
 
   router.use('/', DashboardRoutes(services))
   router.use('/:payTypeSlug/register', RegisterRoutes(services))
