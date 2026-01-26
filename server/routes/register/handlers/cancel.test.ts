@@ -39,12 +39,12 @@ describe('CancelHandler', () => {
   })
 
   describe('POST', () => {
-    it('should redirect to dashboard page when selecting that you want to cancel the application', async () => {
+    it('should redirect to pay overview page when selecting that you want to cancel the application', async () => {
       req.body.choice = 'yes'
 
       await handler.POST(req as Request, res as Response)
 
-      expect(res.redirect).toHaveBeenCalledWith('/')
+      expect(res.redirect).toHaveBeenCalledWith('/long-term-sick/pay-overview')
     })
 
     it('should redirect to check page after selecting that you do not want to cancel the application', async () => {
