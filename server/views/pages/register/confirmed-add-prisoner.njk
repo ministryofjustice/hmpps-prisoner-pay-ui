@@ -17,11 +17,10 @@
             <p class="govuk-body">You can:</p>
             <ul class="govuk-list govuk-list--bullet">
                 <li>
-                    {# TODO: Service link up to A+A #}
-                    <a class="govuk-link" href="#">manage {{ prisoner | formatName(NameFormatStyle.firstLast, false) }}'s allocations</a>
+                    <a class="govuk-link--no-visited-state" href="{{ activitiesUiUrl }}/prisoner-allocations/{{ prisoner.prisonerNumber }}">manage {{ prisoner | formatName(NameFormatStyle.firstLast, false) }}'s allocations</a>
                 </li>
                 <li>
-                    <a class="govuk-link" href="../register/add-prisoner">add someone else to {{ payType.description | lower}}</a>
+                    <a class="govuk-link--no-visited-state" href="../register/add-prisoner">add someone else to {{ payType.description | lower}}</a>
                 </li>
             </ul>
         </div>

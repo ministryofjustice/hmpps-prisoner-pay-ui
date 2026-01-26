@@ -19,11 +19,18 @@ export declare module 'express-session' {
       status?: string
     }
     selectedDate: string
+    payAmount: string
     passport: {
       user: {
         username: string
       }
     }
+  }
+}
+
+declare module 'express-serve-static-core' {
+  interface Response {
+    redirectWithSuccess?(path: string, successHeading: string, message?: string): void
   }
 }
 

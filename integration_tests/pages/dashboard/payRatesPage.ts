@@ -1,4 +1,4 @@
-import { type Locator, type Page } from '@playwright/test'
+import { expect, type Locator, type Page } from '@playwright/test'
 import AbstractPage from '../abstractPage'
 
 export default class PayRatesPage extends AbstractPage {
@@ -9,6 +9,13 @@ export default class PayRatesPage extends AbstractPage {
   private constructor(page: Page) {
     super(page)
     this.header = page.locator('h1', { hasText: 'Pay rates for people who are not in work' })
-    this.payTypeSummaryCards = page.locator('[class*="govuk-summary-list"]')
+    this.payTypeSummaryCards = page.locator('[class="govuk-summary-card"]')
+  }
+
+  static async verifyOnPage(page: Page): Promise<PayRatesPage> {
+    const payRatesPage = new PayRatesPage(page)
+    await expect(payRatesPage.header).toBeVisible()
+    await expect(payRatesPage.payTypeSummaryCards).toBeVisible()
+    return payRatesPage
   }
 }

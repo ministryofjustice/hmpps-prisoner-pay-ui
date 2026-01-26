@@ -4,50 +4,50 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from 'moj/components/date-picker/macro.njk' import mojDatePicker %}
 
-{% set pageTitle = applicationName + " - Removal date" %}
+{% set pageTitle = applicationName + " - Set change date" %}
 {% set mainClasses = "govuk-body" %}
-{% set backLinkHref = "../../pay-overview" %}
+{% set backLinkHref = "./pay-amount" %}
 
 {% block content %}
-    <div class="govuk-grid-row">
+   <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <span class="govuk-caption-l">{{ payType.description }}</span>
             <form method="POST">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                 {{ govukRadios({
                     classes: "govuk-radios",
-                    name: "removalDateOption",
+                    name: "changeDateOption",
                     fieldset: {
                         legend: {
-                            text: "When do you want to remove " + payStatusPeriod | formatName(NameFormatStyle.firstLast, false) + " from " + payType.description + "?",
+                            text: "When do you want the change to take effect?",
                             isPageHeading: true,
                             classes: "govuk-fieldset__legend--l"
                         }
                     },
-                    errorMessage: errors | findError("removalDateOption"),
-                    items:
+                    errorMessage: errors | findError("changeDateOption"),
+                    items: 
                     [
                       {
-                          value: "today",
-                          text: "Today - " + now | formatDate('EEEE, d MMMM yyyy'),
-                          checked: removalDateOption == "today"
+                          value: "tomorrow",
+                          text: "Tomorrow - " + tomorrow | formatDate('EEEE, d MMMM yyyy'),
+                          checked: changeDateOption == "tomorrow"
                       },
                       {
                           value: "other",
-                          text: "A different date",
-                          checked: removalDateOption == "other",
+                          text: "On another date",
+                          checked: changeDateOption == "other",
                           conditional: {
                             html: mojDatePicker({
-                                id: 'removalDate',
-                                name: 'removalDate',
+                                id: 'changeDate',
+                                name: 'changeDate',
                                 leadingZeros: 'true',
                                 classes: 'moj-datepicker--fixed-width',
                                 label: {
                                     text: 'Input the removal date',
                                     classes: 'govuk-visually-hidden'
                                 },
-                                value: formResponses.removalDate,
-                                errorMessage: errors | findError("removalDate")
+                                value: formResponses.changeDate,
+                                errorMessage: errors | findError("changeDate")
                             })
                           }
                       }
@@ -58,7 +58,7 @@
                     {{ govukButton({
                         text: "Continue"
                     }) }}
-                    <a class="govuk-link--no-visited-state" href="cancel">Cancel</a>
+                    <a class="govuk-link--no-visited-state" href="../../pay-overview">Cancel</a>
                 </div>
             </form>
         </div>

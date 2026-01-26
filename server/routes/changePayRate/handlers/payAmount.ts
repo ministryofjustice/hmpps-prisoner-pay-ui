@@ -18,7 +18,8 @@ export default class PayAmountHandler {
       return res.render('pages/changePayRate/pay-amount', { errors: [errors], payAmount })
     }
 
-    // TODO: Implement POST logic
-    return res.redirect('')
+    req.session!.payAmount = payAmount
+
+    return res.redirect('./set-change-date')
   }
 }
