@@ -19,6 +19,8 @@ export default class CheckRemovalDateHandler {
     const payStatusPeriod = await this.orchestratorService.getPayStatusPeriodById(payStatusId)
     const { prisonerNumber } = payStatusPeriod
     const { type: payType } = getPayTypeBySlug(req.params.payTypeSlug)
+    const returnTo = 'check-removal-date'
+    req.session.returnTo = returnTo
 
     await auditPageView(
       req,

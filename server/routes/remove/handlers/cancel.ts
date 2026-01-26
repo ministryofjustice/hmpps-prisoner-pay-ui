@@ -8,7 +8,7 @@ export default class CancelHandler {
   GET = async (req: Request, res: Response) => {
     const prisoner = req.session!.selectedPrisoner
 
-    return res.render('pages/register/cancel', {
+    return res.render('pages/remove/cancel', {
       prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
     })
   }
@@ -18,7 +18,7 @@ export default class CancelHandler {
     const { payTypeSlug } = req.params
 
     const errors = validateForm(choice)
-    if (errors) return res.render('pages/register/cancel', { errors: [errors], choice })
+    if (errors) return res.render('pages/remove/cancel', { errors: [errors], choice })
 
     if (choice === `yes`) {
       req.session.selectedPrisoner = null

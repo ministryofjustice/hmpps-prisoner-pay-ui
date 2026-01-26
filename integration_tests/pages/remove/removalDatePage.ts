@@ -6,6 +6,8 @@ export default class RemovalDatePage extends AbstractPage {
 
   readonly todayRadio: Locator
 
+  readonly cancelLink: Locator
+
   readonly otherRadio: Locator
 
   readonly continueButton: Locator
@@ -15,6 +17,7 @@ export default class RemovalDatePage extends AbstractPage {
     this.header = page.locator('h1')
     this.todayRadio = page.getByLabel('Today')
     this.otherRadio = page.getByLabel('A different date')
+    this.cancelLink = page.getByRole('link', { name: 'Cancel' })
     this.continueButton = page.getByRole('button', { name: 'Continue' })
   }
 
@@ -22,6 +25,7 @@ export default class RemovalDatePage extends AbstractPage {
     const removalDatePage = new RemovalDatePage(page)
     await expect(removalDatePage.header).toBeVisible()
     await expect(removalDatePage.continueButton).toBeVisible()
+    await expect(removalDatePage.cancelLink).toBeVisible()
     return removalDatePage
   }
 }
