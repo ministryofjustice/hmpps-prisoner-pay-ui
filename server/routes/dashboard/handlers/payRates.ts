@@ -13,11 +13,13 @@ export default class PayRatesHandler {
       format(new Date(), 'yyyy-MM-dd'),
       activeCaseLoadId,
     )
+    const payRates = await this.orchestratorService.getPayRates()
     const payTypeData = payTypes.map(payType => {
       const records = paySummary.filter(period => period.type === payType.type)
       return {
         ...payType,
         numberOfPrisoners: records.length,
+        currentRate: payRates.find(rate => rate.type === payType.type)?.rate || undefined,
       }
     })
 

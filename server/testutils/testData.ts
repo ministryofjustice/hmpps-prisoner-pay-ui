@@ -101,4 +101,16 @@ export default class TestData {
       activeCaseLoadId: 'MDI',
     }
   }
+
+  static PayRate() {
+    return {
+      id: '019b268f-f691-785d-ac40-93cb6f815452',
+      prisonCode: 'BCI',
+      type: 'LONG_TERM_SICK',
+      startDate: '2025-11-01',
+      rate: 99,
+      createBy: 'BLOGGSJ',
+      createdDateTime: '2025-10-26T09:23:00',
+    }
+  }
 }

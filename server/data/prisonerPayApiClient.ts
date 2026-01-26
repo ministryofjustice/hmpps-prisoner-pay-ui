@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { asSystem, RestClient } from '@ministryofjustice/hmpps-rest-client'
 import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import { CreatePayStatusPeriodRequest, UpdatePayStatusPeriodRequest } from '../@types/prisonerPayAPI/types'
@@ -28,5 +29,10 @@ export default class PrisonerPayApiClient extends RestClient {
       },
       asSystem(),
     )
+  }
+
+  // TODO: Update with correct implementation when API is available
+  async patchPayRate(request: any): Promise<void> {
+    return null
   }
 }
