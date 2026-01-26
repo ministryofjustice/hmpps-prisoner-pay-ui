@@ -15,4 +15,12 @@ export default class OrchestratorService {
   async searchPrisoners(query: string, prisonCode: string) {
     return this.orchestratorApiClient.searchPrisoners(query, prisonCode)
   }
+
+  async getPayRates() {
+    return this.orchestratorApiClient.getPayRates()
+  }
+
+  async getPayRateByType(type: string) {
+    return this.orchestratorApiClient.getPayRateByType(type)
+  }
 }

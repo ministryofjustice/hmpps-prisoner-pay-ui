@@ -44,4 +44,12 @@ export default class OrchestratorApiClient extends RestClient {
       asSystem(),
     )
   }
+
+  async getPayRates() {
+    return [TestData.PayRate()]
+  }
+
+  async getPayRateByType(type: string) {
+    return TestData.PayRate()
+  }
 }

@@ -17,6 +17,6 @@ export default function routes(services: Services): Router {
   router.use('/', DashboardRoutes(services))
   router.use('/:payTypeSlug/register', RegisterRoutes(services))
   router.use('/:payTypeSlug/remove/:payStatusId', RemoveRoutes(services))
-  router.use('/:payTypeSlug/change-pay-rate', ChangePayRateRoutes())
+  router.use('/:payTypeSlug/change-pay-rate', ChangePayRateRoutes(services))
   return router
 }
