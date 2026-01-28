@@ -1,6 +1,7 @@
 import { RequestHandler, Router } from 'express'
 import type { Services } from '../../services'
 import PayAmountHandler from './handlers/payAmount'
+import CancelRateChangeHandler from './handlers/cancelRateChange'
 import CheckPayRateHandler from './handlers/checkPayRate'
 import SetChangeDateHandler from './handlers/setChangeDate'
 import setPayType from '../../middleware/setPayType'
@@ -23,6 +24,10 @@ export default function Index(services: Services): Router {
   const checkPayRateHandler = new CheckPayRateHandler(services.prisonerPayService)
   get('/check-pay-rate', checkPayRateHandler.GET)
   post('/check-pay-rate', checkPayRateHandler.POST)
+
+  const cancelRateChangeHandler = new CancelRateChangeHandler()
+  get('/cancel-rate-change', cancelRateChangeHandler.GET)
+  post('/cancel-rate-change', cancelRateChangeHandler.POST)
 
   return router
 }
