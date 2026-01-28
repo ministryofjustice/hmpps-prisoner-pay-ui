@@ -2,12 +2,20 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
-{% if backLinkHref %}
+{% if backLinkHref or hardBackLinkHref %}
     <nav class="govuk-!-display-none-print">
-        {{ govukBackLink({
-            text: "Back",
-            href: backLinkHref
-        }) }}
+        {% if backLinkHref %}
+            {{ govukBackLink({
+                text: "Back",
+                href: backLinkHref
+            }) }}
+        {% endif %}
+        {% if hardBackLinkHref and hardBackLinkText %}
+            {{ govukBackLink({
+                text: hardBackLinkText,
+                href: hardBackLinkHref
+            }) }}
+        {% endif %}
     </nav>
 {% endif %}
 
