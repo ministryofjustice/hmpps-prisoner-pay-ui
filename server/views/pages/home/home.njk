@@ -1,0 +1,26 @@
+{% extends "layout.njk" %}
+{% from "../../partials/card.njk" import card %}
+
+{% set pageTitle = "Homepage" %}
+{% set pageId = 'home-page' %}
+{% set hardBackLinkHref = "/activities" %}
+{% set hardBackLinkText = "Back to all activities, unlock and attendance tasks" %}
+
+
+
+{% block content %}
+
+    <h1 class="govuk-heading-l">Prisoner Pay</h1>
+
+    <div class="card-group govuk-grid-row">
+            <div class="govuk-grid-column-one-third card-group__item">
+                {{ card({
+                    "href": "/",
+                    "clickable": "true",
+                    "heading": "Pay Rates for people not in work",
+                    "description": "Change pay rates for people who are unemployed, sick or retired.",
+                    "data-qa": "not-in-work"
+                }) }}
+            </div>
+    </div>
+{% endblock %}
