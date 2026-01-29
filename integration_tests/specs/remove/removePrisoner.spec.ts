@@ -28,7 +28,7 @@ test.describe('Remove Prisoner - Long-term sick', () => {
   test('Can remove a prisoner from a pay type', async ({ page }) => {
     const homepage = await Homepage.verifyOnPage(page)
     await homepage.getTypeLink(card).click()
-    
+
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     await dashboardPage.getTypeLink(type).click()
 
@@ -51,7 +51,7 @@ test.describe('Remove Prisoner - Long-term sick', () => {
   test('Can cancel removing a prisoner - End date page', async ({ page }) => {
     const homepage = await Homepage.verifyOnPage(page)
     await homepage.getTypeLink(card).click()
-    
+
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     await dashboardPage.getTypeLink(type).click()
 
@@ -73,7 +73,7 @@ test.describe('Remove Prisoner - Long-term sick', () => {
   test('Can cancel removing a prisoner - Check page', async ({ page }) => {
     const homepage = await Homepage.verifyOnPage(page)
     await homepage.getTypeLink(card).click()
-    
+
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     await dashboardPage.getTypeLink(type).click()
 
