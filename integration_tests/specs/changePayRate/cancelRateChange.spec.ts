@@ -4,16 +4,14 @@ import DashboardPage from '../../pages/dashboard/dashboardPage'
 import PayRatesPage from '../../pages/dashboard/payRatesPage'
 import payOrchestratorApi from '../../mockApis/payOrchestratorApi'
 import PayOverviewPage from '../../pages/dashboard/payOverviewPage'
-import PayAmountPage from '../../pages/changePayRate/payAmountPage'
-import SetChangeDatePage from '../../pages/changePayRate/setChangeDatePage'
-import CheckPayRatePage from '../../pages/changePayRate/checkPayRatePage'
+import CancelRateChangePage from '../../pages/changePayRate/cancelRateChangePage'
 
 test.describe('Change Pay Rate', () => {
   test.afterEach(async () => {
     await resetStubs()
   })
 
-  test('Can change a pay type pay rate', async ({ page }) => {
+  test('Can cancel a scheduled pay rate change', async ({ page }) => {
     await payOrchestratorApi.stubGetPayStatusPeriods()
 
     const type = 'Long-term sick'
@@ -29,20 +27,13 @@ test.describe('Change Pay Rate', () => {
     await payOverviewPage.changePayRateLink.click()
 
     const payRatesPage = await PayRatesPage.verifyOnPage(page)
-    await payRatesPage.payTypeSummaryCards.locator('a', { hasText: 'Change amount' }).click()
+    await payRatesPage.payTypeSummaryCards.locator('a', { hasText: 'Cancel change' }).click()
 
-    const payAmountPage = await PayAmountPage.verifyOnPage(page)
-    await payAmountPage.enterPayAmount('2.00')
-    await payAmountPage.clickContinue()
+    const cancelRateChangePage = await CancelRateChangePage.verifyOnPage(page)
+    await cancelRateChangePage.yesRadio.check()
+    await cancelRateChangePage.confirmButton.click()
 
-    const setChangeDatePage = await SetChangeDatePage.verifyOnPage(page)
-    await setChangeDatePage.selectTomorrow()
-    await setChangeDatePage.clickContinue()
-
-    const checkPayRatePage = await CheckPayRatePage.verifyOnPage(page)
-    expect(checkPayRatePage.header).toBeDefined()
-
-    await checkPayRatePage.confirmPayChange()
-    await PayRatesPage.verifyOnPage(page)
+    const payRatesPageAfterCancel = await PayRatesPage.verifyOnPage(page)
+    expect(payRatesPageAfterCancel.notificationBanner).toBeVisible()
   })
 })

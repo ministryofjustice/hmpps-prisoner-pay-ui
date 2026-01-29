@@ -23,4 +23,8 @@ export default class OrchestratorService {
   async getPayRateByType(type: string) {
     return this.orchestratorApiClient.getPayRateByType(type)
   }
+
+  async getPayRateById(id: string) {
+    return this.orchestratorApiClient.getPayRateById(id)
+  }
 }

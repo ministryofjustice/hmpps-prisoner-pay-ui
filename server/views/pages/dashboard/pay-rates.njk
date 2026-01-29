@@ -13,7 +13,7 @@
 
             <h2 class="govuk-heading-m govuk-!-margin-top-6">Pay for people who are sick, retired or out at hospital</h2>
             <p class="govuk-body">How much people are automatically paid if they're recorded as being sick, retired or out at hospital.</p>
-
+            {# TODO: dynamic display of cancel change link if a change is already requested #}
             {% for type in payTypes %}
                 {{ govukSummaryList({
                 card: {
@@ -34,7 +34,14 @@
                                 {
                                     href: "../" + type.slug + "/change-pay-rate/pay-amount",
                                     text: "Change",
-                                    visuallyHiddenText: "amount"
+                                    visuallyHiddenText: "amount",
+                                    classes: "govuk-link govuk-link--no-visited-state"
+                                },
+                                {
+                                    href: "../" + type.slug + "/change-pay-rate/1/cancel-rate-change",
+                                    text: "Cancel",
+                                    visuallyHiddenText: "change",
+                                    classes: "govuk-link govuk-link--no-visited-state"
                                 }
                             ]
                         }
