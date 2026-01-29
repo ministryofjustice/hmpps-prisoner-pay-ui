@@ -12,7 +12,7 @@ export default class CancelRateChangePage extends AbstractPage {
 
   private constructor(page: Page) {
     super(page)
-    this.header = page.locator('h1', { hasText: 'Are you sure you want to cancel adding' })
+    this.header = page.locator('h1', { hasText: 'Are you sure you want to cancel the pay rate change?' })
     this.yesRadio = page.getByLabel('Yes')
     this.noRadio = page.getByLabel('No')
     this.confirmButton = page.getByRole('button', { name: 'Confirm' })
