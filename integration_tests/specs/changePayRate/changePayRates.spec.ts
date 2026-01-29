@@ -33,7 +33,7 @@ test.describe('Change Pay Rate', () => {
     await payOverviewPage.changePayRateLink.click()
 
     const payRatesPage = await PayRatesPage.verifyOnPage(page)
-    await payRatesPage.payTypeSummaryCards.locator('a', { hasText: 'Change' }).click()
+    await payRatesPage.payTypeSummaryCards.locator('a', { hasText: 'Change amount' }).click()
 
     const payAmountPage = await PayAmountPage.verifyOnPage(page)
     await payAmountPage.enterPayAmount('2.00')

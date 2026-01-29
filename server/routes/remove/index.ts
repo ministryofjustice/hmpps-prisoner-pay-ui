@@ -2,6 +2,7 @@ import { RequestHandler, Router } from 'express'
 import RemovalDateHandler from './handlers/removalDate'
 import ConfirmedRemovalDateHandler from './handlers/confirmedRemovalDate'
 import CheckRemovalDateHandler from './handlers/checkRemovalDate'
+import CancelHandler from './handlers/cancel'
 import { Services } from '../../services'
 import setPayType from '../../middleware/setPayType'
 
@@ -22,6 +23,10 @@ export default function Index(services: Services): Router {
 
   const confirmedRemovalDateHandler = new ConfirmedRemovalDateHandler(services.orchestratorService)
   get('/confirmed-removal-date', confirmedRemovalDateHandler.GET)
+
+  const cancelHandler = new CancelHandler()
+  get('/cancel', cancelHandler.GET)
+  post('/cancel', cancelHandler.POST)
 
   return router
 }

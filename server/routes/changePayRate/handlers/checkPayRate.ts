@@ -1,8 +1,9 @@
 import { format, parse } from 'date-fns'
 import { Request, Response } from 'express'
+import PrisonerPayService from '../../../services/prisonerPayService'
 
 export default class CheckPayRateHandler {
-  constructor() {}
+  constructor(private readonly prisonerPayService: PrisonerPayService) {}
 
   GET = async (req: Request, res: Response) => {
     const { payAmount, selectedDate } = req.session!
@@ -16,9 +17,13 @@ export default class CheckPayRateHandler {
     const { selectedDate } = req.session!
     const { payType } = res.locals
     const parsedDate = parse(selectedDate, 'dd/MM/yyyy', new Date())
+    const { payAmount } = req.session!
 
-    // TODO: Add request to submit the pay rate change
-    // For now, just redirect to the pay rates page
+    await this.prisonerPayService.patchPayRate({
+      payType: payType.type,
+      payAmount,
+      effectiveDate: format(parsedDate, 'yyyy-MM-dd'),
+    })
 
     const successMessage = `You've updated the pay for ${payType.description}. The change will take effect from ${format(parsedDate, 'd MMMM yyyy')}.`
     return res.redirectWithSuccess('../../pay-rates', 'Pay rate updated', successMessage)

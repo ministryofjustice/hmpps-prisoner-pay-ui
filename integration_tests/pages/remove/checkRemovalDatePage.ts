@@ -4,11 +4,14 @@ import AbstractPage from '../abstractPage'
 export default class CheckRemovalDatePage extends AbstractPage {
   readonly header: Locator
 
+  readonly cancelLink: Locator
+
   readonly confirmButton: Locator
 
   private constructor(page: Page) {
     super(page)
     this.header = page.locator('h1', { hasText: 'Check and confirm details' })
+    this.cancelLink = page.getByRole('link', { name: 'Cancel' })
     this.confirmButton = page.getByRole('button', { name: 'Confirm' })
   }
 
@@ -16,6 +19,7 @@ export default class CheckRemovalDatePage extends AbstractPage {
     const checkRemovalDatePage = new CheckRemovalDatePage(page)
     await expect(checkRemovalDatePage.header).toBeVisible()
     await expect(checkRemovalDatePage.confirmButton).toBeVisible()
+    await expect(checkRemovalDatePage.cancelLink).toBeVisible()
     return checkRemovalDatePage
   }
 }

@@ -28,6 +28,8 @@ describe('PayRatesHandler', () => {
     when(orchestratorService.getPayStatusPeriodsByType)
       .calledWith(expect.any(String), expect.any(String))
       .mockResolvedValue(TestData.PayStatusPeriods())
+
+    when(orchestratorService.getPayRates).calledWith().mockResolvedValue([TestData.PayRate()])
   })
 
   describe('GET', () => {
@@ -41,6 +43,7 @@ describe('PayRatesHandler', () => {
         return {
           ...payType,
           numberOfPrisoners: records.length,
+          currentRate: TestData.PayRate().rate,
         }
       })
 

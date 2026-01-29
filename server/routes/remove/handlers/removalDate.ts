@@ -12,7 +12,10 @@ export default class RemovalDateHandler {
   GET = async (req: Request, res: Response) => {
     const { payStatusId } = req.params
     const payStatusPeriod = await this.orchestratorService.getPayStatusPeriodById(payStatusId)
-    const { prisonerNumber, type } = payStatusPeriod
+    const { prisonerNumber, type, firstName, lastName } = payStatusPeriod
+    req.session.selectedPrisoner = { prisonerNumber, firstName, lastName }
+    const returnTo = 'removal-date'
+    req.session.returnTo = returnTo
 
     await auditPageView(
       req,

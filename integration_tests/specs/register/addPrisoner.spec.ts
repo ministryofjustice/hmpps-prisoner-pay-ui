@@ -31,7 +31,7 @@ test.describe('Add prisoner - Long-term sick', () => {
   test('Can add a prisoner to a pay type - no end date', async ({ page }) => {
     const homepage = await Homepage.verifyOnPage(page)
     await homepage.getTypeLink(card).click()
-
+    
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     await dashboardPage.getTypeLink(type).click()
 

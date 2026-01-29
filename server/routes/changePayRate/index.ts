@@ -1,10 +1,12 @@
 import { RequestHandler, Router } from 'express'
+import type { Services } from '../../services'
 import PayAmountHandler from './handlers/payAmount'
+import CancelRateChangeHandler from './handlers/cancelRateChange'
 import CheckPayRateHandler from './handlers/checkPayRate'
 import SetChangeDateHandler from './handlers/setChangeDate'
 import setPayType from '../../middleware/setPayType'
 
-export default function Index(): Router {
+export default function Index(services: Services): Router {
   const router = Router({ mergeParams: true })
   const get = (path: string, handler: RequestHandler) => router.get(path, handler)
   const post = (path: string, handler: RequestHandler) => router.post(path, handler)
@@ -19,9 +21,13 @@ export default function Index(): Router {
   get('/set-change-date', setChangeDateHandler.GET)
   post('/set-change-date', setChangeDateHandler.POST)
 
-  const checkPayRateHandler = new CheckPayRateHandler()
+  const checkPayRateHandler = new CheckPayRateHandler(services.prisonerPayService)
   get('/check-pay-rate', checkPayRateHandler.GET)
   post('/check-pay-rate', checkPayRateHandler.POST)
+
+  const cancelRateChangeHandler = new CancelRateChangeHandler(services.orchestratorService)
+  get('/:rateId/cancel-rate-change', cancelRateChangeHandler.GET)
+  post('/:rateId/cancel-rate-change', cancelRateChangeHandler.POST)
 
   return router
 }

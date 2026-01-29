@@ -3,9 +3,9 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - cancel" %}
+{% set pageTitle = applicationName + " - cancel pay rate change" %}
 {% set mainClasses = "govuk-body" %}
-{% set backLinkHref = "./add-prisoner" %}
+{% set backLinkHref = "../../../pay-rates" %}
 
 {% block content %}
    <div class="govuk-grid-row">
@@ -19,10 +19,13 @@
             name: "choice",
             fieldset: {
                 legend: {
-                    text: "Are you sure you want to cancel adding " + prisonerName + "?",
+                    text: "Are you sure you want to cancel the pay rate change?",
                     isPageHeading: true,
                     classes: "govuk-fieldset__legend--l"
                 }
+            },
+            hint: {
+                text: "The pay rate is set to change to £" + payAmount / 100 + " per day from " + selectedDate | formatDate("EEEE, d MMMM yyyy") + "."
             },
             errorMessage: errors | findError('choice'),
             items: [

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import CancelHandler from './cancel'
 
-describe('CancelHandler', () => {
+describe('CancelRemovalHandler', () => {
   let handler: CancelHandler
   let req: Partial<Request>
   let res: Partial<Response>
@@ -32,7 +32,7 @@ describe('CancelHandler', () => {
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/register/cancel', {
+      expect(res.render).toHaveBeenCalledWith('pages/remove/cancel', {
         prisonerName: 'Joe Bloggs',
       })
     })
