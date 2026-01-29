@@ -44,7 +44,7 @@ describe('CancelHandler', () => {
 
       await handler.POST(req as Request, res as Response)
 
-      expect(res.redirect).toHaveBeenCalledWith('/')
+      expect(res.redirect).toHaveBeenCalledWith('/long-term-sick/pay-overview')
     })
 
     it('should redirect to check page after selecting that you do not want to cancel the application', async () => {

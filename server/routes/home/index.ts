@@ -8,7 +8,7 @@ export default function Index(): Router {
 
   const homeHandler = new HomeRoutes()
 
-  get('/home', homeHandler.GET)
+  get('/', homeHandler.GET)
 
   return router
 }

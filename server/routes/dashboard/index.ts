@@ -9,7 +9,7 @@ export default function Index({ orchestratorService }: Services): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, handler)
 
   const dashboardHandler = new DashboardHandler(orchestratorService)
-  get('/', dashboardHandler.GET)
+  get('/pay', dashboardHandler.GET)
 
   const payOverviewHandler = new PayOverviewHandler(orchestratorService)
   get('/:payTypeSlug/pay-overview', payOverviewHandler.GET)

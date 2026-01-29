@@ -15,6 +15,7 @@ export default class CancelHandler {
 
   POST = async (req: Request, res: Response) => {
     const { choice } = req.body
+    const { payTypeSlug } = req.params
 
     const errors = validateForm(choice)
     if (errors) return res.render('pages/register/cancel', { errors: [errors], choice })
@@ -22,7 +23,7 @@ export default class CancelHandler {
     if (choice === `yes`) {
       req.session.selectedPrisoner = null
       req.session.returnTo = null
-      return res.redirect('/')
+      return res.redirect(`/${payTypeSlug}/pay-overview`)
     }
     const { returnTo } = req.session
     return res.redirect(returnTo || '/')

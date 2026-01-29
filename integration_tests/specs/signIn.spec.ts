@@ -3,7 +3,7 @@ import hmppsAuth from '../mockApis/hmppsAuth'
 import exampleApi from '../mockApis/exampleApi'
 
 import { login, resetStubs } from '../testUtils'
-import DashboardPage from '../pages/dashboard/dashboardPage'
+import Homepage from '../pages/homepage/homepage'
 import componentsApi from '../mockApis/componentsApi'
 import payOrchestratorApi from '../mockApis/payOrchestratorApi'
 
@@ -35,16 +35,16 @@ test.describe('SignIn', () => {
   test('User name visible in header', async ({ page }) => {
     await login(page, { name: 'A TestUser' })
 
-    const dashboardPage = await DashboardPage.verifyOnPage(page)
+    const homepage = await Homepage.verifyOnPage(page)
 
-    await expect(dashboardPage.usersName).toHaveText('A. Testuser')
+    await expect(homepage.usersName).toHaveText('A. Testuser')
   })
 
   test('User can sign out', async ({ page }) => {
     await login(page)
 
-    const dashboardPage = await DashboardPage.verifyOnPage(page)
-    await dashboardPage.signOut()
+    const homepage = await Homepage.verifyOnPage(page)
+    await homepage.signOut()
 
     await expect(page.getByRole('heading')).toHaveText('Sign in')
   })
@@ -62,7 +62,7 @@ test.describe('SignIn', () => {
 
     await login(page, { name: 'Some OtherTestUser', active: true })
 
-    const dashboardPage = await DashboardPage.verifyOnPage(page)
-    await expect(dashboardPage.usersName).toHaveText('S. Othertestuser')
+    const homepage = await Homepage.verifyOnPage(page)
+    await expect(homepage.usersName).toHaveText('S. Othertestuser')
   })
 })

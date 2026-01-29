@@ -7,6 +7,7 @@ import CheckRemovalDatePage from '../../pages/remove/checkRemovalDatePage'
 import ConfirmedRemovalDatePage from '../../pages/remove/confirmedRemovalDatePage'
 import payOrchestratorApi from '../../mockApis/payOrchestratorApi'
 import prisonerPayApi from '../../mockApis/prisonerPayApi'
+import Homepage from '../../pages/homepage/homepage'
 
 test.describe('Remove Prisoner', () => {
   test.afterEach(async () => {
@@ -17,8 +18,12 @@ test.describe('Remove Prisoner', () => {
     await payOrchestratorApi.stubGetPayStatusPeriods()
     await prisonerPayApi.stubPatchPayStatusPeriod()
 
+    const card = 'Pay rates for people not in work'
     const type = 'Long-term sick'
     await login(page)
+
+    const homepage = await Homepage.verifyOnPage(page)
+    await homepage.getTypeLink(card).click()
 
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     await dashboardPage.getTypeLink(type).click()

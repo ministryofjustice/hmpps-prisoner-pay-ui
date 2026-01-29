@@ -11,19 +11,26 @@ import CheckPage from '../../pages/register/checkPage'
 import ConfirmedAddPrisonerPage from '../../pages/register/confirmedAddPrisonerPage'
 import payOrchestratorApi from '../../mockApis/payOrchestratorApi'
 import prisonerPayApi from '../../mockApis/prisonerPayApi'
+import Homepage from '../../pages/homepage/homepage'
 
-test.describe('Dashboard', () => {
+test.describe('Add prisoner - Long-term sick', () => {
+  const type = 'Long-term sick'
+  const card = 'Pay rates for people not in work'
+
+  test.beforeEach(async ({ page }) => {
+    await payOrchestratorApi.stubGetPayStatusPeriods()
+    await payOrchestratorApi.stubSearchPrisoners()
+    await prisonerPayApi.stubPostPayStatusPeriod()
+    await login(page)
+  })
+
   test.afterEach(async () => {
     await resetStubs()
   })
 
   test('Can add a prisoner to a pay type - no end date', async ({ page }) => {
-    await payOrchestratorApi.stubGetPayStatusPeriods()
-    await payOrchestratorApi.stubSearchPrisoners()
-    await prisonerPayApi.stubPostPayStatusPeriod()
-
-    const type = 'Long-term sick'
-    await login(page)
+    const homepage = await Homepage.verifyOnPage(page)
+    await homepage.getTypeLink(card).click()
 
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     await dashboardPage.getTypeLink(type).click()
@@ -58,12 +65,8 @@ test.describe('Dashboard', () => {
   })
 
   test('Can add a prisoner to a pay type - set end date', async ({ page }) => {
-    await payOrchestratorApi.stubGetPayStatusPeriods()
-    await payOrchestratorApi.stubSearchPrisoners()
-    await prisonerPayApi.stubPostPayStatusPeriod()
-
-    const type = 'Long-term sick'
-    await login(page)
+    const homepage = await Homepage.verifyOnPage(page)
+    await homepage.getTypeLink(card).click()
 
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     await dashboardPage.getTypeLink(type).click()
@@ -102,13 +105,9 @@ test.describe('Dashboard', () => {
     await expect(confirmedAddPrisonerPage.header).toBeVisible()
   })
 
-  test('Can cancel a prisoner to a pay type - End date page', async ({ page }) => {
-    await payOrchestratorApi.stubGetPayStatusPeriods()
-    await payOrchestratorApi.stubSearchPrisoners()
-    await prisonerPayApi.stubPostPayStatusPeriod()
-
-    const type = 'Long-term sick'
-    await login(page)
+  test('Can cancel adding a prisoner to a pay type - End date page', async ({ page }) => {
+    const homepage = await Homepage.verifyOnPage(page)
+    await homepage.getTypeLink(card).click()
 
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     await dashboardPage.getTypeLink(type).click()
@@ -131,16 +130,12 @@ test.describe('Dashboard', () => {
     await cancelPage.yesRadio.click()
     await cancelPage.confirmButton.click()
 
-    await DashboardPage.verifyOnPage(page)
+    await PayOverviewPage.verifyOnPage(page, type)
   })
 
-  test('Can cancel a prisoner to a pay type - Check page', async ({ page }) => {
-    await payOrchestratorApi.stubGetPayStatusPeriods()
-    await payOrchestratorApi.stubSearchPrisoners()
-    await prisonerPayApi.stubPostPayStatusPeriod()
-
-    const type = 'Long-term sick'
-    await login(page)
+  test('Can cancel adding a prisoner to a pay type - Check page', async ({ page }) => {
+    const homepage = await Homepage.verifyOnPage(page)
+    await homepage.getTypeLink(card).click()
 
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     await dashboardPage.getTypeLink(type).click()
@@ -167,6 +162,6 @@ test.describe('Dashboard', () => {
     await cancelPage.yesRadio.click()
     await cancelPage.confirmButton.click()
 
-    await DashboardPage.verifyOnPage(page)
+    await PayOverviewPage.verifyOnPage(page, type)
   })
 })
