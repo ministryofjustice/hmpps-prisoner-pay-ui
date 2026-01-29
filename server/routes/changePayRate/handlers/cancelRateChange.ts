@@ -20,7 +20,6 @@ export default class CancelRateChangeHandler {
     const errors = validateForm(choice)
     if (errors) {
       const rateChange = await this.orchestratorService.getPayRateById(req.params.rateId)
-      console.log(errors)
 
       return res.render('pages/changePayRate/cancel-rate-change', {
         errors: [errors],
