@@ -20,10 +20,6 @@ describe('CancelRateChangeHandler', () => {
       params: {
         rateId: 'rate-123',
       },
-      session: {
-        payAmount: '1000',
-        selectedDate: '10/10/2023',
-      },
       body: { choice: 'yes' },
     } as unknown as Partial<Request>
     res = {
