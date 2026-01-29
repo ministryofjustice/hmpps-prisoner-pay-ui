@@ -25,7 +25,7 @@
                 }
             },
             hint: {
-                text: "The pay rate is set to change to £" + payAmount / 100 + " per day from " + selectedDate + "."
+                text: "The pay rate is set to change to £" + payAmount / 100 + " per day from " + selectedDate | formatDate("EEEE, d MMMM yyyy") + "."
             },
             errorMessage: errors | findError('choice'),
             items: [

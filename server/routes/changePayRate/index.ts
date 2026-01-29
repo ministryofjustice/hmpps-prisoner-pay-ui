@@ -25,9 +25,9 @@ export default function Index(services: Services): Router {
   get('/check-pay-rate', checkPayRateHandler.GET)
   post('/check-pay-rate', checkPayRateHandler.POST)
 
-  const cancelRateChangeHandler = new CancelRateChangeHandler()
-  get('/cancel-rate-change', cancelRateChangeHandler.GET)
-  post('/cancel-rate-change', cancelRateChangeHandler.POST)
+  const cancelRateChangeHandler = new CancelRateChangeHandler(services.orchestratorService)
+  get('/:rateId/cancel-rate-change', cancelRateChangeHandler.GET)
+  post('/:rateId/cancel-rate-change', cancelRateChangeHandler.POST)
 
   return router
 }

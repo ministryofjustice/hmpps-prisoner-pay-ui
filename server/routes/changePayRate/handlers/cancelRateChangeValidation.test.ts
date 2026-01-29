@@ -1,4 +1,4 @@
-import validateForm from './cancelValidation'
+import validateForm from './cancelRateChangeValidation'
 
 describe('cancelValidation', () => {
   it('shows error if end date selection is not entered', () => {

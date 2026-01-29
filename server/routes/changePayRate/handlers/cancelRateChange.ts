@@ -1,15 +1,16 @@
 import { Request, Response } from 'express'
 import { parse } from 'date-fns'
-import validateForm from './cancelValidation'
+import validateForm from './cancelRateChangeValidation'
+import OrchestratorService from '../../../services/orchestratorService'
 
 export default class CancelRateChangeHandler {
-  constructor() {}
+  constructor(private readonly orchestratorService: OrchestratorService) {}
 
   GET = async (req: Request, res: Response) => {
-    const { payAmount, selectedDate } = req.session!
+    const rateChange = await this.orchestratorService.getPayRateById(req.params.rateId)
     return res.render('pages/changePayRate/cancel-rate-change', {
-      payAmount,
-      selectedDate,
+      payAmount: rateChange.rate,
+      selectedDate: parse(rateChange.startDate, 'yyyy-MM-dd', new Date()),
     })
   }
 
@@ -18,18 +19,25 @@ export default class CancelRateChangeHandler {
 
     const errors = validateForm(choice)
     if (errors) {
-      const { payAmount, selectedDate } = req.session!
-      return res.render('pages/register/cancel', {
+      const rateChange = await this.orchestratorService.getPayRateById(req.params.rateId)
+      console.log(errors)
+
+      return res.render('pages/changePayRate/cancel-rate-change', {
         errors: [errors],
         choice,
-        payAmount,
-        selectedDate: parse(selectedDate, 'dd/MM/yyyy', new Date()),
+        payAmount: rateChange.rate,
+        selectedDate: parse(rateChange.startDate, 'yyyy-MM-dd', new Date()),
       })
     }
 
     if (choice === `yes`) {
       // TODO: implement cancellation logic
+      return res.redirectWithSuccess(
+        '../../../pay-rates',
+        'Pay rate updated',
+        "You've cancelled the change to the pay rate for Long-term sick.",
+      )
     }
-    return res.redirect('../../pay-rates')
+    return res.redirect('../../../pay-rates')
   }
 }
