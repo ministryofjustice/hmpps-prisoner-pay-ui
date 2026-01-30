@@ -7,7 +7,6 @@ import PayOverviewPage from '../../pages/dashboard/payOverviewPage'
 import PayAmountPage from '../../pages/changePayRate/payAmountPage'
 import SetChangeDatePage from '../../pages/changePayRate/setChangeDatePage'
 import CheckPayRatePage from '../../pages/changePayRate/checkPayRatePage'
-import Homepage from '../../pages/homepage/homepage'
 
 test.describe('Change Pay Rate', () => {
   test.afterEach(async () => {
@@ -17,12 +16,8 @@ test.describe('Change Pay Rate', () => {
   test('Can change a pay type pay rate', async ({ page }) => {
     await payOrchestratorApi.stubGetPayStatusPeriods()
 
-    const card = 'Pay rates for people not in work'
     const type = 'Long-term sick'
     await login(page)
-
-    const homepage = await Homepage.verifyOnPage(page)
-    await homepage.getTypeLink(card).click()
 
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     expect(dashboardPage.header).toBeDefined()

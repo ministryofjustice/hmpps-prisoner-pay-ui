@@ -11,11 +11,9 @@ import CheckPage from '../../pages/register/checkPage'
 import ConfirmedAddPrisonerPage from '../../pages/register/confirmedAddPrisonerPage'
 import payOrchestratorApi from '../../mockApis/payOrchestratorApi'
 import prisonerPayApi from '../../mockApis/prisonerPayApi'
-import Homepage from '../../pages/homepage/homepage'
 
 test.describe('Add prisoner - Long-term sick', () => {
   const type = 'Long-term sick'
-  const card = 'Pay rates for people not in work'
 
   test.beforeEach(async ({ page }) => {
     await payOrchestratorApi.stubGetPayStatusPeriods()
@@ -29,9 +27,6 @@ test.describe('Add prisoner - Long-term sick', () => {
   })
 
   test('Can add a prisoner to a pay type - no end date', async ({ page }) => {
-    const homepage = await Homepage.verifyOnPage(page)
-    await homepage.getTypeLink(card).click()
-
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     await dashboardPage.getTypeLink(type).click()
 
@@ -65,9 +60,6 @@ test.describe('Add prisoner - Long-term sick', () => {
   })
 
   test('Can add a prisoner to a pay type - set end date', async ({ page }) => {
-    const homepage = await Homepage.verifyOnPage(page)
-    await homepage.getTypeLink(card).click()
-
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     await dashboardPage.getTypeLink(type).click()
 
@@ -106,9 +98,6 @@ test.describe('Add prisoner - Long-term sick', () => {
   })
 
   test('Can cancel adding a prisoner to a pay type - End date page', async ({ page }) => {
-    const homepage = await Homepage.verifyOnPage(page)
-    await homepage.getTypeLink(card).click()
-
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     await dashboardPage.getTypeLink(type).click()
 
@@ -134,9 +123,6 @@ test.describe('Add prisoner - Long-term sick', () => {
   })
 
   test('Can cancel adding a prisoner to a pay type - Check page', async ({ page }) => {
-    const homepage = await Homepage.verifyOnPage(page)
-    await homepage.getTypeLink(card).click()
-
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     await dashboardPage.getTypeLink(type).click()
 

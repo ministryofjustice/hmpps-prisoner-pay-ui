@@ -1,14 +1,13 @@
 import { RequestHandler, Router } from 'express'
-import HomeRoutes from './handlers/home'
+import EditPayHandler from './handlers/home'
 
 export default function Index(): Router {
   const router = Router()
 
   const get = (path: string, handler: RequestHandler) => router.get(path, handler)
 
-  const homeHandler = new HomeRoutes()
-
-  get('/', homeHandler.GET)
+  const editPayHandler = new EditPayHandler()
+  get('/', editPayHandler.GET)
 
   return router
 }

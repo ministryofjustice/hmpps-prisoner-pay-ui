@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import homeRoutes from './home'
+import EditPayRoutes from './editPay'
 import type { Services } from '../services'
 import DashboardRoutes from './dashboard'
 import RegisterRoutes from './register'
@@ -14,8 +14,8 @@ export default function routes(services: Services): Router {
   router.use(timeNowMiddleware())
   router.use(checkForSuccessMessages())
 
-  router.use(homeRoutes())
   router.use('/', DashboardRoutes(services))
+  router.use('/edit-pay', EditPayRoutes())
   router.use('/:payTypeSlug/register', RegisterRoutes(services))
   router.use('/:payTypeSlug/remove/:payStatusId', RemoveRoutes(services))
   router.use('/:payTypeSlug/change-pay-rate', ChangePayRateRoutes(services))
