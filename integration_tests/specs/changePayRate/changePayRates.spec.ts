@@ -21,7 +21,6 @@ test.describe('Change Pay Rate', () => {
 
     const dashboardPage = await DashboardPage.verifyOnPage(page)
     expect(dashboardPage.header).toBeDefined()
-
     await dashboardPage.getTypeLink(type).click()
 
     const payOverviewPage = await PayOverviewPage.verifyOnPage(page, type)

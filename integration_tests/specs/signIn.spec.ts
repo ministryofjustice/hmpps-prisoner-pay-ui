@@ -3,9 +3,10 @@ import hmppsAuth from '../mockApis/hmppsAuth'
 import exampleApi from '../mockApis/exampleApi'
 
 import { login, resetStubs } from '../testUtils'
-import DashboardPage from '../pages/dashboard/dashboardPage'
+
 import componentsApi from '../mockApis/componentsApi'
 import payOrchestratorApi from '../mockApis/payOrchestratorApi'
+import DashboardPage from '../pages/dashboard/dashboardPage'
 
 test.describe('SignIn', () => {
   test.beforeEach(async () => {

@@ -10,7 +10,6 @@ test.describe('Dashboard', () => {
 
   test('Can visit the dashboard page', async ({ page }) => {
     await payOrchestratorApi.stubGetPayStatusPeriods()
-
     await login(page)
 
     const dashboardPage = await DashboardPage.verifyOnPage(page)

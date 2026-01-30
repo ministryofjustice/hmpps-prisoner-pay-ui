@@ -4,6 +4,8 @@
 
 {% set pageTitle = applicationName + " - Page name" %}
 {% set mainClasses = "govuk-body" %}
+{% set hardBackLinkHref = "/edit-pay" %}
+{% set hardBackLinkText = "Back to edit pay options" %}
 
 {% block content %}
     <div class="govuk-grid-row">
@@ -57,7 +59,8 @@
                             items: [
                                 {
                                     href: "../" + type.slug + "/pay-overview",
-                                    text: "View, add and remove people"
+                                    text: "View, add and remove people",
+                                    classes: "govuk-link govuk-link--no-visited-state"
                                 }
                             ]
                         }
