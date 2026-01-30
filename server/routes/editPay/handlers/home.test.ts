@@ -22,6 +22,6 @@ describe('GET /Edit pay homepage', () => {
 
   it('should render edit pay homepage', async () => {
     await handler.GET(req, res)
-    expect(res.render).toHaveBeenCalledWith('pages/editPay/index')
+    expect(res.render).toHaveBeenCalledWith('pages/editPay/home')
   })
 })
