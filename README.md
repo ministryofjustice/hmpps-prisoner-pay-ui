@@ -43,10 +43,7 @@ And then, to build the assets and start the app with esbuild:
 
 ### Logging in with a test user
 
-Once the application is running you should then be able to login with:
-
-username: AUTH_USER
-password: password123456
+Once the application is running you should then be able to login
 
 To request specific users and roles then raise a PR
 to [update the seed data](https://github.com/ministryofjustice/hmpps-auth/blob/main/src/main/resources/db/dev/data/auth/V900_3__users.sql)
