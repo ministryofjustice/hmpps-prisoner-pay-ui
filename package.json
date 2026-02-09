@@ -104,6 +104,7 @@
     "typescript": "^5.9.3"
   },
   "overrides": {
+    "diff": "8.0.3",
     "sinon": {
       "diff": "8.0.3"
     }
