@@ -30,11 +30,13 @@ export default class CheckPayRateHandler {
     await auditPageAction(
       req,
       Page.CHECK_CONFIRM_PAY,
-      Action.EDIT_PAY_RATE, {
+      Action.EDIT_PAY_RATE,
+      {
         payType: payType.type,
         payAmount,
-        effectiveDate: format(parsedDate, 'yyyy-MM-dd')
-      }, SubjectType.NOT_APPLICABLE
+        effectiveDate: format(parsedDate, 'yyyy-MM-dd'),
+      },
+      SubjectType.NOT_APPLICABLE,
     )
 
     const successMessage = `You've updated the pay for ${payType.description}. The change will take effect from ${format(parsedDate, 'd MMMM yyyy')}.`

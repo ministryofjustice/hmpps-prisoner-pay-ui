@@ -25,7 +25,7 @@ export default class PayRatesHandler {
       }
     })
 
-     await auditPageView(req, Page.PAY_RATES, { payTypeData })
+    await auditPageView(req, Page.PAY_RATES, { payTypeData })
 
     return res.render('pages/dashboard/pay-rates', {
       payTypes: payTypeData,

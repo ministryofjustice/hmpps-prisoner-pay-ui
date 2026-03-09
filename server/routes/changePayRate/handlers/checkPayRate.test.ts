@@ -6,7 +6,6 @@ import TestData from '../../../testutils/testData'
 import PrisonerPayService from '../../../services/prisonerPayService'
 import * as auditUtils from '../../../utils/auditUtils'
 
-
 jest.mock('../../../services/prisonerPayService')
 jest.mock('../../../utils/auditUtils')
 
