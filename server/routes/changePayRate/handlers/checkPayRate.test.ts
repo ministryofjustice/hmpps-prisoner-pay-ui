@@ -4,8 +4,11 @@ import { when } from 'jest-when'
 import CheckPayRateHandler from './checkPayRate'
 import TestData from '../../../testutils/testData'
 import PrisonerPayService from '../../../services/prisonerPayService'
+import * as auditUtils from '../../../utils/auditUtils'
+
 
 jest.mock('../../../services/prisonerPayService')
+jest.mock('../../../utils/auditUtils')
 
 const prisonerPayService = new PrisonerPayService(null)
 
@@ -36,6 +39,9 @@ describe('CheckPayRateHandler', () => {
     }
 
     when(prisonerPayService.patchPayRate).calledWith(expect.any(Object)).mockResolvedValue(undefined)
+
+    jest.mocked(auditUtils.auditPageView).mockResolvedValue(undefined)
+    jest.mocked(auditUtils.auditPageAction).mockResolvedValue(undefined)
   })
 
   describe('GET', () => {
