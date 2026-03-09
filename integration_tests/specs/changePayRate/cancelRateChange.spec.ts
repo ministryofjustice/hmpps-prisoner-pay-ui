@@ -12,7 +12,9 @@ test.describe('Change Pay Rate', () => {
   })
 
   test('Can cancel a scheduled pay rate change', async ({ page }) => {
+    await payOrchestratorApi.stubPayOrchestratorHealthPing()
     await payOrchestratorApi.stubGetPayStatusPeriods()
+    await payOrchestratorApi.stubGetPayRatesByPrison()
 
     const type = 'Long-term sick'
     await login(page)

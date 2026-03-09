@@ -11,6 +11,8 @@ const errors: { [key: string]: FormError } = {
   },
 }
 
+// TODO: Validation is missing check for a valid number. Might demand a specific util.
+
 export default function validateForm(
   { payAmount }: PayAmountForm,
   minimumAmount: number,

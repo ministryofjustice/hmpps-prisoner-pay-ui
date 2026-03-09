@@ -12,6 +12,7 @@ test.describe('Dashboard', () => {
 
   test('Can visit the pay rates page', async ({ page }) => {
     await payOrchestratorApi.stubGetPayStatusPeriods()
+    await payOrchestratorApi.stubGetPayRatesByPrison()
 
     const type = 'Long-term sick'
     await login(page)

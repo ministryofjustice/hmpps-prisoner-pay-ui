@@ -5,6 +5,8 @@ type SetChangeDateForm = {
   changeDate?: string
 }
 
+// TODO: Validation is missing check to ensure the date is in the future and is valid (up to 30 days).
+
 const errors: { [key: string]: FormError } = {
   MISSING_CHANGE_DATE_OPTION: {
     href: '#changeDateOption',

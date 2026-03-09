@@ -25,6 +25,7 @@ export declare module 'express-session' {
         username: string
       }
     }
+    payRateId: string
   }
 }
 

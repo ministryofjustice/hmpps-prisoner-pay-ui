@@ -16,8 +16,8 @@ export default class OrchestratorService {
     return this.orchestratorApiClient.searchPrisoners(query, prisonCode)
   }
 
-  async getPayRates() {
-    return this.orchestratorApiClient.getPayRates()
+  async getPayRates(prisonCode: string) {
+    return this.orchestratorApiClient.getPayRates(prisonCode)
   }
 
   async getPayRateByType(type: string) {

@@ -109,13 +109,7 @@ describe('auditUtils', () => {
     it('should format pay summaries with required fields', () => {
       const paySummary = TestData.PayStatusPeriods()
 
-      const payType = {
-        type: PayType.LONG_TERM_SICK,
-        description: 'Long Term Sick Pay',
-        slug: 'long-term-sick',
-        displayName: 'Long Term Sick',
-        dailyPayAmount: 100,
-      }
+      const payType = PayType.LONG_TERM_SICK
 
       const result = auditUtils.getDisplayedPaySummary(paySummary, payType)
 
