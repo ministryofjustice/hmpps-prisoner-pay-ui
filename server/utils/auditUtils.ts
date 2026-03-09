@@ -5,7 +5,6 @@
 
 import { Request } from 'express'
 import { Page, Action, SubjectType } from '../services/auditService'
-import { PayTypeConfig } from '../@types/payTypes'
 import { Prisoner, PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
 
 // Functions to send view/action audit logs to the audit service
@@ -58,7 +57,7 @@ export function getDisplayedResults(prisoners: Prisoner[]) {
   }
 }
 
-export function getDisplayedPaySummary(paySummary: PayStatusPeriod[], payType: PayTypeConfig) {
+export function getDisplayedPaySummary(paySummary: PayStatusPeriod[], payType: string) {
   return {
     paySummaries: paySummary.map(record => ({
       prisonerNumber: record.prisonerNumber,
@@ -66,6 +65,6 @@ export function getDisplayedPaySummary(paySummary: PayStatusPeriod[], payType: P
       startDate: record.startDate,
       endDate: record.endDate,
     })),
-    payType: payType.type,
+    payType,
   }
 }

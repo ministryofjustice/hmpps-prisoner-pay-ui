@@ -1,5 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { CreatePayStatusPeriodRequest, UpdatePayStatusPeriodRequest } from '../@types/prisonerPayAPI/types'
+import {
+  CreatePayStatusPeriodRequest,
+  UpdatePayRateRequest,
+  UpdatePayStatusPeriodRequest,
+} from '../@types/prisonerPayAPI/types'
 import PrisonerPayApiClient from '../data/prisonerPayApiClient'
 
 export default class PrisonerPayService {
@@ -13,7 +16,7 @@ export default class PrisonerPayService {
     return this.prisonerPayApiClient.postPayStatusPeriod(request)
   }
 
-  patchPayRate(request: any): Promise<void> {
-    return this.prisonerPayApiClient.patchPayRate(request)
+  patchPayRate(payStatusId: string, request: UpdatePayRateRequest) {
+    return this.prisonerPayApiClient.patchPayRate(payStatusId, request)
   }
 }

@@ -54,4 +54,17 @@ export default {
         jsonBody: TestData.Prisoners(),
       },
     }),
+
+  stubGetPayRatesByPrison: (prisonCode: string = '.*', httpStatus = 200): SuperAgentRequest =>
+    stubFor({
+      request: {
+        method: 'GET',
+        urlPattern: `/pay-orchestrator-api/pay-rates/prison/${prisonCode}`,
+      },
+      response: {
+        status: httpStatus,
+        headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+        jsonBody: TestData.PayRates(),
+      },
+    }),
 }

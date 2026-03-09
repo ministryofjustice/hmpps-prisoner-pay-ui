@@ -13,7 +13,7 @@ export default function Index(services: Services): Router {
 
   router.use(setPayType)
 
-  const payAmountHandler = new PayAmountHandler()
+  const payAmountHandler = new PayAmountHandler(services.orchestratorService)
   get('/pay-amount', payAmountHandler.GET)
   post('/pay-amount', payAmountHandler.POST)
 

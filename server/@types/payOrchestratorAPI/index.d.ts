@@ -149,6 +149,55 @@ export interface components {
        */
       createdDateTime: string
     }
+    /** @description Pay Rate */
+    PayRate: {
+      /**
+       * Format: uuid
+       * @description The id
+       */
+      id: string
+      /**
+       * @description The prison code
+       */
+      prisonCode: string
+      /**
+       * @description The type
+       */
+      type: string
+      /**
+       * Format: date
+       * @description The start date
+       */
+      startDate: string
+      /**
+       * Format: int32
+       * @description The rate
+       */
+      rate: number
+      /**
+       * Format: date-time
+       * @description The date and time the pay rate was created
+       */
+      createdDateTime: string
+      /**
+       * @description The user who created the pay rate
+       */
+      createdBy: string
+      /**
+       * Format: date-time
+       * @description The date and time the pay rate was last updated
+       */
+      updatedDateTime: string
+      /**
+       * @description The user who last updated the pay rate
+       */
+      updatedBy: string
+      /**
+       * Format: int32
+       * @description The prisoner count
+       */
+      prisonerCount: number
+    }
   }
   responses: never
   parameters: never

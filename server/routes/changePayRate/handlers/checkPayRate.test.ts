@@ -20,6 +20,7 @@ describe('CheckPayRateHandler', () => {
       session: {
         payAmount: '1.00',
         selectedDate: '15/08/2024',
+        payRateId: 'e6a19788-4f80-4923-8aff-1e5fe26a6139',
       },
     } as Partial<Request>
     res = {
@@ -35,7 +36,9 @@ describe('CheckPayRateHandler', () => {
       redirectWithSuccess: jest.fn(),
     }
 
-    when(prisonerPayService.patchPayRate).calledWith(expect.any(Object)).mockResolvedValue(undefined)
+    when(prisonerPayService.patchPayRate)
+      .calledWith(expect.any(String), expect.any(Object))
+      .mockResolvedValue(undefined)
   })
 
   describe('GET', () => {
@@ -55,10 +58,9 @@ describe('CheckPayRateHandler', () => {
     it('should call patchPayRate with correct parameters', async () => {
       await handler.POST(req as Request, res as Response)
 
-      expect(prisonerPayService.patchPayRate).toHaveBeenCalledWith({
-        payType: 'LONG_TERM_SICK',
-        payAmount: '1.00',
-        effectiveDate: '2024-08-15',
+      expect(prisonerPayService.patchPayRate).toHaveBeenCalledWith('e6a19788-4f80-4923-8aff-1e5fe26a6139', {
+        startDate: '2024-08-15',
+        rate: 1,
       })
     })
 
