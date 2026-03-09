@@ -3,6 +3,7 @@ import { login, resetStubs } from '../../testUtils'
 import DashboardPage from '../../pages/dashboard/dashboardPage'
 import PayRatesPage from '../../pages/dashboard/payRatesPage'
 import payOrchestratorApi from '../../mockApis/payOrchestratorApi'
+import prisonerPayApi from '../../mockApis/prisonerPayApi'
 import PayOverviewPage from '../../pages/dashboard/payOverviewPage'
 import PayAmountPage from '../../pages/changePayRate/payAmountPage'
 import SetChangeDatePage from '../../pages/changePayRate/setChangeDatePage'
@@ -14,7 +15,11 @@ test.describe('Change Pay Rate', () => {
   })
 
   test('Can change a pay type pay rate', async ({ page }) => {
+    await payOrchestratorApi.stubPayOrchestratorHealthPing()
     await payOrchestratorApi.stubGetPayStatusPeriods()
+    await payOrchestratorApi.stubGetPayRatesByPrison()
+    await prisonerPayApi.stubPrisonerPayHealthPing()
+    await prisonerPayApi.stubPatchPayRate()
 
     const type = 'Long-term sick'
     await login(page)

@@ -9,6 +9,7 @@ const payTypes = [
   },
 ]
 
+// TODO: Change from hardcoded list to handle types from the api.
 export const getPayTypeBySlug = (slug: string) => {
   return payTypes.find(payType => payType.slug === slug)
 }

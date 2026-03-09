@@ -146,6 +146,21 @@ export interface components {
        */
       removeEndDate: boolean
     }
+    /** @description The update or create pay rate request */
+    UpdatePayRateRequest: {
+      /**
+       * Format: date
+       * @description The start date
+       * @example 2025-01-01
+       */
+      startDate: string
+      /**
+       * Format: int32
+       * @description The pay rate in pence per session
+       * @example 99
+       */
+      rate: number
+    }
   }
   responses: never
   parameters: never

@@ -41,4 +41,17 @@ export default {
         jsonBody: {},
       },
     }),
+
+  stubPatchPayRate: (httpStatus = 200): SuperAgentRequest =>
+    stubFor({
+      request: {
+        method: 'PUT',
+        urlPattern: '/prisoner-pay-api/pay-rates/.*',
+      },
+      response: {
+        status: httpStatus,
+        headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+        jsonBody: TestData.PayRates(),
+      },
+    }),
 }

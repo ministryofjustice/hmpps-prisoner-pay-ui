@@ -4,7 +4,7 @@ import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients
 import config from '../config'
 import logger from '../../logger'
 import TestData from '../testutils/testData'
-import { PayStatusPeriod, Prisoner } from '../@types/payOrchestratorAPI/types'
+import { PayStatusPeriod, Prisoner, PayRate } from '../@types/payOrchestratorAPI/types'
 
 export default class OrchestratorApiClient extends RestClient {
   constructor(authenticationClient: AuthenticationClient) {
@@ -45,8 +45,13 @@ export default class OrchestratorApiClient extends RestClient {
     )
   }
 
-  async getPayRates() {
-    return [TestData.PayRate()]
+  async getPayRates(prisonCode: string) {
+    return this.get<PayRate[]>(
+      {
+        path: `/pay-rates/prison/${prisonCode}`,
+      },
+      asSystem(),
+    )
   }
 
   async getPayRateByType(type: string) {

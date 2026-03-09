@@ -31,7 +31,7 @@ describe('PayRatesHandler', () => {
       .calledWith(expect.any(String), expect.any(String))
       .mockResolvedValue(TestData.PayStatusPeriods())
 
-    when(orchestratorService.getPayRates).calledWith().mockResolvedValue([TestData.PayRate()])
+     when(orchestratorService.getPayRates).calledWith('MDI').mockResolvedValue([TestData.PayRate()])
 
     jest.mocked(auditUtils.auditPageView).mockResolvedValue(undefined)
   })

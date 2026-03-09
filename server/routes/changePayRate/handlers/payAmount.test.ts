@@ -3,8 +3,12 @@ import { when } from 'jest-when'
 import PayAmountHandler from './payAmount'
 import validateForm from './payAmountValidation'
 import TestData from '../../../testutils/testData'
+import OrchestratorService from '../../../services/orchestratorService'
 
 jest.mock('./payAmountValidation')
+jest.mock('../../../services/orchestratorService')
+
+const orchestratorService = new OrchestratorService(null) as jest.Mocked<OrchestratorService>
 
 describe('PayAmountHandler', () => {
   let handler: PayAmountHandler
@@ -12,7 +16,7 @@ describe('PayAmountHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
-    handler = new PayAmountHandler()
+    handler = new PayAmountHandler(orchestratorService)
     req = {
       body: {
         payAmount: '1.00',
@@ -22,6 +26,7 @@ describe('PayAmountHandler', () => {
     res = {
       locals: {
         payType: {
+          type: 'LONG_TERM_SICK',
           dailyPayAmount: 0.65,
           description: 'Long-term sick',
         },
@@ -30,6 +35,8 @@ describe('PayAmountHandler', () => {
       render: jest.fn(),
       redirect: jest.fn(),
     }
+
+    when(orchestratorService.getPayRates).calledWith(expect.any(String)).mockResolvedValue(TestData.PayRates())
   })
 
   describe('GET', () => {
@@ -46,8 +53,17 @@ describe('PayAmountHandler', () => {
 
       await handler.POST(req as Request, res as Response)
 
-      expect(res.redirect).toHaveBeenCalled()
+      expect(res.redirect).toHaveBeenCalledWith('./set-change-date')
       expect(res.render).not.toHaveBeenCalled()
+    })
+
+    it('should set session data when validation passes', async () => {
+      when(validateForm).calledWith(expect.any(Object), expect.any(Number), expect.any(String)).mockReturnValue(null)
+
+      await handler.POST(req as Request, res as Response)
+
+      expect(req.session!.payAmount).toBe('1.00')
+      expect(req.session!.payRateId).toBe(TestData.PayRates()[0].id)
     })
 
     it('should render with error when validation fails', async () => {

@@ -16,15 +16,15 @@ export default class CheckPayRateHandler {
   }
 
   POST = async (req: Request, res: Response) => {
-    const { selectedDate } = req.session!
+    const { selectedDate, payRateId } = req.session!
     const { payType } = res.locals
     const parsedDate = parse(selectedDate, 'dd/MM/yyyy', new Date())
     const { payAmount } = req.session!
+    // TODO: Add util earlier in journey to calculate this so api can work in decimals but UI can display in £ and p
 
-    await this.prisonerPayService.patchPayRate({
-      payType: payType.type,
-      payAmount,
-      effectiveDate: format(parsedDate, 'yyyy-MM-dd'),
+    await this.prisonerPayService.patchPayRate(payRateId, {
+      startDate: format(parsedDate, 'yyyy-MM-dd'),
+      rate: parseFloat(payAmount),
     })
 
     await auditPageAction(

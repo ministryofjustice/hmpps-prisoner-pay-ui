@@ -9,6 +9,7 @@ test.describe('Edit pay homepage', () => {
 
   test.beforeEach(async ({ page }) => {
     await payOrchestratorApi.stubGetPayStatusPeriods()
+    await payOrchestratorApi.stubGetPayRatesByPrison()
     await login(page)
     await page.goto('/edit-pay')
   })
