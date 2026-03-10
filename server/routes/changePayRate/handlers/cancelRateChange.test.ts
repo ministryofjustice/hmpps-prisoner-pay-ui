@@ -3,8 +3,10 @@ import { when } from 'jest-when'
 import CancelRateChangeHandler from './cancelRateChange'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
+import * as auditUtils from '../../../utils/auditUtils'
 
 jest.mock('../../../services/orchestratorService')
+jest.mock('../../../utils/auditUtils')
 
 const orchestratorService = new OrchestratorService(null)
 const rateChange = TestData.PayRate()
@@ -29,6 +31,8 @@ describe('CancelRateChangeHandler', () => {
     }
 
     when(orchestratorService.getPayRateById).calledWith('rate-123').mockResolvedValue(TestData.PayRate())
+
+    jest.mocked(auditUtils.auditPageView).mockResolvedValue(undefined)
   })
 
   describe('GET', () => {

@@ -2,15 +2,21 @@ import { Request, Response } from 'express'
 import { parse } from 'date-fns'
 import validateForm from './cancelRateChangeValidation'
 import OrchestratorService from '../../../services/orchestratorService'
+import { auditPageView } from '../../../utils/auditUtils'
+import { Page } from '../../../services/auditService'
 
 export default class CancelRateChangeHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
 
   GET = async (req: Request, res: Response) => {
     const rateChange = await this.orchestratorService.getPayRateById(req.params.rateId)
+    const selectedDate = parse(rateChange.startDate, 'yyyy-MM-dd', new Date())
+
+    await auditPageView(req, Page.CANCEL_RATE_CHANGE, { payAmount: rateChange.rate, selectedDate })
+
     return res.render('pages/changePayRate/cancel-rate-change', {
       payAmount: rateChange.rate,
-      selectedDate: parse(rateChange.startDate, 'yyyy-MM-dd', new Date()),
+      selectedDate,
     })
   }
 
