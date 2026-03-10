@@ -12,18 +12,11 @@ export default class CancelRateChangeHandler {
     const rateChange = await this.orchestratorService.getPayRateById(req.params.rateId)
     const selectedDate = parse(rateChange.startDate, 'yyyy-MM-dd', new Date())
 
-    await auditPageView(
-      req,
-      Page.CANCEL_RATE_CHANGE,
-      {
-        payAmount: rateChange.rate,
-        selectedDate: selectedDate,
-      }
-    )
+    await auditPageView(req, Page.CANCEL_RATE_CHANGE, { payAmount: rateChange.rate, selectedDate })
 
     return res.render('pages/changePayRate/cancel-rate-change', {
       payAmount: rateChange.rate,
-      selectedDate: selectedDate,
+      selectedDate,
     })
   }
 
