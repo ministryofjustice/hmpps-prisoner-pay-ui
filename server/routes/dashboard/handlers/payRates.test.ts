@@ -4,8 +4,10 @@ import PayRatesHandler from './payRates'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
 import { getAllPayTypes } from '../../../utils/payTypeUtils'
+import * as auditUtils from '../../../utils/auditUtils'
 
 jest.mock('../../../services/orchestratorService')
+jest.mock('../../../utils/auditUtils')
 
 const orchestratorService = new OrchestratorService(null)
 
@@ -30,6 +32,8 @@ describe('PayRatesHandler', () => {
       .mockResolvedValue(TestData.PayStatusPeriods())
 
     when(orchestratorService.getPayRates).calledWith('MDI').mockResolvedValue([TestData.PayRate()])
+
+    jest.mocked(auditUtils.auditPageView).mockResolvedValue(undefined)
   })
 
   describe('GET', () => {

@@ -2,6 +2,8 @@ import { Request, Response } from 'express'
 import { format } from 'date-fns'
 import { getAllPayTypes } from '../../../utils/payTypeUtils'
 import OrchestratorService from '../../../services/orchestratorService'
+import { auditPageView } from '../../../utils/auditUtils'
+import { Page } from '../../../services/auditService'
 
 export default class PayRatesHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
@@ -22,6 +24,8 @@ export default class PayRatesHandler {
         currentRate: payRates.find(rate => rate.type === payType.type)?.rate || undefined,
       }
     })
+
+    await auditPageView(req, Page.PAY_RATES, { payTypeData })
 
     return res.render('pages/dashboard/pay-rates', {
       payTypes: payTypeData,

@@ -1,6 +1,8 @@
 import { format, parse } from 'date-fns'
 import { Request, Response } from 'express'
 import PrisonerPayService from '../../../services/prisonerPayService'
+import { Action, Page, SubjectType } from '../../../services/auditService'
+import { auditPageAction } from '../../../utils/auditUtils'
 
 export default class CheckPayRateHandler {
   constructor(private readonly prisonerPayService: PrisonerPayService) {}
@@ -24,6 +26,18 @@ export default class CheckPayRateHandler {
       startDate: format(parsedDate, 'yyyy-MM-dd'),
       rate: parseFloat(payAmount),
     })
+
+    await auditPageAction(
+      req,
+      Page.CHECK_CONFIRM_PAY,
+      Action.EDIT_PAY_RATE,
+      {
+        payType: payType.type,
+        payAmount,
+        effectiveDate: format(parsedDate, 'yyyy-MM-dd'),
+      },
+      SubjectType.NOT_APPLICABLE,
+    )
 
     const successMessage = `You've updated the pay for ${payType.description}. The change will take effect from ${format(parsedDate, 'd MMMM yyyy')}.`
     return res.redirectWithSuccess('../../pay-rates', 'Pay rate updated', successMessage)
