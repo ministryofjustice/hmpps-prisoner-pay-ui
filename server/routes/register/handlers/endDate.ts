@@ -1,12 +1,11 @@
 import { Request, Response } from 'express'
-import OrchestratorService from '../../../services/orchestratorService'
 import { formatFirstLastName } from '../../../utils/utils'
 import validateForm from './endDateValidation'
 import { auditPageView } from '../../../utils/auditUtils'
 import { Page, SubjectType } from '../../../services/auditService'
 
 export default class EndDateHandler {
-  constructor(private readonly orchestratorService: OrchestratorService) {}
+  constructor() {}
 
   GET = async (req: Request, res: Response) => {
     const prisoner = req.session!.selectedPrisoner

@@ -23,7 +23,7 @@ export default function Index(services: Services): Router {
   get('/cancel', cancelHandler.GET)
   post('/cancel', cancelHandler.POST)
 
-  const endDateHandler = new EndDateHandler(services.orchestratorService)
+  const endDateHandler = new EndDateHandler()
   post('/end-date', endDateHandler.POST)
   get('/end-date', endDateHandler.GET)
 
