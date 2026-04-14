@@ -14,7 +14,10 @@ generic-service:
     COMPONENT_API_URL: "https://frontend-components-preprod.hmpps.service.justice.gov.uk"
     ACTIVITIES_UI_URL: "https://activities-preprod.prison.service.justice.gov.uk/activities"
     PRISON_API_URL: "https://prison-api-preprod.prison.service.justice.gov.uk"
+    PRISONER_SEARCH_API_URL: "https://prisoner-search-preprod.prison.service.justice.gov.uk"
     DIGITAL_PRISON_SERVICE_URL: "https://digital-preprod.prison.service.justice.gov.uk"
+    PAY_ORCHESTRATOR_API_URL: "https://prisoner-pay-orchestrator-api-preprod.hmpps.service.justice.gov.uk"
+    PRISONER_PAY_API_URL: "https://prisoner-pay-api-preprod.hmpps.service.justice.gov.uk"
     ENVIRONMENT_NAME: PRE-PRODUCTION
     AUDIT_ENABLED: "false"
 
