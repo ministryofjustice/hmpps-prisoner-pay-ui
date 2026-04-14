@@ -78,7 +78,7 @@ envoy:
   logLevel: info
   image:
     repository: envoyproxy/envoy
-    tag: v1.33-latest
+    tag: v1.37-latest
   ports:
     proxy: 3128
     admin: 9901
