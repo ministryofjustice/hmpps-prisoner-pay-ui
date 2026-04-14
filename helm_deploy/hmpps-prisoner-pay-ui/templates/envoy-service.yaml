@@ -1,0 +1,15 @@
+{{- if .Values.envoy.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "hmpps-prisoner-pay-ui.envoyServiceName" . }}
+  labels:
+{{ include "hmpps-prisoner-pay-ui.envoyLabels" . | indent 4 }}
+spec:
+  selector:
+    app: {{ include "hmpps-prisoner-pay-ui.envoyDeploymentName" . }}
+  ports:
+    - name: https-proxy
+      port: {{ .Values.envoy.ports.proxy }}
+      targetPort: proxy
+{{- end }}

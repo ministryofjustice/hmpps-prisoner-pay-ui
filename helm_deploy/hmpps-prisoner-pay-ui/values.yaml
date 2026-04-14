@@ -34,6 +34,9 @@ generic-service:
     TOKEN_VERIFICATION_ENABLED: 'true'
     AUDIT_SQS_REGION: 'eu-west-2'
     AUDIT_SERVICE_NAME: 'hmpps-prisoner-pay-ui'
+    HTTP_PROXY: 'http://envoy-https-proxy:3128'
+    HTTPS_PROXY: 'http://envoy-https-proxy:3128'
+    NO_PROXY: 'localhost,127.0.0.1,envoy-https-proxy,.svc,.cluster.local'
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:
@@ -65,3 +68,38 @@ generic-service:
 
 generic-prometheus-alerts:
   targetApplication: hmpps-prisoner-pay-ui
+
+envoy:
+  enabled: true
+  deploymentName: envoy-https-proxy
+  configMapName: envoy-https-proxy-config
+  serviceName: envoy-https-proxy
+  replicas: 2
+  logLevel: info
+  image:
+    repository: envoyproxy/envoy
+    tag: v1.33-latest
+  ports:
+    proxy: 3128
+    admin: 9901
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  allowedHosts:
+    exact:
+      - sqs.eu-west-2.amazonaws.com
+    suffixes:
+      - .in.applicationinsights.azure.com
+      - .livediagnostics.monitor.azure.com
+  allowedHostEnvVars:
+    - HMPPS_AUTH_URL
+    - TOKEN_VERIFICATION_API_URL
+    - COMPONENT_API_URL
+    - PRISON_API_URL
+    - PAY_ORCHESTRATOR_API_URL
+    - PRISONER_PAY_API_URL
+    - PRISONER_SEARCH_API_URL
