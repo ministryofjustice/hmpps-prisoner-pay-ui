@@ -15,7 +15,6 @@ generic-service:
     ACTIVITIES_UI_URL: "https://activities-preprod.prison.service.justice.gov.uk/activities"
     PRISON_API_URL: "https://prison-api-preprod.prison.service.justice.gov.uk"
     DIGITAL_PRISON_SERVICE_URL: "https://digital-preprod.prison.service.justice.gov.uk"
-    EXAMPLE_API_URL: 'https://template-kotlin-preprod.hmpps.service.justice.gov.uk'
     ENVIRONMENT_NAME: PRE-PRODUCTION
     AUDIT_ENABLED: "false"
 

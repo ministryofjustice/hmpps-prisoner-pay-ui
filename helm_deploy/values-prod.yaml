@@ -13,7 +13,6 @@ generic-service:
     ACTIVITIES_UI_URL: "https://activities.prison.service.justice.gov.uk/activities"
     PRISON_API_URL: "https://prison-api.prison.service.justice.gov.uk"
     DIGITAL_PRISON_SERVICE_URL: "https://digital.prison.service.justice.gov.uk"
-    EXAMPLE_API_URL: 'https://template-kotlin.hmpps.service.justice.gov.uk'
     AUDIT_ENABLED: "false"
 
 generic-prometheus-alerts:

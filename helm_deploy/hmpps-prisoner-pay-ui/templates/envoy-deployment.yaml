@@ -1,0 +1,77 @@
+{{- if .Values.envoy.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hmpps-prisoner-pay-ui.envoyDeploymentName" . }}
+  labels:
+{{ include "hmpps-prisoner-pay-ui.envoyLabels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.envoy.replicas }}
+  selector:
+    matchLabels:
+      app: {{ include "hmpps-prisoner-pay-ui.envoyDeploymentName" . }}
+  template:
+    metadata:
+      labels:
+{{ include "hmpps-prisoner-pay-ui.envoyLabels" . | indent 8 }}
+      annotations:
+        checksum/envoy-config: {{ include (print $.Template.BasePath "/envoy-configmap.yaml") . | sha256sum }}
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        seccompProfile:
+          type: RuntimeDefault
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - {{ include "hmpps-prisoner-pay-ui.envoyDeploymentName" . }}
+                topologyKey: kubernetes.io/hostname
+      containers:
+        - name: envoy
+          image: {{ printf "%s:%s" .Values.envoy.image.repository .Values.envoy.image.tag | quote }}
+          args:
+            - -c
+            - /etc/envoy/envoy.yaml
+            - --service-cluster
+            - {{ include "hmpps-prisoner-pay-ui.envoyDeploymentName" . }}
+            - --log-level
+            - {{ .Values.envoy.logLevel }}
+          ports:
+            - name: proxy
+              containerPort: {{ .Values.envoy.ports.proxy }}
+            - name: admin
+              containerPort: {{ .Values.envoy.ports.admin }}
+          readinessProbe:
+            tcpSocket:
+              port: proxy
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: proxy
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+{{ toYaml .Values.envoy.resources | indent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: envoy-config
+              mountPath: /etc/envoy/envoy.yaml
+              subPath: envoy.yaml
+      volumes:
+        - name: envoy-config
+          configMap:
+            name: {{ include "hmpps-prisoner-pay-ui.envoyConfigMapName" . }}
+{{- end }}
