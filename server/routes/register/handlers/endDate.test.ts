@@ -1,15 +1,11 @@
 import { Request, Response } from 'express'
 import { format } from 'date-fns'
 import EndDateHandler from './endDate'
-import OrchestratorService from '../../../services/orchestratorService'
 import * as auditUtils from '../../../utils/auditUtils'
 import TestData from '../../../testutils/testData'
 import { Page, SubjectType } from '../../../services/auditService'
 
-jest.mock('../../../services/orchestratorService')
 jest.mock('../../../utils/auditUtils')
-
-const orchestratorService = new OrchestratorService(null)
 
 describe('EndDateHandler', () => {
   let handler: EndDateHandler
@@ -18,7 +14,7 @@ describe('EndDateHandler', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
-    handler = new EndDateHandler(orchestratorService)
+    handler = new EndDateHandler()
     req = {
       body: {},
       params: { payTypeSlug: 'long-term-sick' },
