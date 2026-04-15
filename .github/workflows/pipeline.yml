@@ -60,7 +60,7 @@ jobs:
       environment: ${{ matrix.environments }}
   build:
     name: Build docker image from hmpps-github-actions
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || endsWith(github.ref, 'docker-build')
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/docker_build.yml@v2 # WORKFLOW_VERSION
     needs:
       - node_integration_tests
@@ -69,10 +69,11 @@ jobs:
       docker_registry: 'ghcr.io'
       registry_org: 'ministryofjustice'
       additional_docker_tag: ${{ inputs.additional_docker_tag }}
-      push: ${{ inputs.push || inputs.push == null }}
+      push: ${{ (inputs.push || inputs.push == null) && github.ref == 'refs/heads/main' }}
       docker_multiplatform: false
   deploy_dev:
     name: Deploy to the development environment
+    if: github.ref == 'refs/heads/main'
     needs:
       - build
       - helm_lint
