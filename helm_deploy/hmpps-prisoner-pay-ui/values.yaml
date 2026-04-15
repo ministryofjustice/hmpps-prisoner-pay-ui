@@ -92,6 +92,8 @@ envoy:
   allowedHosts:
     exact:
       - sqs.eu-west-2.amazonaws.com
+      - agent.azureserviceprofiler.net
+      - sts.eu-west-2.amazonaws.com
     suffixes:
       - .in.applicationinsights.azure.com
       - .livediagnostics.monitor.azure.com
