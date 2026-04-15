@@ -22,7 +22,7 @@ ARG BUILD_NUMBER
 ARG GIT_REF
 ARG GIT_BRANCH
 
-COPY package*.json ./
+COPY package*.json .npmrc ./
 RUN npm ci --no-audit
 ENV NODE_ENV='production'
 
