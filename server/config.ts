@@ -2,6 +2,23 @@ import { AgentConfig } from '@ministryofjustice/hmpps-rest-client'
 
 const production = process.env.NODE_ENV === 'production'
 
+// Should the egress filter policy be adopted hmpps-wide
+// this code might be able to be merged into the hmpps-rest-client instead
+const buildProxyEnv = () => ({
+  HTTP_PROXY: process.env.HTTP_PROXY,
+  HTTPS_PROXY: process.env.HTTPS_PROXY,
+  NO_PROXY: process.env.NO_PROXY,
+  http_proxy: process.env.http_proxy,
+  https_proxy: process.env.https_proxy,
+  no_proxy: process.env.no_proxy,
+})
+
+class ProxyAwareAgentConfig extends AgentConfig {
+  proxyEnv = buildProxyEnv()
+}
+
+const buildAgentConfig = (timeout: number) => new ProxyAwareAgentConfig(timeout)
+
 function get<T>(name: string, fallback: T, options = { requireInProduction: false }): T | string {
   if (process.env[name]) {
     return process.env[name]
@@ -56,7 +73,7 @@ export default {
         response: Number(get('HMPPS_AUTH_TIMEOUT_RESPONSE', 10000)),
         deadline: Number(get('HMPPS_AUTH_TIMEOUT_DEADLINE', 10000)),
       },
-      agent: new AgentConfig(Number(get('HMPPS_AUTH_TIMEOUT_RESPONSE', 10000))),
+      agent: buildAgentConfig(Number(get('HMPPS_AUTH_TIMEOUT_RESPONSE', 10000))),
       authClientId: get('AUTH_CODE_CLIENT_ID', 'clientid', requiredInProduction),
       authClientSecret: get('AUTH_CODE_CLIENT_SECRET', 'clientsecret', requiredInProduction),
       systemClientId: get('CLIENT_CREDS_CLIENT_ID', 'clientid', requiredInProduction),
@@ -69,7 +86,7 @@ export default {
         response: Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000)),
         deadline: Number(get('TOKEN_VERIFICATION_API_TIMEOUT_DEADLINE', 5000)),
       },
-      agent: new AgentConfig(Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000))),
+      agent: buildAgentConfig(Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000))),
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
     payOrchestratorApi: {
@@ -79,7 +96,7 @@ export default {
         response: Number(get('PAY_ORCHESTRATOR_API_TIMEOUT_RESPONSE', 30000)),
         deadline: Number(get('PAY_ORCHESTRATOR_API_TIMEOUT_DEADLINE', 30000)),
       },
-      agent: new AgentConfig(Number(get('PAY_ORCHESTRATOR_API_TIMEOUT_RESPONSE', 30000))),
+      agent: buildAgentConfig(Number(get('PAY_ORCHESTRATOR_API_TIMEOUT_RESPONSE', 30000))),
     },
     prisonerPayApi: {
       url: get('PRISONER_PAY_API_URL', 'http://localhost:8081', requiredInProduction),
@@ -88,7 +105,7 @@ export default {
         response: Number(get('PRISONER_PAY_API_TIMEOUT_RESPONSE', 30000)),
         deadline: Number(get('PRISONER_PAY_API_TIMEOUT_DEADLINE', 30000)),
       },
-      agent: new AgentConfig(Number(get('PRISONER_PAY_API_TIMEOUT_RESPONSE', 30000))),
+      agent: buildAgentConfig(Number(get('PRISONER_PAY_API_TIMEOUT_RESPONSE', 30000))),
     },
     componentApi: {
       url: get('COMPONENT_API_URL', 'http://localhost:8099', requiredInProduction),
@@ -97,7 +114,7 @@ export default {
         response: Number(get('COMPONENT_TIMEOUT_RESPONSE', 10000)),
         deadline: Number(get('COMPONENT_TIMEOUT_DEADLINE', 10000)),
       },
-      agent: new AgentConfig(Number(get('COMPONENT_TIMEOUT_DEADLINE', 10000))),
+      agent: buildAgentConfig(Number(get('COMPONENT_TIMEOUT_DEADLINE', 10000))),
     },
     prisonApi: {
       url: get('PRISON_API_URL', 'http://localhost:8080', requiredInProduction),
@@ -106,7 +123,7 @@ export default {
         response: Number(get('PRISON_API_TIMEOUT_RESPONSE', 30000)),
         deadline: Number(get('PRISON_API_TIMEOUT_DEADLINE', 30000)),
       },
-      agent: new AgentConfig(Number(get('PRISON_API_TIMEOUT_RESPONSE', 30000))),
+      agent: buildAgentConfig(Number(get('PRISON_API_TIMEOUT_RESPONSE', 30000))),
     },
   },
   sqs: {
