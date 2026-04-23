@@ -30,7 +30,7 @@
     "npm": "^11"
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.1031.0",
+    "@aws-sdk/client-sqs": "^3.1032.0",
     "@ministryofjustice/frontend": "^8.0.1",
     "@ministryofjustice/hmpps-auth-clients": "^1.0.2",
     "@ministryofjustice/hmpps-connect-dps-components": "5.4.0",
@@ -90,7 +90,7 @@
     "jest": "^30.3.0",
     "jest-html-reporter": "^4.4.0",
     "jest-junit": "^16.0.0",
-    "jest-when": "^4.0.1",
+    "jest-when": "^4.0.2",
     "jsonwebtoken": "^9.0.3",
     "lint-staged": "^16.4.0",
     "nock": "^14.0.12",
