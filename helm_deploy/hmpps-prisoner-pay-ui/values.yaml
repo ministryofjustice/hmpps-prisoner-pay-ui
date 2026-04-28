@@ -42,6 +42,8 @@ generic-service:
     http_proxy: 'http://envoy-https-proxy:3128'
     https_proxy: 'http://envoy-https-proxy:3128'
     no_proxy: 'localhost,127.0.0.1,envoy-https-proxy'
+    # Statsbeat doesnt work through the proxy and doesnt do anything we need
+    APPLICATION_INSIGHTS_NO_STATSBEAT: 'true'
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:
