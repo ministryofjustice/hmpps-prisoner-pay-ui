@@ -36,7 +36,6 @@ generic-service:
     AUDIT_SERVICE_NAME: 'hmpps-prisoner-pay-ui'
     # Keep both cases because Application Insights reads lowercase proxy vars
     # directly, while the rest of the app stack conventionally uses uppercase.
-    NODE_USE_ENV_PROXY: "1"
     HTTP_PROXY: 'http://envoy-https-proxy:3128'
     HTTPS_PROXY: 'http://envoy-https-proxy:3128'
     NO_PROXY: 'localhost,127.0.0.1,envoy-https-proxy'
