@@ -76,11 +76,9 @@ generic-service:
 generic-prometheus-alerts:
   targetApplication: hmpps-prisoner-pay-ui
 
-envoy:
+envoy-forward-proxy:
   enabled: true
-  deploymentName: envoy-https-proxy
-  configMapName: envoy-https-proxy-config
-  serviceName: envoy-https-proxy
+  fullnameOverride: envoy-https-proxy
   replicas: 2
   logLevel: info
   image:
@@ -96,19 +94,4 @@ envoy:
     limits:
       cpu: 500m
       memory: 256Mi
-  allowedHosts:
-    exact:
-      - sqs.eu-west-2.amazonaws.com
-      - agent.azureserviceprofiler.net
-      - sts.eu-west-2.amazonaws.com
-    suffixes:
-      - .in.applicationinsights.azure.com
-      - .livediagnostics.monitor.azure.com
-  allowedHostEnvVars:
-    - HMPPS_AUTH_URL
-    - TOKEN_VERIFICATION_API_URL
-    - COMPONENT_API_URL
-    - PRISON_API_URL
-    - PAY_ORCHESTRATOR_API_URL
-    - PRISONER_PAY_API_URL
-    - PRISONER_SEARCH_API_URL
+
