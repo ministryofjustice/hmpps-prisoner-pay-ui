@@ -34,14 +34,6 @@ generic-service:
     TOKEN_VERIFICATION_ENABLED: 'true'
     AUDIT_SQS_REGION: 'eu-west-2'
     AUDIT_SERVICE_NAME: 'hmpps-prisoner-pay-ui'
-    # Keep both cases because Application Insights reads lowercase proxy vars
-    # directly, while the rest of the app stack conventionally uses uppercase.
-    HTTP_PROXY: 'http://envoy-https-proxy:3128'
-    HTTPS_PROXY: 'http://envoy-https-proxy:3128'
-    NO_PROXY: 'localhost,127.0.0.1,envoy-https-proxy'
-    http_proxy: 'http://envoy-https-proxy:3128'
-    https_proxy: 'http://envoy-https-proxy:3128'
-    no_proxy: 'localhost,127.0.0.1,envoy-https-proxy'
     # Statsbeat doesnt work through the proxy and doesnt do anything we need
     APPLICATION_INSIGHTS_NO_STATSBEAT: 'true'
 
@@ -68,6 +60,13 @@ generic-service:
     sqs-hmpps-audit-secret:
       AUDIT_SQS_QUEUE_URL: 'sqs_queue_url'
       AUDIT_SQS_QUEUE_NAME: 'sqs_queue_name'
+    hmpps-prisoner-pay-ui-envoy-https-proxy-env:
+      HTTP_PROXY: "HTTP_PROXY"
+      HTTPS_PROXY: "HTTPS_PROXY"
+      NO_PROXY: "NO_PROXY"
+      http_proxy: "HTTP_PROXY"
+      https_proxy: "HTTPS_PROXY"
+      no_proxy: "NO_PROXY"
 
   allowlist:
     groups:
@@ -75,23 +74,4 @@ generic-service:
 
 generic-prometheus-alerts:
   targetApplication: hmpps-prisoner-pay-ui
-
-envoy-forward-proxy:
-  enabled: true
-  fullnameOverride: envoy-https-proxy
-  replicas: 2
-  logLevel: info
-  image:
-    repository: envoyproxy/envoy
-    tag: v1.38-latest
-  ports:
-    proxy: 3128
-    admin: 9901
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 500m
-      memory: 256Mi
 
