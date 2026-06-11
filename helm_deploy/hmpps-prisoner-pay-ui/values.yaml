@@ -60,7 +60,7 @@ generic-service:
     sqs-hmpps-audit-secret:
       AUDIT_SQS_QUEUE_URL: 'sqs_queue_url'
       AUDIT_SQS_QUEUE_NAME: 'sqs_queue_name'
-    hmpps-prisoner-pay-ui-envoy-https-proxy-env:
+    hmpps-envoy-https-proxy-env:
       HTTP_PROXY: "HTTP_PROXY"
       HTTPS_PROXY: "HTTPS_PROXY"
       NO_PROXY: "NO_PROXY"
