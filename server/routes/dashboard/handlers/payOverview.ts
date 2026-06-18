@@ -4,14 +4,14 @@ import OrchestratorService from '../../../services/orchestratorService'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 import { auditPageView, getDisplayedPaySummary } from '../../../utils/auditUtils'
 import { Page, SubjectType } from '../../../services/auditService'
+import { getSingleParam } from '../../../utils/utils'
 
 export default class PayOverviewHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
 
   GET = async (req: Request, res: Response) => {
     const { activeCaseLoadId } = res.locals.user
-    const { payTypeSlug } = req.params
-    const payType = getPayTypeBySlug(payTypeSlug)
+    const payType = getPayTypeBySlug(getSingleParam(req.params.payTypeSlug))
     const paySummary = (
       await this.orchestratorService.getPayStatusPeriodsByType(format(new Date(), 'yyyy-MM-dd'), activeCaseLoadId)
     ).filter(period => period.type === payType.type)

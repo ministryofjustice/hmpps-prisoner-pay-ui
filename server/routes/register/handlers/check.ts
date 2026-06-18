@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { format, parse } from 'date-fns'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
-import { formatFirstLastName } from '../../../utils/utils'
+import { formatFirstLastName, getSingleParam } from '../../../utils/utils'
 import PrisonerPayService from '../../../services/prisonerPayService'
 import { CreatePayStatusPeriodRequest } from '../../../@types/prisonerPayAPI/types'
 import { auditPageAction, auditPageView } from '../../../utils/auditUtils'
@@ -14,7 +14,7 @@ export default class CheckHandler {
     const prisoner = req.session!.selectedPrisoner
     const { prisonerNumber } = prisoner
     const { selectedDate } = req.session!
-    const { type: payType } = getPayTypeBySlug(req.params.payTypeSlug)
+    const { type: payType } = getPayTypeBySlug(getSingleParam(req.params.payTypeSlug))
     const returnTo = 'check'
     req.session.returnTo = returnTo
 
@@ -38,7 +38,7 @@ export default class CheckHandler {
     const now = new Date()
     const prisoner = req.session!.selectedPrisoner
     const { prisonerNumber } = prisoner
-    const { type: payType } = getPayTypeBySlug(req.params.payTypeSlug)
+    const { type: payType } = getPayTypeBySlug(getSingleParam(req.params.payTypeSlug))
     const { selectedDate } = req.session!
 
     const postRequest: CreatePayStatusPeriodRequest = {

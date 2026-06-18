@@ -3,6 +3,7 @@ import { format, isToday, parse } from 'date-fns'
 import OrchestratorService from '../../../services/orchestratorService'
 import { auditPageView } from '../../../utils/auditUtils'
 import { Page, SubjectType } from '../../../services/auditService'
+import { getSingleParam } from '../../../utils/utils'
 
 export default class ConfirmedRemovalDateHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
@@ -10,7 +11,7 @@ export default class ConfirmedRemovalDateHandler {
   GET = async (req: Request, res: Response) => {
     const selectedDate = parse(req.session!.selectedDate, 'dd/MM/yyyy', new Date())
     const formattedDate = format(selectedDate, 'EEEE, d MMMM yyyy')
-    const { payStatusId } = req.params
+    const payStatusId = getSingleParam(req.params.payStatusId)
     const payStatusPeriod = await this.orchestratorService.getPayStatusPeriodById(payStatusId)
     const { endDate, type, prisonerNumber } = payStatusPeriod
 
