@@ -137,3 +137,6 @@ export const toFixed = (num: number, decimals = 2) => {
   if (!num && num !== 0) return null
   return num.toFixed(decimals)
 }
+
+export const getSingleParam = (value: string | string[] | undefined): string =>
+  Array.isArray(value) ? (value[0] ?? '') : (value ?? '')

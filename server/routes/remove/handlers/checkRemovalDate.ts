@@ -5,6 +5,7 @@ import PrisonerPayService from '../../../services/prisonerPayService'
 import { auditPageAction, auditPageView } from '../../../utils/auditUtils'
 import { Action, Page, SubjectType } from '../../../services/auditService'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
+import { getSingleParam } from '../../../utils/utils'
 
 export default class CheckRemovalDateHandler {
   constructor(
@@ -15,10 +16,10 @@ export default class CheckRemovalDateHandler {
   GET = async (req: Request, res: Response) => {
     const selectedDate = parse(req.session!.selectedDate, 'dd/MM/yyyy', new Date())
     const formattedDate = format(selectedDate, 'EEEE, d MMMM yyyy')
-    const { payStatusId } = req.params
+    const payStatusId = getSingleParam(req.params.payStatusId)
     const payStatusPeriod = await this.orchestratorService.getPayStatusPeriodById(payStatusId)
     const { prisonerNumber } = payStatusPeriod
-    const { type: payType } = getPayTypeBySlug(req.params.payTypeSlug)
+    const { type: payType } = getPayTypeBySlug(getSingleParam(req.params.payTypeSlug))
     const returnTo = 'check-removal-date'
     req.session.returnTo = returnTo
 
@@ -38,9 +39,9 @@ export default class CheckRemovalDateHandler {
   }
 
   POST = async (req: Request, res: Response) => {
-    const { payStatusId } = req.params
+    const payStatusId = getSingleParam(req.params.payStatusId)
     const selectedDate = parse(req.session!.selectedDate, 'dd/MM/yyyy', new Date())
-    const { type: payType } = getPayTypeBySlug(req.params.payTypeSlug)
+    const { type: payType } = getPayTypeBySlug(getSingleParam(req.params.payTypeSlug))
 
     await this.prisonerPayService.patchPayStatusPeriod(payStatusId, {
       endDate: format(selectedDate, 'yyyy-MM-dd'),

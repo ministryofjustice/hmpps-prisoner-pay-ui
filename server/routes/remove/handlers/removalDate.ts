@@ -5,12 +5,13 @@ import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 import validateForm from './removalDateValidation'
 import { auditPageView } from '../../../utils/auditUtils'
 import { Page, SubjectType } from '../../../services/auditService'
+import { getSingleParam } from '../../../utils/utils'
 
 export default class RemovalDateHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
 
   GET = async (req: Request, res: Response) => {
-    const { payStatusId } = req.params
+    const payStatusId = getSingleParam(req.params.payStatusId)
     const payStatusPeriod = await this.orchestratorService.getPayStatusPeriodById(payStatusId)
     const { prisonerNumber, type, firstName, lastName } = payStatusPeriod
     req.session.selectedPrisoner = { prisonerNumber, firstName, lastName }
@@ -36,9 +37,9 @@ export default class RemovalDateHandler {
 
     const errors = validateForm({ removalDateOption, removalDate })
     if (errors) {
-      const { payStatusId } = req.params
+      const payStatusId = getSingleParam(req.params.payStatusId)
       const payStatusPeriod = await this.orchestratorService.getPayStatusPeriodById(payStatusId)
-      const payType = getPayTypeBySlug(req.params.payTypeSlug)
+      const payType = getPayTypeBySlug(getSingleParam(req.params.payTypeSlug))
       return res.render('pages/remove/removal-date', {
         payStatusPeriod,
         payType,
