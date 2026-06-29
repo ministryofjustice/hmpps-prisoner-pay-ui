@@ -30,13 +30,13 @@
     "npm": "^11"
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.1073.0",
+    "@aws-sdk/client-sqs": "^3.1075.0",
     "@ministryofjustice/frontend": "^9.0.0",
     "@ministryofjustice/hmpps-auth-clients": "^3.0.0",
-    "@ministryofjustice/hmpps-connect-dps-components": "6.2.0",
+    "@ministryofjustice/hmpps-connect-dps-components": "6.2.1",
     "@ministryofjustice/hmpps-monitoring": "^2.1.0",
-    "@ministryofjustice/hmpps-rest-client": "^2.1.0",
-    "@ministryofjustice/hmpps-azure-telemetry": "^1.0.0",
+    "@ministryofjustice/hmpps-rest-client": "^2.2.0",
+    "@ministryofjustice/hmpps-azure-telemetry": "^1.0.1",
     "body-parser": "^2.3.0",
     "bunyan": "^1.8.15",
     "bunyan-format": "^0.2.1",
@@ -55,7 +55,7 @@
     "nunjucks": "^3.2.4",
     "passport": "^0.7.0",
     "passport-oauth2": "^1.8.0",
-    "redis": "^6.0.0",
+    "redis": "^6.0.1",
     "superagent": "^10.3.0"
   },
   "devDependencies": {
@@ -63,7 +63,7 @@
     "@ministryofjustice/eslint-config-hmpps": "2.0.0-alpha.2",
     "@ministryofjustice/hmpps-npm-script-allowlist": "0.0.6",
     "@ministryofjustice/hmpps-precommit-hooks": "^3.0.1",
-    "@playwright/test": "^1.61.0",
+    "@playwright/test": "^1.61.1",
     "@tsconfig/node24": "^24.0.4",
     "@types/bunyan": "^1.8.11",
     "@types/bunyan-format": "^0.2.9",
@@ -103,7 +103,7 @@
     "brace-expansion@^1.1.0": "1.1.15",
     "brace-expansion@^2.0.0": "2.1.1",
     "brace-expansion@^5.0.0": "5.0.6",
-    "qs": "6.15.2",
+    "qs": "6.15.3",
     "sinon": {
       "diff": "9.0.0"
     }
