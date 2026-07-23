@@ -1,6 +1,8 @@
 # Stage: base image
 FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine AS base
 
+WORKDIR /app
+
 ARG BUILD_NUMBER
 ARG GIT_REF
 ARG GIT_BRANCH
@@ -23,16 +25,18 @@ ARG GIT_REF
 ARG GIT_BRANCH
 
 COPY package*.json .allowed-scripts.mjs .npmrc ./
-RUN npm ci --no-audit
+RUN NPM_CONFIG_AUDIT=false NPM_CONFIG_FUND=false npm run setup
 ENV NODE_ENV='production'
 
 COPY . .
 RUN npm run build
 
-RUN npm prune --no-audit --omit=dev
+RUN npm prune --no-audit --no-fund --omit=dev
 
 # Stage: copy production assets and dependencies
-FROM base
+FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine-runtime
+
+WORKDIR /app
 
 COPY --from=build --chown=appuser:appgroup \
         /app/package.json \
@@ -49,4 +53,4 @@ EXPOSE 3000
 ENV NODE_ENV='production'
 USER 2000
 
-CMD [ "npm", "start" ]
+CMD [ "node", "dist/server.js" ]
