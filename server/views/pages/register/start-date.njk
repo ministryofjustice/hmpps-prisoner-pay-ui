@@ -1,0 +1,52 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from 'moj/components/date-picker/macro.njk' import mojDatePicker %}
+{% set pageTitle = applicationName + " - Start date" %}
+{% set mainClasses = "govuk-body" %}
+{% set backLinkHref = "./add-prisoner-results?query=" + (searchQuery | urlencode) %}
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">{{ payType.description }}</span>
+      <form method="POST">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        {% set dateInput %}
+          {{
+            mojDatePicker({
+              id: "startDate",
+              name: "startDate",
+              leadingZeros: "true",
+              classes: "moj-datepicker--fixed-width",
+              label: { text: "Enter or select the start date" },
+              hint: { text: "For example, 27/03/2027" },
+              errorMessage: errors | findError("startDate"),
+              value: startDate
+            })
+          }}
+        {% endset %}
+        {{
+          govukRadios({
+            idPrefix: "startDateOption",
+            name: "startDateOption",
+            fieldset: { legend: {
+              text: "When is " + prisonerName + "’s first day on this status?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            } },
+            errorMessage: errors | findError("startDateOption"),
+            items: [
+              { value: "today", text: "Today - " + today, checked: startDateOption == "today" },
+              { value: "tomorrow", text: "Tomorrow - " + tomorrow, checked: startDateOption == "tomorrow" },
+              { value: "other", text: "A different future date", checked: startDateOption == "other", conditional: { html: dateInput } }
+            ]
+          })
+        }}
+        <div class="govuk-button-group">
+          {{ govukButton({ text: "Continue" }) }}
+          <a class="govuk-link--no-visited-state" href="cancel">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

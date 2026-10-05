@@ -1,69 +1,71 @@
 {% extends "layout.njk" %}
-
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from 'moj/components/date-picker/macro.njk' import mojDatePicker %}
 
 {% set pageTitle = applicationName + " - End date" %}
 {% set mainClasses = "govuk-body" %}
-{% set backLinkHref = "./add-prisoner" %}
+{% set backLinkHref = "./start-date" %}
 
 {% block content %}
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">{{ payType.description }}</span>
+      <form method="POST">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        {{
+          govukRadios({
+              classes: "govuk-radios",
+              id: "endDateSelection",
+              name: "endDateSelection",
+              fieldset: {
+                  legend: {
+                      text: "Do you want to add an end date for " + prisonerName + "'s " + payType.description + "?",
+                      isPageHeading: true,
+                      classes: "govuk-fieldset__legend--l"
+                  }
+              },
+              items:
+              [
+                {
+                    value: "yes",
+                    text: "Yes",
+                    checked: endDateSelection == "yes",
+                    conditional: {
+                      html: mojDatePicker({
+                          id: 'selectedDate',
+                          name: 'selectedDate',
+                          leadingZeros: 'true',
+                          classes: 'moj-datepicker--fixed-width',
+                          label: {
+                              text: 'Input the end date',
+                              classes: 'govuk-visually-hidden'
+                          },
+                          value: selectedDate,
+                          errorMessage: errors | findError("selectedDate")
+                      })
+                    }
+                },
+                {
+                      value: "no",
+                      text: "No",
+                      checked: endDateSelection == "no"
+                }
+              ],
+              errorMessage: errors | findError("endDateSelection")
+          })
+        }}
 
-            <span class="govuk-caption-l">{{ payType.description }}</span>
-            <form method="POST">
-                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-                {{ govukRadios({
-                    classes: "govuk-radios",
-                    id: "endDateSelection",
-                    name: "endDateSelection",
-                    fieldset: {
-                        legend: {
-                            text: "Do you want to add an end date for " + prisonerName + "'s " + payType.description + "?",
-                            isPageHeading: true,
-                            classes: "govuk-fieldset__legend--l"
-                        }
-                    },
-                    items: 
-                    [
-                      {
-                          value: "yes",
-                          text: "Yes",
-                          checked: endDateSelection == "yes",
-                          conditional: {
-                            html: mojDatePicker({
-                                id: 'selectedDate',
-                                name: 'selectedDate',
-                                leadingZeros: 'true',
-                                classes: 'moj-datepicker--fixed-width',
-                                label: {
-                                    text: 'Input the end date',
-                                    classes: 'govuk-visually-hidden'
-                                },
-                                value: selectedDate,
-                                errorMessage: errors | findError("selectedDate")
-                            })
-                          }
-                      },
-                      {
-                            value: "no",
-                            text: "No",
-                            checked: endDateSelection == "no"
-                      }
-                    ],
-                    errorMessage: errors | findError("endDateSelection")
-                }) }}
+        <div class="govuk-button-group">
+          {{
+            govukButton({
+                text: "Continue"
+            })
+          }}
 
-                <div class="govuk-button-group">
-                    {{ govukButton({
-                        text: "Continue"
-                    }) }}
-
-                    <a class="govuk-link--no-visited-state" href="cancel">Cancel</a>
-                </div>
-            </form>  
+          <a class="govuk-link--no-visited-state" href="cancel">Cancel</a>
         </div>
+      </form>
     </div>
+  </div>
 {% endblock %}

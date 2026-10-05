@@ -51,7 +51,12 @@ export default class AddPrisonerResultsHandler {
     }
 
     const prisoner = prisonerResults.find(p => p.prisonerNumber === selectedPrisoner)
-    req.session!.selectedPrisoner = prisoner
-    return res.redirect('end-date')
+    const previousJourney = req.session.registerJourney
+    req.session.registerJourney = {
+      ...(previousJourney?.prisoner.prisonerNumber === prisoner.prisonerNumber ? previousJourney : {}),
+      prisoner,
+      searchQuery: query,
+    }
+    return res.redirect('start-date')
   }
 }

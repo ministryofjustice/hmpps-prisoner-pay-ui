@@ -5,6 +5,7 @@ import AddPrisonerResultsHandler from './handlers/addPrisonerResults'
 import CancelHandler from './handlers/cancel'
 import CheckHandler from './handlers/check'
 import EndDateHandler from './handlers/endDate'
+import StartDateHandler from './handlers/startDate'
 import { Services } from '../../services'
 import setPayType from '../../middleware/setPayType'
 
@@ -16,12 +17,17 @@ export default function Index(services: Services): Router {
   router.use(setPayType)
 
   const addPrisonerHandler = new AddPrisonerHandler()
+  get('/new', addPrisonerHandler.NEW)
   get('/add-prisoner', addPrisonerHandler.GET)
   post('/add-prisoner', addPrisonerHandler.POST)
 
   const cancelHandler = new CancelHandler()
   get('/cancel', cancelHandler.GET)
   post('/cancel', cancelHandler.POST)
+
+  const startDateHandler = new StartDateHandler()
+  get('/start-date', startDateHandler.GET)
+  post('/start-date', startDateHandler.POST)
 
   const endDateHandler = new EndDateHandler()
   post('/end-date', endDateHandler.POST)

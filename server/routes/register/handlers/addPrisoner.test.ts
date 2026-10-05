@@ -89,4 +89,18 @@ describe('AddPrisonerHandler', () => {
       )
     })
   })
+  it('starts a new registration without changing other journeys or authentication', async () => {
+    req.session = {
+      registerJourney: { prisoner: TestData.Prisoner(), searchQuery: 'test', startDate: '2026-01-20' },
+      registerConfirmation: { prisoner: TestData.Prisoner(), startDate: '2026-01-20' },
+      selectedDate: 'other journey date',
+      returnTo: '/authentication-return',
+    } as Request['session']
+    await handler.NEW(req as Request, res as Response)
+    expect(req.session.registerJourney).toBeUndefined()
+    expect(req.session.registerConfirmation).toBeUndefined()
+    expect(req.session.selectedDate).toBe('other journey date')
+    expect(req.session.returnTo).toBe('/authentication-return')
+    expect(res.redirect).toHaveBeenCalledWith('add-prisoner')
+  })
 })

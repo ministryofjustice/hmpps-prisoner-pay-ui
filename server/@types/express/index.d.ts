@@ -1,5 +1,6 @@
 import { PrisonUser } from '../../interfaces/hmppsUser'
 import AuditService from '../../services/auditService'
+import { RegisterJourney, RegisterConfirmation } from '../../routes/register/journey'
 
 export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
@@ -18,6 +19,8 @@ export declare module 'express-session' {
       cellLocation?: string
       status?: string
     }
+    registerJourney?: RegisterJourney
+    registerConfirmation?: RegisterConfirmation
     selectedDate: string
     payAmount: string
     passport: {

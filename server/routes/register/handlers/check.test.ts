@@ -17,13 +17,18 @@ describe('CheckHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2025-01-23T12:00:00Z'))
     jest.clearAllMocks()
     handler = new CheckHandler(prisonerPayService)
     req = {
       params: { payTypeSlug: 'long-term-sick' },
       session: {
-        selectedPrisoner: TestData.Prisoner(),
-        selectedDate: '25/01/2025',
+        registerJourney: {
+          prisoner: TestData.Prisoner(),
+          endDate: '25/01/2025',
+          startDate: '2025-01-24',
+          endDateSelection: 'yes',
+        },
       },
     } as unknown as Partial<Request>
     res = {
@@ -42,6 +47,8 @@ describe('CheckHandler', () => {
     jest.mocked(auditUtils.auditPageAction).mockResolvedValue(undefined)
   })
 
+  afterEach(() => jest.useRealTimers())
+
   describe('GET', () => {
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
@@ -50,6 +57,7 @@ describe('CheckHandler', () => {
         prisonerName: 'Nicaigh Johnustine',
         prisoner: TestData.Prisoner(),
         selectedDate: '25/01/2025',
+        startDate: '2025-01-24',
       })
     })
 
@@ -62,6 +70,7 @@ describe('CheckHandler', () => {
         {
           payType: 'LONG_TERM_SICK',
           endDate: '25/01/2025',
+          startDate: '2025-01-24',
         },
         SubjectType.PRISONER_ID,
         null,
@@ -78,7 +87,7 @@ describe('CheckHandler', () => {
         expect.objectContaining({
           prisonerNumber: TestData.Prisoner().prisonerNumber,
           type: 'LONG_TERM_SICK',
-          startDate: expect.any(String),
+          startDate: '2025-01-24',
           endDate: '2025-01-25',
         }),
       )
@@ -100,10 +109,71 @@ describe('CheckHandler', () => {
         {
           payType: 'LONG_TERM_SICK',
           endDate: '25/01/2025',
+          startDate: '2025-01-24',
         },
         SubjectType.PRISONER_ID,
         TestData.Prisoner().prisonerNumber,
       )
     })
+  })
+  it.each(['GET', 'POST'] as const)('returns to start date when it is missing on %s', async method => {
+    delete req.session.registerJourney.startDate
+    await handler[method](req as Request, res as Response)
+    expect(res.redirect).toHaveBeenCalledWith('start-date')
+    expect(prisonerPayService.postPayStatusPeriod).not.toHaveBeenCalled()
+  })
+  it.each(['GET', 'POST'] as const)('rechecks the date range on %s after start date changes', async method => {
+    req.session.registerJourney.startDate = '2025-01-26'
+    await handler[method](req as Request, res as Response)
+    expect(res.redirect).toHaveBeenCalledWith('end-date')
+    expect(prisonerPayService.postPayStatusPeriod).not.toHaveBeenCalled()
+  })
+  it('renders check answers when no end date was selected', async () => {
+    req.session.registerJourney.endDateSelection = 'no'
+    delete req.session.registerJourney.endDate
+    await handler.GET(req as Request, res as Response)
+    expect(res.render).toHaveBeenCalledWith(
+      'pages/register/check',
+      expect.objectContaining({ startDate: '2025-01-24', selectedDate: undefined }),
+    )
+  })
+
+  it('submits without an end date when no end date was selected', async () => {
+    req.session.registerJourney.endDateSelection = 'no'
+    delete req.session.registerJourney.endDate
+    await handler.POST(req as Request, res as Response)
+    expect(prisonerPayService.postPayStatusPeriod).toHaveBeenCalledWith(
+      expect.objectContaining({ startDate: '2025-01-24', endDate: undefined }),
+    )
+    expect(res.redirect).toHaveBeenCalledWith('confirmed-add-prisoner')
+  })
+  it('clears the draft after saving and retains only confirmation details', async () => {
+    req.session.returnTo = '/authentication-return'
+    await handler.POST(req as Request, res as Response)
+    expect(req.session.registerJourney).toBeUndefined()
+    expect(req.session.registerConfirmation).toEqual({
+      prisoner: TestData.Prisoner(),
+      startDate: '2025-01-24',
+      endDate: '25/01/2025',
+    })
+    expect(req.session.returnTo).toBe('/authentication-return')
+    jest.mocked(prisonerPayService.postPayStatusPeriod).mockClear()
+    await handler.POST(req as Request, res as Response)
+    expect(prisonerPayService.postPayStatusPeriod).not.toHaveBeenCalled()
+  })
+
+  it('keeps the draft when the API fails', async () => {
+    const draft = { ...req.session.registerJourney }
+    jest.mocked(prisonerPayService.postPayStatusPeriod).mockRejectedValueOnce(new Error('API unavailable'))
+    await expect(handler.POST(req as Request, res as Response)).rejects.toThrow('API unavailable')
+    expect(req.session.registerJourney).toEqual(draft)
+    expect(req.session.registerConfirmation).toBeUndefined()
+  })
+
+  it('does not overwrite authentication navigation when showing check answers', async () => {
+    req.session.returnTo = '/authentication-return'
+    await handler.GET(req as Request, res as Response)
+    expect(req.session.returnTo).toBe('/authentication-return')
+    expect(req.session.registerJourney.returnTo).toBe('check')
   })
 })

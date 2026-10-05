@@ -78,8 +78,8 @@ describe('AddPrisonerResultsHandler', () => {
   describe('POST', () => {
     it('should redirect after processing', async () => {
       await handler.POST(req as Request, res as Response)
-      expect(req.session!.selectedPrisoner).toStrictEqual(TestData.Prisoner())
-      expect(res.redirect).toHaveBeenCalledWith('end-date')
+      expect(req.session.registerJourney.prisoner).toStrictEqual(TestData.Prisoner())
+      expect(res.redirect).toHaveBeenCalledWith('start-date')
     })
 
     it('should call audit page action with correct parameters', async () => {
@@ -93,5 +93,27 @@ describe('AddPrisonerResultsHandler', () => {
         SubjectType.SEARCH_TERM,
       )
     })
+  })
+  it('preserves date choices when returning through search results for the same prisoner', async () => {
+    req.session.registerJourney = { prisoner: TestData.Prisoner(), searchQuery: 'test' }
+    req.session.registerJourney.startDate = '2026-01-20'
+    req.session.registerJourney.startDateOption = 'other'
+    await handler.POST(req as Request, res as Response)
+    expect(req.session.registerJourney.startDate).toBe('2026-01-20')
+    expect(req.session.registerJourney.startDateOption).toBe('other')
+  })
+
+  it('starts a fresh draft when a different prisoner is selected', async () => {
+    req.session.registerJourney = {
+      prisoner: { ...TestData.Prisoner(), prisonerNumber: 'OTHER' },
+      searchQuery: 'test',
+      startDate: '2026-01-20',
+      startDateOption: 'other',
+      endDate: '21/01/2026',
+      endDateSelection: 'yes',
+      returnTo: 'check',
+    }
+    await handler.POST(req as Request, res as Response)
+    expect(req.session.registerJourney).toEqual({ prisoner: TestData.Prisoner(), searchQuery: 'test' })
   })
 })

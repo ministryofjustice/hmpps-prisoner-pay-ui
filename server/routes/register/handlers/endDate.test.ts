@@ -19,7 +19,10 @@ describe('EndDateHandler', () => {
       body: {},
       params: { payTypeSlug: 'long-term-sick' },
       session: {
-        selectedPrisoner: TestData.Prisoner(),
+        registerJourney: {
+          prisoner: TestData.Prisoner(),
+          startDate: '2025-01-01',
+        },
       },
     } as unknown as Request
     res = {
@@ -40,6 +43,8 @@ describe('EndDateHandler', () => {
       expect(res.render).toHaveBeenCalledWith('pages/register/end-date', {
         prisonerName: 'Nicaigh Johnustine',
         prisoner: TestData.Prisoner(),
+        selectedDate: undefined,
+        endDateSelection: undefined,
       })
     })
 
@@ -80,5 +85,21 @@ describe('EndDateHandler', () => {
 
       expect(res.redirect).toHaveBeenCalled()
     })
+  })
+  it('clears an earlier end date when no is selected', async () => {
+    req.session.registerJourney.endDate = '25/01/2026'
+    req.body = { endDateSelection: 'no', selectedDate: '25/01/2026' }
+    await handler.POST(req as Request, res as Response)
+    expect(req.session.registerJourney.endDate).toBeUndefined()
+    expect(req.session.registerJourney.endDateSelection).toBe('no')
+  })
+  it('restores the chosen end date on back navigation', async () => {
+    req.session.registerJourney.endDate = '25/01/2026'
+    req.session.registerJourney.endDateSelection = 'yes'
+    await handler.GET(req as Request, res as Response)
+    expect(res.render).toHaveBeenCalledWith(
+      'pages/register/end-date',
+      expect.objectContaining({ selectedDate: '25/01/2026', endDateSelection: 'yes' }),
+    )
   })
 })

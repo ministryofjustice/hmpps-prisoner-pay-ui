@@ -8,25 +8,27 @@ export default class EndDateHandler {
   constructor() {}
 
   GET = async (req: Request, res: Response) => {
-    const prisoner = req.session!.selectedPrisoner
+    if (!req.session.registerJourney?.startDate) return res.redirect('start-date')
+    const { prisoner } = req.session.registerJourney
     const { prisonerNumber } = prisoner
-    const returnTo = 'end-date'
-    req.session.returnTo = returnTo
+    req.session.registerJourney.returnTo = 'end-date'
 
     await auditPageView(req, Page.SET_END_DATE, {}, SubjectType.PRISONER_ID, null, prisonerNumber)
 
     return res.render('pages/register/end-date', {
       prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
       prisoner,
+      selectedDate: req.session.registerJourney.endDate,
+      endDateSelection: req.session.registerJourney.endDateSelection,
     })
   }
 
   POST = async (req: Request, res: Response) => {
-    const prisoner = req.session!.selectedPrisoner
+    if (!req.session.registerJourney?.startDate) return res.redirect('start-date')
+    const { prisoner } = req.session.registerJourney
     const { selectedDate, endDateSelection } = req.body
-    req.session.selectedDate = selectedDate
 
-    const errors = validateForm(endDateSelection, selectedDate)
+    const errors = validateForm(endDateSelection, selectedDate, req.session.registerJourney.startDate)
     if (errors)
       return res.render('pages/register/end-date', {
         errors: [errors],
@@ -35,7 +37,9 @@ export default class EndDateHandler {
         prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
         prisoner,
       })
-    req.session.returnTo = null
+
+    req.session.registerJourney.endDate = endDateSelection === 'yes' ? selectedDate : undefined
+    req.session.registerJourney.endDateSelection = endDateSelection
     return res.redirect('check')
   }
 }
