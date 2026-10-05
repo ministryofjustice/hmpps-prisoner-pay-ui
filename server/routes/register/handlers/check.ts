@@ -42,10 +42,13 @@ export default class CheckHandler {
 
   POST = async (req: Request, res: Response) => {
     if (!req.session.registerJourney) return res.redirect('add-prisoner')
+
     const { startDate, endDateSelection, endDate } = req.session.registerJourney
     if (!startDate || !isValid(parseISO(startDate)) || parseISO(startDate) < startOfToday())
       return res.redirect('start-date')
+
     if (validateEndDate(endDateSelection, endDate, startDate)) return res.redirect('end-date')
+
     const { prisoner } = req.session.registerJourney
     const { prisonerNumber } = prisoner
     const { type: payType } = getPayTypeBySlug(getSingleParam(req.params.payTypeSlug))
