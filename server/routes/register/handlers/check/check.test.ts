@@ -56,8 +56,8 @@ describe('CheckHandler', () => {
       expect(res.render).toHaveBeenCalledWith('pages/register/check', {
         prisonerName: 'Nicaigh Johnustine',
         prisoner: TestData.Prisoner(),
-        selectedDate: '25/01/2025',
-        startDate: '2025-01-24',
+        endDateText: '25 January 2025',
+        startDateText: 'Tomorrow - 24 January 2025',
       })
     })
 
@@ -134,7 +134,7 @@ describe('CheckHandler', () => {
     await handler.GET(req as Request, res as Response)
     expect(res.render).toHaveBeenCalledWith(
       'pages/register/check',
-      expect.objectContaining({ startDate: '2025-01-24', selectedDate: undefined }),
+      expect.objectContaining({ startDateText: 'Tomorrow - 24 January 2025', endDateText: 'None set' }),
     )
   })
 
@@ -175,5 +175,24 @@ describe('CheckHandler', () => {
     await handler.GET(req as Request, res as Response)
     expect(req.session.returnTo).toBe('/authentication-return')
     expect(req.session.registerJourney.returnTo).toBe('check')
+  })
+  it.each([
+    ['2025-01-23', 'Today - 23 January 2025'],
+    ['2025-01-24', 'Tomorrow - 24 January 2025'],
+    ['2025-01-25', '25 January 2025'],
+  ])('formats both summary dates for %s using the saved date', async (date, text) => {
+    req.session.registerJourney.startDate = date
+    req.session.registerJourney.endDate = date
+    req.session.registerJourney.startDateOption = 'other'
+    await handler.GET(req as Request, res as Response)
+    expect(res.render).toHaveBeenCalledWith(
+      'pages/register/check',
+      expect.objectContaining({
+        startDateText: text,
+        endDateText: text,
+      }),
+    )
+    expect(req.session.registerJourney.startDate).toBe(date)
+    expect(req.session.registerJourney.endDate).toBe(date)
   })
 })

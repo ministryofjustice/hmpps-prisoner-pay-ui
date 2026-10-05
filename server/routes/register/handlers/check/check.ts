@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { isToday, isTomorrow, parseISO } from 'date-fns'
 import { getPayTypeBySlug } from '../../../../utils/payTypeUtils'
 import { formatDate, formatFirstLastName, getSingleParam } from '../../../../utils/utils'
 import PrisonerPayService from '../../../../services/prisonerPayService'
@@ -6,6 +7,14 @@ import { CreatePayStatusPeriodRequest } from '../../../../@types/prisonerPayAPI/
 import { auditPageAction, auditPageView } from '../../../../utils/auditUtils'
 import { Action, Page, SubjectType } from '../../../../services/auditService'
 import { getRegisterJourneyRedirect } from '../../registerJourneyValidation'
+
+const formatCheckDate = (date: string): string => {
+  const parsedDate = parseISO(date)
+  const fullDate = formatDate(date, 'd MMMM yyyy')
+  if (isToday(parsedDate)) return `Today - ${fullDate}`
+  if (isTomorrow(parsedDate)) return `Tomorrow - ${fullDate}`
+  return fullDate
+}
 
 export default class CheckHandler {
   constructor(private readonly prisonerPayService: PrisonerPayService) {}
@@ -32,8 +41,8 @@ export default class CheckHandler {
     return res.render('pages/register/check', {
       prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
       prisoner,
-      selectedDate: endDate ? formatDate(endDate, 'dd/MM/yyyy') : undefined,
-      startDate,
+      startDateText: formatCheckDate(startDate),
+      endDateText: endDate ? formatCheckDate(endDate) : 'None set',
     })
   }
 

@@ -30,12 +30,12 @@
                 },
                 {
                     key: { text: "Start date" },
-                    value: { text: startDate | formatDate },
+                    value: { text: startDateText },
                     actions: { items: [{ href: "start-date", text: "Change", visuallyHiddenText: "start date" }] }
                 },
                 {
                     key: { text: "End Date" },
-                    value: { text: selectedDate if selectedDate else 'None set' },
+                    value: { text: endDateText },
                     actions: {
                         items: [{
                             href: "end-date",
