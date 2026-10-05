@@ -1,10 +1,11 @@
 import { Request, Response } from 'express'
 import { addDays, format, parseISO, startOfToday } from 'date-fns'
-import { formatFirstLastName } from '../../../utils/utils'
-import { auditPageView } from '../../../utils/auditUtils'
-import { Page, SubjectType } from '../../../services/auditService'
-import { FormError } from '../../../@types/template'
+import { formatFirstLastName } from '../../../../utils/utils'
+import { auditPageView } from '../../../../utils/auditUtils'
+import { Page, SubjectType } from '../../../../services/auditService'
+import { FormError } from '../../../../@types/template'
 import validateForm, { parseStartDate, StartDateForm } from './startDateValidation'
+import { StartDateOption } from '../../journey'
 
 export default class StartDateHandler {
   private render = (req: Request, res: Response, form: StartDateForm, errors: FormError[] = []) => {
@@ -52,7 +53,7 @@ export default class StartDateHandler {
         ? parseStartDate(form)
         : addDays(startOfToday(), form.startDateOption === 'tomorrow' ? 1 : 0)
     req.session.registerJourney.startDate = format(date, 'yyyy-MM-dd')
-    req.session.registerJourney.startDateOption = form.startDateOption
+    req.session.registerJourney.startDateOption = form.startDateOption as StartDateOption
     return res.redirect('end-date')
   }
 }

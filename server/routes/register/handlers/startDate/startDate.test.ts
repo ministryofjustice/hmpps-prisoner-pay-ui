@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import StartDateHandler from './startDate'
-import TestData from '../../../testutils/testData'
-import { auditPageView } from '../../../utils/auditUtils'
-import { Page, SubjectType } from '../../../services/auditService'
+import TestData from '../../../../testutils/testData'
+import { auditPageView } from '../../../../utils/auditUtils'
+import { Page, SubjectType } from '../../../../services/auditService'
 
-jest.mock('../../../utils/auditUtils')
+jest.mock('../../../../utils/auditUtils')
 
 describe('StartDateHandler', () => {
   let req: Request

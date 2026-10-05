@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { formatFirstLastName } from '../../../utils/utils'
+import { formatFirstLastName } from '../../../../utils/utils'
 import validateForm from './cancelValidation'
 
 export default class CancelHandler {

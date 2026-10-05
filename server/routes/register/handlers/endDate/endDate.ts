@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
-import { formatFirstLastName } from '../../../utils/utils'
+import { format, parse } from 'date-fns'
+import { formatDate, formatFirstLastName } from '../../../../utils/utils'
 import validateForm from './endDateValidation'
-import { auditPageView } from '../../../utils/auditUtils'
-import { Page, SubjectType } from '../../../services/auditService'
+import { auditPageView } from '../../../../utils/auditUtils'
+import { Page, SubjectType } from '../../../../services/auditService'
+import { EndDateSelection } from '../../journey'
 
 export default class EndDateHandler {
-  constructor() {}
-
   GET = async (req: Request, res: Response) => {
     if (!req.session.registerJourney?.startDate) return res.redirect('start-date')
     const { prisoner } = req.session.registerJourney
@@ -18,7 +18,9 @@ export default class EndDateHandler {
     return res.render('pages/register/end-date', {
       prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
       prisoner,
-      selectedDate: req.session.registerJourney.endDate,
+      selectedDate: req.session.registerJourney.endDate
+        ? formatDate(req.session.registerJourney.endDate, 'dd/MM/yyyy')
+        : undefined,
       endDateSelection: req.session.registerJourney.endDateSelection,
     })
   }
@@ -38,8 +40,9 @@ export default class EndDateHandler {
         prisoner,
       })
 
-    req.session.registerJourney.endDate = endDateSelection === 'yes' ? selectedDate : undefined
-    req.session.registerJourney.endDateSelection = endDateSelection
+    req.session.registerJourney.endDate =
+      endDateSelection === 'yes' ? format(parse(selectedDate, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd') : undefined
+    req.session.registerJourney.endDateSelection = endDateSelection as EndDateSelection
     return res.redirect('check')
   }
 }

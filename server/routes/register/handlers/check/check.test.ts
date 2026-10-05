@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import { when } from 'jest-when'
 import CheckHandler from './check'
-import PrisonerPayService from '../../../services/prisonerPayService'
-import * as auditUtils from '../../../utils/auditUtils'
-import TestData from '../../../testutils/testData'
-import { Action, Page, SubjectType } from '../../../services/auditService'
+import PrisonerPayService from '../../../../services/prisonerPayService'
+import * as auditUtils from '../../../../utils/auditUtils'
+import TestData from '../../../../testutils/testData'
+import { Action, Page, SubjectType } from '../../../../services/auditService'
 
-jest.mock('../../../services/prisonerPayService')
-jest.mock('../../../utils/auditUtils')
+jest.mock('../../../../services/prisonerPayService')
+jest.mock('../../../../utils/auditUtils')
 
 const prisonerPayService = new PrisonerPayService(null)
 
@@ -25,7 +25,7 @@ describe('CheckHandler', () => {
       session: {
         registerJourney: {
           prisoner: TestData.Prisoner(),
-          endDate: '25/01/2025',
+          endDate: '2025-01-25',
           startDate: '2025-01-24',
           endDateSelection: 'yes',
         },
@@ -69,7 +69,7 @@ describe('CheckHandler', () => {
         Page.CHECK_CONFIRM_PAY,
         {
           payType: 'LONG_TERM_SICK',
-          endDate: '25/01/2025',
+          endDate: '2025-01-25',
           startDate: '2025-01-24',
         },
         SubjectType.PRISONER_ID,
@@ -108,7 +108,7 @@ describe('CheckHandler', () => {
         Action.CREATE_STATUS_PERIOD,
         {
           payType: 'LONG_TERM_SICK',
-          endDate: '25/01/2025',
+          endDate: '2025-01-25',
           startDate: '2025-01-24',
         },
         SubjectType.PRISONER_ID,
@@ -154,7 +154,7 @@ describe('CheckHandler', () => {
     expect(req.session.registerConfirmation).toEqual({
       prisoner: TestData.Prisoner(),
       startDate: '2025-01-24',
-      endDate: '25/01/2025',
+      endDate: '2025-01-25',
     })
     expect(req.session.returnTo).toBe('/authentication-return')
     jest.mocked(prisonerPayService.postPayStatusPeriod).mockClear()

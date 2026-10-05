@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import { when } from 'jest-when'
 import AddPrisonerResultsHandler from './addPrisonerResults'
-import OrchestratorService from '../../../services/orchestratorService'
-import * as auditUtils from '../../../utils/auditUtils'
-import TestData from '../../../testutils/testData'
-import { Action, Page, SubjectType } from '../../../services/auditService'
+import OrchestratorService from '../../../../services/orchestratorService'
+import * as auditUtils from '../../../../utils/auditUtils'
+import TestData from '../../../../testutils/testData'
+import { Action, Page, SubjectType } from '../../../../services/auditService'
 
-jest.mock('../../../services/orchestratorService')
-jest.mock('../../../utils/auditUtils')
+jest.mock('../../../../services/orchestratorService')
+jest.mock('../../../../utils/auditUtils')
 
 const orchestratorService = new OrchestratorService(null)
 
@@ -147,7 +147,7 @@ describe('AddPrisonerResultsHandler', () => {
       searchQuery: 'test',
       startDate: '2026-01-20',
       startDateOption: 'other',
-      endDate: '21/01/2026',
+      endDate: '2026-01-21',
       endDateSelection: 'yes',
       returnTo: 'check',
     }

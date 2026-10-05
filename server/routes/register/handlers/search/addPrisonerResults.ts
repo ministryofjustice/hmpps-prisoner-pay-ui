@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import OrchestratorService from '../../../services/orchestratorService'
+import OrchestratorService from '../../../../services/orchestratorService'
 import validateForm from './addPrisonerResultsValidation'
-import { Action, Page, SubjectType } from '../../../services/auditService'
-import { auditPageAction, auditPageView, getDisplayedResults } from '../../../utils/auditUtils'
+import { Action, Page, SubjectType } from '../../../../services/auditService'
+import { auditPageAction, auditPageView, getDisplayedResults } from '../../../../utils/auditUtils'
 
 export default class AddPrisonerResultsHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}

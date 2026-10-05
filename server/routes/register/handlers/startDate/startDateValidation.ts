@@ -1,5 +1,5 @@
 import { isValid, parse, startOfToday } from 'date-fns'
-import { FormError } from '../../../@types/template'
+import { FormError } from '../../../../@types/template'
 
 export type StartDateForm = {
   startDateOption?: string

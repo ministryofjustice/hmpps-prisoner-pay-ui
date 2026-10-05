@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import ConfirmedAddPrisonerHandler from './confirmedAddPrisoner'
-import * as auditUtils from '../../../utils/auditUtils'
-import TestData from '../../../testutils/testData'
-import { Page, SubjectType } from '../../../services/auditService'
+import * as auditUtils from '../../../../utils/auditUtils'
+import TestData from '../../../../testutils/testData'
+import { Page, SubjectType } from '../../../../services/auditService'
 
-jest.mock('../../../utils/auditUtils')
+jest.mock('../../../../utils/auditUtils')
 
 describe('ConfirmedAddPrisonerHandler', () => {
   let handler: ConfirmedAddPrisonerHandler
@@ -46,7 +46,7 @@ describe('ConfirmedAddPrisonerHandler', () => {
         'pages/register/confirmed-add-prisoner',
         expect.objectContaining({
           prisoner: TestData.Prisoner(),
-          selectedDate: '2025-01-01',
+          selectedDate: '01/01/2025',
         }),
       )
     })

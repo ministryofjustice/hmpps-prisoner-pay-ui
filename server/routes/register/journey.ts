@@ -1,3 +1,6 @@
+export type StartDateOption = 'today' | 'tomorrow' | 'other'
+export type EndDateSelection = 'yes' | 'no'
+
 export type RegisterJourney = {
   prisoner: {
     prisonerNumber: string
@@ -7,13 +10,15 @@ export type RegisterJourney = {
     status?: string
   }
   searchQuery: string
+  // Both dates are stored as ISO calendar dates (yyyy-MM-dd).
   startDate?: string
-  startDateOption?: string
-  // The end-date picker uses dd/MM/yyyy; the API payload converts it to ISO.
+  startDateOption?: StartDateOption
   endDate?: string
-  endDateSelection?: string
+  endDateSelection?: EndDateSelection
   returnTo?: 'start-date' | 'end-date' | 'check'
 }
 
 // Retain only the details needed to refresh the confirmation after the draft is cleared.
-export type RegisterConfirmation = Pick<RegisterJourney, 'prisoner' | 'startDate' | 'endDate'>
+export type RegisterConfirmation = Pick<RegisterJourney, 'prisoner' | 'endDate'> & {
+  startDate: string
+}

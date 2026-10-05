@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import { when } from 'jest-when'
 import AddPrisonerHandler from './addPrisoner'
-import * as auditUtils from '../../../utils/auditUtils'
+import * as auditUtils from '../../../../utils/auditUtils'
 import validateForm from './addPrisonerValidation'
-import TestData from '../../../testutils/testData'
-import { Page, Action, SubjectType } from '../../../services/auditService'
+import TestData from '../../../../testutils/testData'
+import { Page, Action, SubjectType } from '../../../../services/auditService'
 
 jest.mock('./addPrisonerValidation')
-jest.mock('../../../utils/auditUtils')
+jest.mock('../../../../utils/auditUtils')
 
 describe('AddPrisonerHandler', () => {
   let handler: AddPrisonerHandler
@@ -96,7 +96,7 @@ describe('AddPrisonerHandler', () => {
       selectedDate: 'other journey date',
       returnTo: '/authentication-return',
     } as Request['session']
-    await handler.NEW(req as Request, res as Response)
+    await handler.startNewRegistration(req as Request, res as Response)
     expect(req.session.registerJourney).toBeUndefined()
     expect(req.session.registerConfirmation).toBeUndefined()
     expect(req.session.selectedDate).toBe('other journey date')

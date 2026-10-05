@@ -1,11 +1,11 @@
 import { RequestHandler, Router } from 'express'
-import AddPrisonerHandler from './handlers/addPrisoner'
-import ConfirmedAddPrisonerHandler from './handlers/confirmedAddPrisoner'
-import AddPrisonerResultsHandler from './handlers/addPrisonerResults'
-import CancelHandler from './handlers/cancel'
-import CheckHandler from './handlers/check'
-import EndDateHandler from './handlers/endDate'
-import StartDateHandler from './handlers/startDate'
+import AddPrisonerHandler from './handlers/search/addPrisoner'
+import ConfirmedAddPrisonerHandler from './handlers/confirmation/confirmedAddPrisoner'
+import AddPrisonerResultsHandler from './handlers/search/addPrisonerResults'
+import CancelHandler from './handlers/cancel/cancel'
+import CheckHandler from './handlers/check/check'
+import EndDateHandler from './handlers/endDate/endDate'
+import StartDateHandler from './handlers/startDate/startDate'
 import { Services } from '../../services'
 import setPayType from '../../middleware/setPayType'
 
@@ -17,7 +17,7 @@ export default function Index(services: Services): Router {
   router.use(setPayType)
 
   const addPrisonerHandler = new AddPrisonerHandler()
-  get('/new', addPrisonerHandler.NEW)
+  get('/new', addPrisonerHandler.startNewRegistration)
   get('/add-prisoner', addPrisonerHandler.GET)
   post('/add-prisoner', addPrisonerHandler.POST)
 
