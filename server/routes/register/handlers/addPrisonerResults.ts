@@ -50,7 +50,7 @@ export default class AddPrisonerResultsHandler {
       })
     }
 
-    const prisoner = prisonerResults.find(prisoner => prisoner.prisonerNumber === selectedPrisoner)
+    const prisoner = prisonerResults.find(p => p.prisonerNumber === selectedPrisoner)
     const previousJourney = req.session.registerJourney
     req.session.registerJourney = {
       ...(previousJourney?.prisoner.prisonerNumber === prisoner.prisonerNumber ? previousJourney : {}),
