@@ -40,7 +40,13 @@ export default class AddPrisonerResultsHandler {
     const prisonerResults = await this.orchestratorService.searchPrisoners(query, activeCaseLoadId)
     await auditPageAction(req, Page.ADD_PRISONER, Action.SEARCH_PRISONER, { query }, SubjectType.SEARCH_TERM)
 
-    const errors = validateForm({ selectedPrisoner })
+    const prisoner = prisonerResults.find(p => p.prisonerNumber === selectedPrisoner)
+    const errors =
+      validateForm({ selectedPrisoner }) ||
+      (!prisoner && {
+        href: '#selectedPrisoner',
+        text: 'Select someone from the current search results',
+      })
     if (errors) {
       return res.render('pages/register/add-prisoner-results', {
         errors: [errors],
@@ -50,7 +56,6 @@ export default class AddPrisonerResultsHandler {
       })
     }
 
-    const prisoner = prisonerResults.find(p => p.prisonerNumber === selectedPrisoner)
     const previousJourney = req.session.registerJourney
     req.session.registerJourney = {
       ...(previousJourney?.prisoner.prisonerNumber === prisoner.prisonerNumber ? previousJourney : {}),

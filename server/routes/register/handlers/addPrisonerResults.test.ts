@@ -7,7 +7,6 @@ import TestData from '../../../testutils/testData'
 import { Action, Page, SubjectType } from '../../../services/auditService'
 
 jest.mock('../../../services/orchestratorService')
-jest.mock('./addPrisonerResultsValidation')
 jest.mock('../../../utils/auditUtils')
 
 const orchestratorService = new OrchestratorService(null)
@@ -76,6 +75,45 @@ describe('AddPrisonerResultsHandler', () => {
   })
 
   describe('POST', () => {
+    it.each([
+      ['an altered prisoner number', 'UNKNOWN', TestData.Prisoners()],
+      ['a stale selection after results become empty', 'G4529UP', []],
+      ['a stale selection after results change', 'G4529UP', [TestData.Prisoners()[1]]],
+    ])('redisplays refreshed results for %s without changing the journey', async (_description, selection, results) => {
+      req.body.selectedPrisoner = selection
+      req.session.registerJourney = {
+        prisoner: TestData.Prisoner(),
+        searchQuery: 'test',
+        startDate: '2026-01-20',
+      }
+      const previousJourney = { ...req.session.registerJourney }
+      jest.mocked(orchestratorService.searchPrisoners).mockResolvedValueOnce(results)
+
+      await handler.POST(req as Request, res as Response)
+
+      expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner-results', {
+        errors: [{ href: '#selectedPrisoner', text: 'Select someone from the current search results' }],
+        selectedPrisoner: selection,
+        query: 'test',
+        prisoners: results,
+      })
+      expect(req.session.registerJourney).toEqual(previousJourney)
+      expect(res.redirect).not.toHaveBeenCalled()
+    })
+
+    it('retains the required-selection error when nothing is submitted', async () => {
+      delete req.body.selectedPrisoner
+      await handler.POST(req as Request, res as Response)
+      expect(res.render).toHaveBeenCalledWith(
+        'pages/register/add-prisoner-results',
+        expect.objectContaining({
+          errors: [{ href: '#selectedPrisoner', text: 'You must select someone' }],
+        }),
+      )
+      expect(req.session.registerJourney).toBeUndefined()
+      expect(res.redirect).not.toHaveBeenCalled()
+    })
+
     it('should redirect after processing', async () => {
       await handler.POST(req as Request, res as Response)
       expect(req.session.registerJourney.prisoner).toStrictEqual(TestData.Prisoner())
