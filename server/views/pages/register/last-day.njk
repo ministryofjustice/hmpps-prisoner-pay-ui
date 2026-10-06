@@ -1,0 +1,36 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from 'moj/components/date-picker/macro.njk' import mojDatePicker %}
+{% set pageTitle = applicationName + " - Last day" %}
+{% set mainClasses = "govuk-body" %}
+{% set backLinkHref = "./end-date" %}
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">{{ payType.description }}</span>
+      <form method="POST">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        {{
+          mojDatePicker({
+            id: "selectedDate",
+            name: "selectedDate",
+            leadingZeros: "true",
+            classes: "moj-datepicker--fixed-width",
+            label: {
+              text: "When is " + prisonerName + "'s last day in this status?",
+              isPageHeading: true,
+              classes: "govuk-label--l"
+            },
+            hint: { text: "Enter the date, for example 27/03/2027, or click the calendar to select" },
+            value: selectedDate,
+            errorMessage: errors | findError("selectedDate")
+          })
+        }}
+        <div class="govuk-button-group">
+          {{ govukButton({ text: "Continue" }) }}
+          <a class="govuk-link--no-visited-state" href="cancel">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

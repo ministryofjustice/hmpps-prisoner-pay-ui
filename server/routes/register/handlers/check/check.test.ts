@@ -57,6 +57,7 @@ describe('CheckHandler', () => {
         prisonerName: 'Nicaigh Johnustine',
         prisoner: TestData.Prisoner(),
         endDateText: '25 January 2025',
+        previousPage: 'last-day',
         startDateText: 'Tomorrow - 24 January 2025',
       })
     })
@@ -125,7 +126,7 @@ describe('CheckHandler', () => {
   it.each(['GET', 'POST'] as const)('rechecks the date range on %s after start date changes', async method => {
     req.session.registerJourney.startDate = '2025-01-26'
     await handler[method](req as Request, res as Response)
-    expect(res.redirect).toHaveBeenCalledWith('end-date')
+    expect(res.redirect).toHaveBeenCalledWith('last-day')
     expect(prisonerPayService.postPayStatusPeriod).not.toHaveBeenCalled()
   })
   it('renders check answers when no end date was selected', async () => {

@@ -1,20 +1,22 @@
 import validateForm from './endDateValidation'
 
 describe('endDateValidation', () => {
+  beforeEach(() => jest.useFakeTimers().setSystemTime(new Date('2026-01-20T12:00:00Z')))
+  afterEach(() => jest.useRealTimers())
+
   it.each([
-    ['no', '', null],
-    ['no', undefined, null],
-    ['no', 'invalid', null],
-    ['yes', '20/01/2026', null],
-    ['yes', '21/01/2026', null],
-    ['', '', 'Select end date option'],
-    ['invalid', '', 'Select end date option'],
-    ['yes', '', 'Enter or select a date'],
-    ['yes', '32/13/2026', 'Enter a real date'],
-    ['yes', '19/01/2026', 'The end date must be on or after the start date'],
-  ])('validates %s / %s against the chosen start date', (option, date, error) => {
-    const result = validateForm(option, date, '2026-01-20')
-    if (error) expect(result?.text).toBe(error)
+    ['20/01/2026', '2026-01-20', null],
+    ['21/01/2026', '2026-01-20', null],
+    ['', '2026-01-20', 'Enter or select a date'],
+    [undefined, '2026-01-20', 'Enter or select a date'],
+    ['32/13/2026', '2026-01-20', 'Enter a real date'],
+    ['31/02/2026', '2026-01-20', 'Enter a real date'],
+    ['19/01/2026', '2026-01-20', 'The end date must be on or after the start date'],
+    ['20/01/2026', '2026-01-21', 'The end date must be on or after the start date'],
+    ['19/01/2026', '2026-01-18', 'The end date cannot be in the past'],
+  ])('validates %s against start date %s', (date, start, error) => {
+    const result = validateForm(date, start)
+    if (error) expect(result).toEqual({ href: '#selectedDate', text: error })
     else expect(result).toBeNull()
   })
 })
