@@ -221,7 +221,7 @@ test.describe('Add prisoner - Long-term sick', () => {
     )
     await continueButton.click()
     await continueButton.click()
-    await expect(page.getByRole('alert')).toContainText('Please select an option')
+    await expect(page.getByRole('alert')).toContainText('Select if you want to set their last day or not')
     await end.yesRadio.check()
     await continueButton.click()
     await continueButton.click()

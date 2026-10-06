@@ -84,7 +84,7 @@ describe('EndDateHandler', () => {
       expect(res.render).toHaveBeenCalledWith(
         'pages/register/end-date',
         expect.objectContaining({
-          errors: [{ href: '#endDateSelection', text: 'Please select an option' }],
+          errors: [{ href: '#endDateSelection', text: 'Select if you want to set their last day or not' }],
         }),
       )
       expect(res.redirect).not.toHaveBeenCalled()

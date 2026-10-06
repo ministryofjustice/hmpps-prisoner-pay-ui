@@ -1,26 +1,14 @@
-import { isBefore, isValid, parse, parseISO, startOfToday } from 'date-fns'
 import { FormError } from '../../../../@types/template'
 
 const errors: { [key: string]: FormError } = {
-  ENTER_DATE: {
-    href: '#selectedDate',
-    text: 'Enter or select a date',
-  },
-  VALID_DATE: {
-    href: '#selectedDate',
-    text: 'Enter a real date',
-  },
-  FUTURE_DATE: {
-    href: '#selectedDate',
-    text: 'The end date must be on or after the start date',
+  SELECT_OPTION: {
+    href: '#endDateSelection',
+    text: 'Select if you want to set their last day or not',
   },
 }
 
-export default function validateForm(selectedDate: string, startDate: string): FormError | null {
-  if (!selectedDate) return errors.ENTER_DATE
-  const parsedDate = parse(selectedDate, 'dd/MM/yyyy', new Date())
-  if (!isValid(parsedDate)) return errors.VALID_DATE
-  if (isBefore(parsedDate, parseISO(startDate))) return errors.FUTURE_DATE
-  if (isBefore(parsedDate, startOfToday())) return { href: '#selectedDate', text: 'The end date cannot be in the past' }
+export default function validateForm(endDateSelection: string): FormError | null {
+  if (!['yes', 'no'].includes(endDateSelection)) return errors.SELECT_OPTION
+
   return null
 }

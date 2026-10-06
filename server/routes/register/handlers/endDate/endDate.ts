@@ -3,6 +3,7 @@ import { formatFirstLastName } from '../../../../utils/utils'
 import { auditPageView } from '../../../../utils/auditUtils'
 import { Page, SubjectType } from '../../../../services/auditService'
 import { EndDateSelection } from '../../journey'
+import validateForm from './endDateValidation'
 
 export default class EndDateHandler {
   GET = async (req: Request, res: Response) => {
@@ -25,9 +26,10 @@ export default class EndDateHandler {
     const { prisoner } = req.session.registerJourney
     const { endDateSelection } = req.body
 
-    if (!['yes', 'no'].includes(endDateSelection))
+    const errors = validateForm(endDateSelection)
+    if (errors)
       return res.render('pages/register/end-date', {
-        errors: [{ href: '#endDateSelection', text: 'Please select an option' }],
+        errors: [errors],
         endDateSelection,
         prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
         prisoner,

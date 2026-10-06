@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { format, parse } from 'date-fns'
 import { formatDate, formatFirstLastName } from '../../../../utils/utils'
-import validateForm from './endDateValidation'
+import validateForm from './lastDayValidation'
 import { auditPageView } from '../../../../utils/auditUtils'
 import { Page, SubjectType } from '../../../../services/auditService'
 
