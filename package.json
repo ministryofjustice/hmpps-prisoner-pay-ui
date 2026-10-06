@@ -30,10 +30,10 @@
     "npm": "^11"
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.1141.0",
+    "@aws-sdk/client-sqs": "^3.1144.0",
     "@ministryofjustice/frontend": "^11.1.0",
     "@ministryofjustice/hmpps-auth-clients": "^3.0.0",
-    "@ministryofjustice/hmpps-connect-dps-components": "6.3.5",
+    "@ministryofjustice/hmpps-connect-dps-components": "6.4.0",
     "@ministryofjustice/hmpps-monitoring": "^2.1.0",
     "@ministryofjustice/hmpps-rest-client": "^2.2.0",
     "@ministryofjustice/hmpps-azure-telemetry": "^1.1.0",
@@ -55,7 +55,7 @@
     "nunjucks": "^3.2.4",
     "passport": "^0.7.0",
     "passport-oauth2": "^1.8.0",
-    "redis": "^6.2.1",
+    "redis": "^6.3.0",
     "superagent": "^10.4.1"
   },
   "devDependencies": {
