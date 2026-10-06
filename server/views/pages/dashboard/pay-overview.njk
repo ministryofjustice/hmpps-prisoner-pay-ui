@@ -7,7 +7,7 @@
 {% set backLinkHref = "../../" %}
 
 {% set weekPay = (payType.dailyPayAmount * 5) / 100 %}
-{% set payTypeDescriptionLower = payType.description | lower %}
+{% set payTypeDescription = payType.description | lower %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -20,7 +20,7 @@
 
       {{
         govukButton({
-            text: "Add someone to " + payTypeDescriptionLower,
+            text: "Add someone to " + payTypeDescription,
             href: './register/new',
             attributes: {
                 'data-qa': 'add-to-pay-type-button'
@@ -41,7 +41,7 @@
         {% if row.endDate %}
           {% set changeLink = '<a class="govuk-link--no-visited-state" href="./remove/' + row.id + '/removal-date">Change end date</a>' %}
         {% else %}
-          {% set changeLink = '<a class="govuk-link--no-visited-state" href="./remove/' + row.id + '/removal-date">Remove from ' + payTypeDescriptionLower + '</a>' %}
+          {% set changeLink = '<a class="govuk-link--no-visited-state" href="./remove/' + row.id + '/removal-date">Remove from ' + payTypeDescription + '</a>' %}
         {% endif %}
         {%
           set rows = (rows.push([
@@ -80,7 +80,7 @@
                     attributes: { "aria-sort": "none" }
                 },
                 {
-                    text: "Date added to " + payTypeDescriptionLower,
+                    text: "Date added to " + payTypeDescription,
                     attributes: { "aria-sort": "none" }
                 },
                 {
