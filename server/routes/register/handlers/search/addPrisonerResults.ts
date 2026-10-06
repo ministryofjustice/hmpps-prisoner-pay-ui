@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import OrchestratorService from '../../../services/orchestratorService'
+import OrchestratorService from '../../../../services/orchestratorService'
 import validateForm from './addPrisonerResultsValidation'
-import { Action, Page, SubjectType } from '../../../services/auditService'
-import { auditPageAction, auditPageView, getDisplayedResults } from '../../../utils/auditUtils'
+import { Action, Page, SubjectType } from '../../../../services/auditService'
+import { auditPageAction, auditPageView, getDisplayedResults } from '../../../../utils/auditUtils'
 
 export default class AddPrisonerResultsHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
@@ -40,7 +40,7 @@ export default class AddPrisonerResultsHandler {
     const prisonerResults = await this.orchestratorService.searchPrisoners(query, activeCaseLoadId)
     await auditPageAction(req, Page.ADD_PRISONER, Action.SEARCH_PRISONER, { query }, SubjectType.SEARCH_TERM)
 
-    const errors = validateForm({ selectedPrisoner })
+    const errors = validateForm({ selectedPrisoner }, prisonerResults)
     if (errors) {
       return res.render('pages/register/add-prisoner-results', {
         errors: [errors],
@@ -51,7 +51,12 @@ export default class AddPrisonerResultsHandler {
     }
 
     const prisoner = prisonerResults.find(p => p.prisonerNumber === selectedPrisoner)
-    req.session!.selectedPrisoner = prisoner
-    return res.redirect('end-date')
+    const previousJourney = req.session.registerJourney
+    req.session.registerJourney = {
+      ...(previousJourney?.prisoner.prisonerNumber === prisoner.prisonerNumber ? previousJourney : {}),
+      prisoner,
+      searchQuery: query,
+    }
+    return res.redirect('start-date')
   }
 }

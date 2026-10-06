@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import { when } from 'jest-when'
 import AddPrisonerHandler from './addPrisoner'
-import * as auditUtils from '../../../utils/auditUtils'
+import * as auditUtils from '../../../../utils/auditUtils'
 import validateForm from './addPrisonerValidation'
-import TestData from '../../../testutils/testData'
-import { Page, Action, SubjectType } from '../../../services/auditService'
+import TestData from '../../../../testutils/testData'
+import { Page, Action, SubjectType } from '../../../../services/auditService'
 
 jest.mock('./addPrisonerValidation')
-jest.mock('../../../utils/auditUtils')
+jest.mock('../../../../utils/auditUtils')
 
 describe('AddPrisonerHandler', () => {
   let handler: AddPrisonerHandler
@@ -88,5 +88,19 @@ describe('AddPrisonerHandler', () => {
         SubjectType.SEARCH_TERM,
       )
     })
+  })
+  it('starts a new registration without changing other journeys or authentication', async () => {
+    req.session = {
+      registerJourney: { prisoner: TestData.Prisoner(), searchQuery: 'test', startDate: '2026-01-20' },
+      registerConfirmation: { prisoner: TestData.Prisoner(), startDate: '2026-01-20' },
+      selectedDate: 'other journey date',
+      returnTo: '/authentication-return',
+    } as Request['session']
+    await handler.startNewRegistration(req as Request, res as Response)
+    expect(req.session.registerJourney).toBeUndefined()
+    expect(req.session.registerConfirmation).toBeUndefined()
+    expect(req.session.selectedDate).toBe('other journey date')
+    expect(req.session.returnTo).toBe('/authentication-return')
+    expect(res.redirect).toHaveBeenCalledWith('add-prisoner')
   })
 })

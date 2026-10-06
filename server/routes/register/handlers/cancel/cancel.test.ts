@@ -15,9 +15,11 @@ describe('CancelHandler', () => {
       },
       body: {},
       session: {
-        selectedPrisoner: {
-          firstName: 'Joe',
-          lastName: 'Bloggs',
+        registerJourney: {
+          prisoner: {
+            firstName: 'Joe',
+            lastName: 'Bloggs',
+          },
         },
       },
     } as unknown as Partial<Request>
@@ -49,7 +51,7 @@ describe('CancelHandler', () => {
 
     it('should redirect to check page after selecting that you do not want to cancel the application', async () => {
       req.body.choice = 'no'
-      req.session.returnTo = 'check'
+      req.session.registerJourney.returnTo = 'check'
 
       await handler.POST(req as Request, res as Response)
 
@@ -58,11 +60,36 @@ describe('CancelHandler', () => {
 
     it('should redirect to dashboard page after selecting No and returnTo is null ', async () => {
       req.body.choice = 'no'
-      req.session.returnTo = undefined
+      req.session.registerJourney.returnTo = undefined
 
       await handler.POST(req as Request, res as Response)
 
-      expect(res.redirect).toHaveBeenCalledWith('/')
+      expect(res.redirect).toHaveBeenCalledWith('add-prisoner')
     })
+  })
+  it('clears only the registration draft when cancelled', async () => {
+    req.session.returnTo = '/authentication-return'
+    req.session.selectedDate = 'other journey date'
+    req.body.choice = 'yes'
+    await handler.POST(req as Request, res as Response)
+    expect(req.session.registerJourney).toBeUndefined()
+    expect(req.session.returnTo).toBe('/authentication-return')
+    expect(req.session.selectedDate).toBe('other journey date')
+  })
+
+  it('uses the journey return page rather than the authentication return URL', async () => {
+    req.session.returnTo = '/authentication-return'
+    req.session.registerJourney.returnTo = 'start-date'
+    req.body.choice = 'no'
+    await handler.POST(req as Request, res as Response)
+    expect(res.redirect).toHaveBeenCalledWith('start-date')
+    expect(req.session.returnTo).toBe('/authentication-return')
+  })
+
+  it('returns to search when the draft has expired', async () => {
+    delete req.session.registerJourney
+    await handler.GET(req as Request, res as Response)
+    await handler.POST(req as Request, res as Response)
+    expect(res.redirect).toHaveBeenCalledWith('add-prisoner')
   })
 })

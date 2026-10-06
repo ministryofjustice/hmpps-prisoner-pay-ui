@@ -1,28 +1,43 @@
 {% extends "layout.njk" %}
-
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 
 {% set pageTitle = applicationName + " - Add prisoner confirmation" %}
 {% set mainClasses = "govuk-body" %}
 
 {% block content %}
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            {{ govukPanel({
-                titleText: prisoner | formatName(NameFormatStyle.firstLast, false) + " will now be paid " + payType.description | lower + " pay"
-            }) }}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{
+        govukPanel({
+            titleText: payType.description + " status confirmed",
+            text: prisonerName + " (" + prisoner.prisonerNumber + ") will receive " + (payType.description | lower) + " pay from " + startDateText
+        })
+      }}
 
-            <h2 class="govuk-heading-m">What you can do next</h2>
+      <h2 class="govuk-heading-m">What you can do next</h2>
 
-            <p class="govuk-body">You can:</p>
-            <ul class="govuk-list govuk-list--bullet">
-                <li>
-                    <a class="govuk-link--no-visited-state" href="{{ activitiesUiUrl }}/prisoner-allocations/{{ prisoner.prisonerNumber }}">manage {{ prisoner | formatName(NameFormatStyle.firstLast, false) }}'s allocations</a>
-                </li>
-                <li>
-                    <a class="govuk-link--no-visited-state" href="../register/add-prisoner">add someone else to {{ payType.description | lower}}</a>
-                </li>
-            </ul>
-        </div>
+      <p class="govuk-body">You can:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>
+          <a
+            class="govuk-link--no-visited-state"
+            href="{{ activitiesUiUrl }}/prisoner-allocations/{{ prisoner.prisonerNumber }}"
+            >take {{ prisonerName }} off activities they’re allocated to</a
+          >
+        </li>
+        <li>
+          <a
+            class="govuk-link--no-visited-state"
+            href="{{ activitiesUiUrl }}/prisoner-allocations/{{ prisoner.prisonerNumber }}"
+            >manage {{ prisonerName }}’s allocations</a
+          >
+        </li>
+        <li>
+          <a class="govuk-link--no-visited-state" href="../register/new"
+            >add someone else to {{ payType.description | lower }}</a
+          >
+        </li>
+      </ul>
     </div>
+  </div>
 {% endblock %}

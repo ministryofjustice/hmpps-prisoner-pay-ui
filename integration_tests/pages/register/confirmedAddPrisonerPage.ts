@@ -6,7 +6,7 @@ export default class ConfirmedAddPrisonerPage extends AbstractPage {
 
   private constructor(page: Page) {
     super(page)
-    this.header = page.locator('h1', { hasText: 'will now be paid' })
+    this.header = page.locator('h1', { hasText: 'Long-term sick status confirmed' })
   }
 
   static async verifyOnPage(page: Page): Promise<ConfirmedAddPrisonerPage> {

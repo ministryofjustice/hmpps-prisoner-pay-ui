@@ -1,9 +1,15 @@
 import { Request, Response } from 'express'
 import validateForm from './addPrisonerValidation'
-import { Action, Page, SubjectType } from '../../../services/auditService'
-import { auditPageAction } from '../../../utils/auditUtils'
+import { Action, Page, SubjectType } from '../../../../services/auditService'
+import { auditPageAction } from '../../../../utils/auditUtils'
 
 export default class AddPrisonerHandler {
+  startNewRegistration = async (req: Request, res: Response) => {
+    delete req.session.registerJourney
+    delete req.session.registerConfirmation
+    return res.redirect('add-prisoner')
+  }
+
   GET = async (req: Request, res: Response) => {
     return res.render('pages/register/add-prisoner', {})
   }
