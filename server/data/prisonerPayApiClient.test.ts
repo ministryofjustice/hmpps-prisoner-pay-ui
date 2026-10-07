@@ -22,6 +22,17 @@ describe('PrisonerPayApiClient', () => {
     jest.resetAllMocks()
   })
 
+  describe('deleteFuturePayRate', () => {
+    it('should delete the scheduled future pay rate using system authentication', async () => {
+      const scope = nock(config.apis.prisonerPayApi.url).delete('/pay-rates/rate-123').reply(204)
+
+      await prisonerPayApiClient.deleteFuturePayRate('rate-123')
+
+      expect(scope.isDone()).toBe(true)
+      expect(mockAuthenticationClient.getToken).toHaveBeenCalled()
+    })
+  })
+
   describe('patchPayStatusPeriod', () => {
     it('should make a PATCH request with the correct payload and return a pay status period', async () => {
       const payStatusId = '123'
