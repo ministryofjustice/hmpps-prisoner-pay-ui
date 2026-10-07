@@ -42,6 +42,17 @@ export default {
       },
     }),
 
+  stubDeleteFuturePayRate: (httpStatus = 204): SuperAgentRequest =>
+    stubFor({
+      request: {
+        method: 'DELETE',
+        urlPattern: '/prisoner-pay-api/pay-rates/.*',
+      },
+      response: {
+        status: httpStatus,
+      },
+    }),
+
   stubPatchPayRate: (httpStatus = 200): SuperAgentRequest =>
     stubFor({
       request: {

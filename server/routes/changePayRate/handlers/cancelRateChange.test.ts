@@ -1,14 +1,17 @@
 import { Request, Response } from 'express'
 import { when } from 'jest-when'
 import CancelRateChangeHandler from './cancelRateChange'
+import PrisonerPayService from '../../../services/prisonerPayService'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
 import * as auditUtils from '../../../utils/auditUtils'
 
 jest.mock('../../../services/orchestratorService')
+jest.mock('../../../services/prisonerPayService')
 jest.mock('../../../utils/auditUtils')
 
 const orchestratorService = new OrchestratorService(null)
+const prisonerPayService = new PrisonerPayService(null)
 const rateChange = TestData.PayRate()
 
 describe('CancelRateChangeHandler', () => {
@@ -17,7 +20,8 @@ describe('CancelRateChangeHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
-    handler = new CancelRateChangeHandler(orchestratorService)
+    jest.clearAllMocks()
+    handler = new CancelRateChangeHandler(orchestratorService, prisonerPayService)
     req = {
       params: {
         rateId: 'rate-123',
@@ -51,6 +55,7 @@ describe('CancelRateChangeHandler', () => {
     it('should redirect with success to pay-rates when choice is yes', async () => {
       await handler.POST(req as Request, res as Response)
 
+      expect(prisonerPayService.cancelRateChange).toHaveBeenCalledWith('rate-123')
       expect(res.redirectWithSuccess).toHaveBeenCalledWith(
         '../../../pay-rates',
         'Pay rate updated',
@@ -62,7 +67,16 @@ describe('CancelRateChangeHandler', () => {
       req.body = { choice: 'no' }
       await handler.POST(req as Request, res as Response)
 
+      expect(prisonerPayService.cancelRateChange).not.toHaveBeenCalled()
       expect(res.redirect).toHaveBeenCalledWith('../../../pay-rates')
+    })
+
+    it('should propagate cancellation errors without showing success', async () => {
+      jest.mocked(prisonerPayService.cancelRateChange).mockRejectedValueOnce(new Error('Cancellation failed'))
+
+      await expect(handler.POST(req as Request, res as Response)).rejects.toThrow('Cancellation failed')
+
+      expect(res.redirectWithSuccess).not.toHaveBeenCalled()
     })
 
     it('should render with errors when validation fails', async () => {
@@ -70,6 +84,7 @@ describe('CancelRateChangeHandler', () => {
 
       await handler.POST(req as Request, res as Response)
 
+      expect(prisonerPayService.cancelRateChange).not.toHaveBeenCalled()
       expect(res.render).toHaveBeenCalledWith(
         'pages/changePayRate/cancel-rate-change',
         expect.objectContaining({

@@ -15,6 +15,14 @@ describe('PrisonerPayService', () => {
     prisonerPayService = new PrisonerPayService(prisonerPayApiClientMock)
   })
 
+  describe('cancelRateChange', () => {
+    it('should cancel the scheduled change by deleting its future pay rate', async () => {
+      await prisonerPayService.cancelRateChange('rate-123')
+
+      expect(prisonerPayApiClientMock.deleteFuturePayRate).toHaveBeenCalledWith('rate-123')
+    })
+  })
+
   describe('patchPayStatusPeriod', () => {
     it('should call patchPayStatusPeriod on the api client with correct parameters', () => {
       const request = {

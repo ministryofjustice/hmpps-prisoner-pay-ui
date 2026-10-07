@@ -34,6 +34,10 @@ export default class PrisonerPayApiClient extends RestClient {
     )
   }
 
+  deleteFuturePayRate(rateId: string): Promise<void> {
+    return this.delete<void>({ path: `/pay-rates/${rateId}` }, asSystem())
+  }
+
   async patchPayRate(payStatusId: string, request: UpdatePayRateRequest): Promise<PayStatusPeriod> {
     return this.put<PayStatusPeriod>(
       {

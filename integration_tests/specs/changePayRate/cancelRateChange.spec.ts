@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test'
 import { login, resetStubs } from '../../testUtils'
 import DashboardPage from '../../pages/dashboard/dashboardPage'
 import PayRatesPage from '../../pages/dashboard/payRatesPage'
+import prisonerPayApi from '../../mockApis/prisonerPayApi'
 import payOrchestratorApi from '../../mockApis/payOrchestratorApi'
 import PayOverviewPage from '../../pages/dashboard/payOverviewPage'
 import CancelRateChangePage from '../../pages/changePayRate/cancelRateChangePage'
@@ -15,6 +16,7 @@ test.describe('Change Pay Rate', () => {
     await payOrchestratorApi.stubPayOrchestratorHealthPing()
     await payOrchestratorApi.stubGetPayStatusPeriods()
     await payOrchestratorApi.stubGetPayRatesByPrison()
+    await prisonerPayApi.stubDeleteFuturePayRate()
 
     const type = 'Long-term sick'
     await login(page)

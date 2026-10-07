@@ -1,13 +1,17 @@
 import { Request, Response } from 'express'
 import { parse } from 'date-fns'
 import validateForm from './cancelRateChangeValidation'
+import PrisonerPayService from '../../../services/prisonerPayService'
 import OrchestratorService from '../../../services/orchestratorService'
 import { auditPageView } from '../../../utils/auditUtils'
 import { Page } from '../../../services/auditService'
 import { getSingleParam } from '../../../utils/utils'
 
 export default class CancelRateChangeHandler {
-  constructor(private readonly orchestratorService: OrchestratorService) {}
+  constructor(
+    private readonly orchestratorService: OrchestratorService,
+    private readonly prisonerPayService: PrisonerPayService,
+  ) {}
 
   GET = async (req: Request, res: Response) => {
     const rateChange = await this.orchestratorService.getPayRateById(getSingleParam(req.params.rateId))
@@ -37,7 +41,7 @@ export default class CancelRateChangeHandler {
     }
 
     if (choice === `yes`) {
-      // TODO: implement cancellation logic
+      await this.prisonerPayService.cancelRateChange(getSingleParam(req.params.rateId))
       return res.redirectWithSuccess(
         '../../../pay-rates',
         'Pay rate updated',
