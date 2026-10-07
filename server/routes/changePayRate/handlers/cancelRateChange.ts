@@ -4,8 +4,8 @@ import { format, parse } from 'date-fns'
 import validateForm from './cancelRateChangeValidation'
 import PrisonerPayService from '../../../services/prisonerPayService'
 import OrchestratorService from '../../../services/orchestratorService'
-import { auditPageView } from '../../../utils/auditUtils'
-import { Page } from '../../../services/auditService'
+import { auditPageAction, auditPageView } from '../../../utils/auditUtils'
+import { Action, Page, SubjectType } from '../../../services/auditService'
 import { getSingleParam } from '../../../utils/utils'
 
 export default class CancelRateChangeHandler {
@@ -56,7 +56,21 @@ export default class CancelRateChangeHandler {
 
     if (choice === `yes`) {
       const rateChange = await this.getRateChange(req, res)
+
       await this.prisonerPayService.cancelRateChange(rateChange.id)
+      await auditPageAction(
+        req,
+        Page.CANCEL_RATE_CHANGE,
+        Action.CANCEL_RATE_CHANGE,
+        {
+          payRateId: rateChange.id,
+          prisonCode: res.locals.user.activeCaseLoadId,
+          payType: rateChange.type,
+          payAmount: rateChange.rate,
+          effectiveDate: rateChange.startDate,
+        },
+        SubjectType.NOT_APPLICABLE,
+      )
       return res.redirectWithSuccess(
         '../../../pay-rates',
         'Pay rate updated',

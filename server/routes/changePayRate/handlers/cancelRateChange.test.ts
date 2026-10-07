@@ -4,6 +4,7 @@ import CancelRateChangeHandler from './cancelRateChange'
 import PrisonerPayService from '../../../services/prisonerPayService'
 import OrchestratorService from '../../../services/orchestratorService'
 import TestData from '../../../testutils/testData'
+import { Action, Page, SubjectType } from '../../../services/auditService'
 import * as auditUtils from '../../../utils/auditUtils'
 
 jest.mock('../../../services/orchestratorService')
@@ -39,6 +40,7 @@ describe('CancelRateChangeHandler', () => {
     when(orchestratorService.getPayRates).calledWith('MDI').mockResolvedValue([rateChange])
 
     jest.mocked(auditUtils.auditPageView).mockResolvedValue(undefined)
+    jest.mocked(auditUtils.auditPageAction).mockResolvedValue(undefined)
   })
 
   afterEach(() => {
@@ -65,6 +67,7 @@ describe('CancelRateChangeHandler', () => {
 
         expect(res.render).not.toHaveBeenCalled()
         expect(prisonerPayService.cancelRateChange).not.toHaveBeenCalled()
+        expect(auditUtils.auditPageAction).not.toHaveBeenCalled()
         expect(res.redirectWithSuccess).not.toHaveBeenCalled()
       },
     )
@@ -94,11 +97,37 @@ describe('CancelRateChangeHandler', () => {
       )
     })
 
+    it('should audit the completed cancellation before redirecting', async () => {
+      await handler.POST(req as Request, res as Response)
+
+      expect(auditUtils.auditPageAction).toHaveBeenCalledTimes(1)
+      expect(auditUtils.auditPageAction).toHaveBeenCalledWith(
+        req,
+        Page.CANCEL_RATE_CHANGE,
+        Action.CANCEL_RATE_CHANGE,
+        {
+          payRateId: rateChange.id,
+          prisonCode: 'MDI',
+          payType: rateChange.type,
+          payAmount: rateChange.rate,
+          effectiveDate: rateChange.startDate,
+        },
+        SubjectType.NOT_APPLICABLE,
+      )
+      expect(jest.mocked(prisonerPayService.cancelRateChange).mock.invocationCallOrder[0]).toBeLessThan(
+        jest.mocked(auditUtils.auditPageAction).mock.invocationCallOrder[0],
+      )
+      expect(jest.mocked(auditUtils.auditPageAction).mock.invocationCallOrder[0]).toBeLessThan(
+        jest.mocked(res.redirectWithSuccess).mock.invocationCallOrder[0],
+      )
+    })
+
     it('should redirect to pay-rates when choice is no', async () => {
       req.body = { choice: 'no' }
       await handler.POST(req as Request, res as Response)
 
       expect(prisonerPayService.cancelRateChange).not.toHaveBeenCalled()
+      expect(auditUtils.auditPageAction).not.toHaveBeenCalled()
       expect(res.redirect).toHaveBeenCalledWith('../../../pay-rates')
     })
 
@@ -108,6 +137,7 @@ describe('CancelRateChangeHandler', () => {
       await expect(handler.POST(req as Request, res as Response)).rejects.toThrow('Cancellation failed')
 
       expect(res.redirectWithSuccess).not.toHaveBeenCalled()
+      expect(auditUtils.auditPageAction).not.toHaveBeenCalled()
     })
 
     it('should render with errors when validation fails', async () => {
@@ -116,6 +146,7 @@ describe('CancelRateChangeHandler', () => {
       await handler.POST(req as Request, res as Response)
 
       expect(prisonerPayService.cancelRateChange).not.toHaveBeenCalled()
+      expect(auditUtils.auditPageAction).not.toHaveBeenCalled()
       expect(res.render).toHaveBeenCalledWith(
         'pages/changePayRate/cancel-rate-change',
         expect.objectContaining({
