@@ -12,10 +12,10 @@ export default function hasValidEndDate({ startDate, endDate, endDateSelection }
 
 export function getRegisterJourneyRedirect(
   journey: RegisterJourney | undefined,
-): 'add-prisoner' | 'start-date' | 'end-date' | undefined {
+): 'add-prisoner' | 'start-date' | 'end-date' | 'last-day' | undefined {
   if (!journey) return 'add-prisoner'
   const start = journey.startDate ? parseISO(journey.startDate) : undefined
   if (!isValid(start) || start < startOfToday()) return 'start-date'
-  if (!hasValidEndDate(journey)) return 'end-date'
+  if (!hasValidEndDate(journey)) return journey.endDateSelection === 'yes' ? 'last-day' : 'end-date'
   return undefined
 }

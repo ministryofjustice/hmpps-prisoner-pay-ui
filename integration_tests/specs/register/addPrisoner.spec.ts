@@ -92,6 +92,10 @@ test.describe('Add prisoner - Long-term sick', () => {
 
     const endDatePage = await EndDatePage.verifyOnPage(page)
     await endDatePage.yesRadio.click()
+    await endDatePage.continueButton.click()
+    await expect(
+      page.getByRole('heading', { name: "When is Nicaigh Johnustine's last day in this status?" }),
+    ).toBeVisible()
 
     const futureDate = new Date()
     futureDate.setDate(futureDate.getDate() + 1)
@@ -216,7 +220,12 @@ test.describe('Add prisoner - Long-term sick', () => {
       format(start, 'dd/MM/yyyy'),
     )
     await continueButton.click()
+    await continueButton.click()
+    await expect(page.getByRole('alert')).toContainText('Select if you want to set their last day or not')
     await end.yesRadio.check()
+    await continueButton.click()
+    await continueButton.click()
+    await expect(page.getByRole('alert')).toContainText('Enter or select a date')
     await end.endDateInput.fill(format(addDays(start, -1), 'dd/MM/yyyy'))
     await continueButton.click()
     await expect(page.getByRole('alert')).toContainText('The end date must be on or after the start date')
@@ -225,7 +234,6 @@ test.describe('Add prisoner - Long-term sick', () => {
     const check = await CheckPage.verifyOnPage(page)
     await expect(page.locator('.govuk-summary-list')).toContainText(format(start, 'd MMMM yyyy'))
     await page.getByRole('link', { name: 'Back', exact: true }).click()
-    await expect(end.yesRadio).toBeChecked()
     await expect(end.endDateInput).toHaveValue(format(start, 'dd/MM/yyyy'))
     await continueButton.click()
     await check.confirmButton.click()

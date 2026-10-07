@@ -4,6 +4,7 @@ import ConfirmedAddPrisonerHandler from './handlers/confirmation/confirmedAddPri
 import AddPrisonerResultsHandler from './handlers/search/addPrisonerResults'
 import CancelHandler from './handlers/cancel/cancel'
 import CheckHandler from './handlers/check/check'
+import LastDayHandler from './handlers/endDate/lastDay'
 import EndDateHandler from './handlers/endDate/endDate'
 import StartDateHandler from './handlers/startDate/startDate'
 import { Services } from '../../services'
@@ -32,6 +33,10 @@ export default function Index(services: Services): Router {
   const endDateHandler = new EndDateHandler()
   post('/end-date', endDateHandler.POST)
   get('/end-date', endDateHandler.GET)
+
+  const lastDayHandler = new LastDayHandler()
+  get('/last-day', lastDayHandler.GET)
+  post('/last-day', lastDayHandler.POST)
 
   const checkHandler = new CheckHandler(services.prisonerPayService)
   get('/check', checkHandler.GET)

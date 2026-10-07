@@ -44,7 +44,7 @@ describe('registration step required before check answers', () => {
   })
 
   it('returns to end date when it precedes the chosen start date', () => {
-    expect(getRegisterJourneyRedirect({ ...journey, endDateSelection: 'yes', endDate: '2026-01-19' })).toBe('end-date')
+    expect(getRegisterJourneyRedirect({ ...journey, endDateSelection: 'yes', endDate: '2026-01-19' })).toBe('last-day')
   })
 
   it('allows a complete journey without an end date', () => {

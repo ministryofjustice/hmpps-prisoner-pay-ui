@@ -1,7 +1,6 @@
 {% extends "layout.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from 'moj/components/date-picker/macro.njk' import mojDatePicker %}
 
 {% set pageTitle = applicationName + " - End date" %}
 {% set mainClasses = "govuk-body" %}
@@ -16,11 +15,11 @@
         {{
           govukRadios({
               classes: "govuk-radios",
-              id: "endDateSelection",
+              idPrefix: "endDateSelection",
               name: "endDateSelection",
               fieldset: {
                   legend: {
-                      text: "Do you want to add an end date for " + prisonerName + "'s " + payType.description + "?",
+                      text: "Do you want to set " + prisonerName + "'s last day on this status?",
                       isPageHeading: true,
                       classes: "govuk-fieldset__legend--l"
                   }
@@ -30,21 +29,7 @@
                 {
                     value: "yes",
                     text: "Yes",
-                    checked: endDateSelection == "yes",
-                    conditional: {
-                      html: mojDatePicker({
-                          id: 'selectedDate',
-                          name: 'selectedDate',
-                          leadingZeros: 'true',
-                          classes: 'moj-datepicker--fixed-width',
-                          label: {
-                              text: 'Input the end date',
-                              classes: 'govuk-visually-hidden'
-                          },
-                          value: selectedDate,
-                          errorMessage: errors | findError("selectedDate")
-                      })
-                    }
+                    checked: endDateSelection == "yes"
                 },
                 {
                       value: "no",

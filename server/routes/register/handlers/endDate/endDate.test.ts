@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { format } from 'date-fns'
 import EndDateHandler from './endDate'
 import * as auditUtils from '../../../../utils/auditUtils'
 import TestData from '../../../../testutils/testData'
@@ -43,7 +42,6 @@ describe('EndDateHandler', () => {
       expect(res.render).toHaveBeenCalledWith('pages/register/end-date', {
         prisonerName: 'Nicaigh Johnustine',
         prisoner: TestData.Prisoner(),
-        selectedDate: undefined,
         endDateSelection: undefined,
       })
     })
@@ -53,7 +51,7 @@ describe('EndDateHandler', () => {
 
       expect(auditUtils.auditPageView).toHaveBeenCalledWith(
         req,
-        Page.SET_END_DATE,
+        Page.SET_END_DATE_SELECTION,
         {},
         SubjectType.PRISONER_ID,
         null,
@@ -70,22 +68,29 @@ describe('EndDateHandler', () => {
       }
       await handler.POST(req as Request, res as Response)
 
-      expect(res.redirect).toHaveBeenCalled()
+      expect(res.redirect).toHaveBeenCalledWith('check')
     })
 
-    it('should redirect after processing with date', async () => {
-      const futureDate = new Date()
-      futureDate.setDate(futureDate.getDate() + 1)
-      const formattedDate = format(futureDate, 'dd/MM/yyyy')
-      req.body = {
-        selectedDate: formattedDate,
-        endDateSelection: 'yes',
-      }
+    it('opens the date screen when yes is selected', async () => {
+      req.body = { endDateSelection: 'yes' }
       await handler.POST(req as Request, res as Response)
+      expect(req.session.registerJourney.endDateSelection).toBe('yes')
+      expect(res.redirect).toHaveBeenCalledWith('last-day')
+    })
 
-      expect(res.redirect).toHaveBeenCalled()
+    it.each([undefined, '', 'invalid'])('requires a valid choice: %s', async endDateSelection => {
+      req.body = { endDateSelection }
+      await handler.POST(req as Request, res as Response)
+      expect(res.render).toHaveBeenCalledWith(
+        'pages/register/end-date',
+        expect.objectContaining({
+          errors: [{ href: '#endDateSelection', text: 'Select if you want to set their last day or not' }],
+        }),
+      )
+      expect(res.redirect).not.toHaveBeenCalled()
     })
   })
+
   it('clears an earlier end date when no is selected', async () => {
     req.session.registerJourney.endDate = '2026-01-25'
     req.body = { endDateSelection: 'no', selectedDate: '25/01/2026' }
@@ -99,35 +104,7 @@ describe('EndDateHandler', () => {
     await handler.GET(req as Request, res as Response)
     expect(res.render).toHaveBeenCalledWith(
       'pages/register/end-date',
-      expect.objectContaining({ selectedDate: '25/01/2026', endDateSelection: 'yes' }),
+      expect.objectContaining({ endDateSelection: 'yes' }),
     )
-  })
-  it('stores a submitted picker date as ISO and restores it for redisplay', async () => {
-    req.body = { endDateSelection: 'yes', selectedDate: '25/01/2026' }
-    await handler.POST(req as Request, res as Response)
-    expect(req.session.registerJourney.endDate).toBe('2026-01-25')
-    await handler.GET(req as Request, res as Response)
-    expect(res.render).toHaveBeenCalledWith(
-      'pages/register/end-date',
-      expect.objectContaining({
-        selectedDate: '25/01/2026',
-        endDateSelection: 'yes',
-      }),
-    )
-  })
-
-  it('preserves an invalid picker entry without changing the saved ISO date', async () => {
-    req.session.registerJourney.endDate = '2026-01-25'
-    req.body = { endDateSelection: 'yes', selectedDate: '31/02/2026' }
-    await handler.POST(req as Request, res as Response)
-    expect(req.session.registerJourney.endDate).toBe('2026-01-25')
-    expect(res.render).toHaveBeenCalledWith(
-      'pages/register/end-date',
-      expect.objectContaining({
-        selectedDate: '31/02/2026',
-        errors: [{ href: '#selectedDate', text: 'Enter a real date' }],
-      }),
-    )
-    expect(res.redirect).not.toHaveBeenCalled()
   })
 })

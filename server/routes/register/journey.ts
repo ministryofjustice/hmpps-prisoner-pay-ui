@@ -15,7 +15,7 @@ export type RegisterJourney = {
   startDateOption?: StartDateOption
   endDate?: string
   endDateSelection?: EndDateSelection
-  returnTo?: 'start-date' | 'end-date' | 'check'
+  returnTo?: 'start-date' | 'end-date' | 'last-day' | 'check'
 }
 
 // Retain only the details needed to refresh the confirmation after the draft is cleared.

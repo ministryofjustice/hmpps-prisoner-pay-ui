@@ -42,6 +42,7 @@ export default class CheckHandler {
       prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
       prisoner,
       startDateText: formatCheckDate(startDate),
+      previousPage: endDate ? 'last-day' : 'end-date',
       endDateText: endDate ? formatCheckDate(endDate) : 'None set',
     })
   }

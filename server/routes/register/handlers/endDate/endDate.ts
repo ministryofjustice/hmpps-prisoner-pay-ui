@@ -1,10 +1,9 @@
 import { Request, Response } from 'express'
-import { format, parse } from 'date-fns'
-import { formatDate, formatFirstLastName } from '../../../../utils/utils'
-import validateForm from './endDateValidation'
+import { formatFirstLastName } from '../../../../utils/utils'
 import { auditPageView } from '../../../../utils/auditUtils'
 import { Page, SubjectType } from '../../../../services/auditService'
 import { EndDateSelection } from '../../journey'
+import validateForm from './endDateValidation'
 
 export default class EndDateHandler {
   GET = async (req: Request, res: Response) => {
@@ -13,14 +12,11 @@ export default class EndDateHandler {
     const { prisonerNumber } = prisoner
     req.session.registerJourney.returnTo = 'end-date'
 
-    await auditPageView(req, Page.SET_END_DATE, {}, SubjectType.PRISONER_ID, null, prisonerNumber)
+    await auditPageView(req, Page.SET_END_DATE_SELECTION, {}, SubjectType.PRISONER_ID, null, prisonerNumber)
 
     return res.render('pages/register/end-date', {
       prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
       prisoner,
-      selectedDate: req.session.registerJourney.endDate
-        ? formatDate(req.session.registerJourney.endDate, 'dd/MM/yyyy')
-        : undefined,
       endDateSelection: req.session.registerJourney.endDateSelection,
     })
   }
@@ -28,21 +24,19 @@ export default class EndDateHandler {
   POST = async (req: Request, res: Response) => {
     if (!req.session.registerJourney?.startDate) return res.redirect('start-date')
     const { prisoner } = req.session.registerJourney
-    const { selectedDate, endDateSelection } = req.body
+    const { endDateSelection } = req.body
 
-    const errors = validateForm(endDateSelection, selectedDate, req.session.registerJourney.startDate)
+    const errors = validateForm(endDateSelection)
     if (errors)
       return res.render('pages/register/end-date', {
         errors: [errors],
         endDateSelection,
-        selectedDate: selectedDate || '',
         prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
         prisoner,
       })
 
-    req.session.registerJourney.endDate =
-      endDateSelection === 'yes' ? format(parse(selectedDate, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd') : undefined
+    if (endDateSelection === 'no') req.session.registerJourney.endDate = undefined
     req.session.registerJourney.endDateSelection = endDateSelection as EndDateSelection
-    return res.redirect('check')
+    return res.redirect(endDateSelection === 'yes' ? 'last-day' : 'check')
   }
 }
