@@ -20,6 +20,7 @@ describe('CancelRateChangeHandler', () => {
   let res: Partial<Response>
 
   beforeEach(() => {
+    jest.useFakeTimers({ now: new Date('2025-10-07T12:00:00Z') })
     jest.clearAllMocks()
     handler = new CancelRateChangeHandler(orchestratorService, prisonerPayService)
     req = {
@@ -29,7 +30,7 @@ describe('CancelRateChangeHandler', () => {
       body: { choice: 'yes' },
     } as unknown as Partial<Request>
     res = {
-      locals: { user: TestData.PrisonUser() },
+      locals: { user: TestData.PrisonUser(), payType: { type: 'LONG_TERM_SICK' } },
       render: jest.fn(),
       redirect: jest.fn(),
       redirectWithSuccess: jest.fn(),
@@ -38,6 +39,35 @@ describe('CancelRateChangeHandler', () => {
     when(orchestratorService.getPayRates).calledWith('MDI').mockResolvedValue([rateChange])
 
     jest.mocked(auditUtils.auditPageView).mockResolvedValue(undefined)
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
+  describe.each([
+    ['a current rate', { ...rateChange, startDate: '2025-10-06' }],
+    ['a rate starting today', { ...rateChange, startDate: '2025-10-07' }],
+    ['a future rate for another pay type', { ...rateChange, type: 'RETIRED' }],
+    ['an unknown ID', { ...rateChange, id: 'another-id' }],
+  ])('rejecting %s', (_description, rate) => {
+    beforeEach(() => {
+      jest.mocked(orchestratorService.getPayRates).mockResolvedValueOnce([rate])
+    })
+
+    it.each(['GET', 'POST', 'invalid POST'])(
+      'should return 404 for %s without rendering or cancelling',
+      async method => {
+        if (method === 'invalid POST') req.body = { choice: '' }
+        const action = method === 'GET' ? handler.GET : handler.POST
+
+        await expect(action(req as Request, res as Response)).rejects.toMatchObject({ status: 404 })
+
+        expect(res.render).not.toHaveBeenCalled()
+        expect(prisonerPayService.cancelRateChange).not.toHaveBeenCalled()
+        expect(res.redirectWithSuccess).not.toHaveBeenCalled()
+      },
+    )
   })
 
   describe('GET', () => {
