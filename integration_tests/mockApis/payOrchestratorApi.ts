@@ -55,7 +55,11 @@ export default {
       },
     }),
 
-  stubGetPayRatesByPrison: (prisonCode: string = '.*', httpStatus = 200): SuperAgentRequest =>
+  stubGetPayRatesByPrison: (
+    prisonCode: string = '.*',
+    httpStatus = 200,
+    payRates = TestData.PayRates(),
+  ): SuperAgentRequest =>
     stubFor({
       request: {
         method: 'GET',
@@ -64,7 +68,7 @@ export default {
       response: {
         status: httpStatus,
         headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-        jsonBody: TestData.PayRates(),
+        jsonBody: payRates,
       },
     }),
 }

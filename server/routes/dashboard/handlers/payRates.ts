@@ -16,12 +16,21 @@ export default class PayRatesHandler {
       activeCaseLoadId,
     )
     const payRates = await this.orchestratorService.getPayRates(activeCaseLoadId)
+    const today = format(new Date(), 'yyyy-MM-dd')
     const payTypeData = payTypes.map(payType => {
       const records = paySummary.filter(period => period.type === payType.type)
+      const rates = payRates.filter(rate => rate.type === payType.type)
+      const currentRate = rates
+        .filter(rate => rate.startDate <= today)
+        .sort((a, b) => b.startDate.localeCompare(a.startDate))[0]
+      const scheduledRate = rates
+        .filter(rate => rate.startDate > today)
+        .sort((a, b) => a.startDate.localeCompare(b.startDate))[0]
       return {
         ...payType,
         numberOfPrisoners: records.length,
-        currentRate: payRates.find(rate => rate.type === payType.type)?.rate || undefined,
+        currentRate: currentRate?.rate,
+        scheduledRateId: scheduledRate?.id,
       }
     })
 

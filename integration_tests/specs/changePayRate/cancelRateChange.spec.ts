@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import TestData from '../../../server/testutils/testData'
 import { login, resetStubs } from '../../testUtils'
 import DashboardPage from '../../pages/dashboard/dashboardPage'
 import PayRatesPage from '../../pages/dashboard/payRatesPage'
@@ -15,7 +16,10 @@ test.describe('Change Pay Rate', () => {
   test('Can cancel a scheduled pay rate change', async ({ page }) => {
     await payOrchestratorApi.stubPayOrchestratorHealthPing()
     await payOrchestratorApi.stubGetPayStatusPeriods()
-    await payOrchestratorApi.stubGetPayRatesByPrison()
+    await payOrchestratorApi.stubGetPayRatesByPrison('.*', 200, [
+      ...TestData.PayRates(),
+      { ...TestData.PayRate(), id: 'f7a138e6-7f9e-4336-8494-890d6b3d0a97', startDate: '2999-01-01' },
+    ])
     await prisonerPayApi.stubDeleteFuturePayRate()
 
     const type = 'Long-term sick'
@@ -31,7 +35,12 @@ test.describe('Change Pay Rate', () => {
     await payOverviewPage.changePayRateLink.click()
 
     const payRatesPage = await PayRatesPage.verifyOnPage(page)
-    await payRatesPage.payTypeSummaryCards.locator('a', { hasText: 'Cancel change' }).click()
+    const cancelLink = payRatesPage.payTypeSummaryCards.locator('a', { hasText: 'Cancel change' })
+    await expect(cancelLink).toHaveAttribute(
+      'href',
+      '../long-term-sick/change-pay-rate/f7a138e6-7f9e-4336-8494-890d6b3d0a97/cancel-rate-change',
+    )
+    await cancelLink.click()
 
     const cancelRateChangePage = await CancelRateChangePage.verifyOnPage(page)
     await cancelRateChangePage.yesRadio.check()

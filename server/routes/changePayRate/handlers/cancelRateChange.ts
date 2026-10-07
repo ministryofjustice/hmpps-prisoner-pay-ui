@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import createError from 'http-errors'
 import { parse } from 'date-fns'
 import validateForm from './cancelRateChangeValidation'
 import PrisonerPayService from '../../../services/prisonerPayService'
@@ -13,8 +14,15 @@ export default class CancelRateChangeHandler {
     private readonly prisonerPayService: PrisonerPayService,
   ) {}
 
+  private async getRateChange(req: Request, res: Response) {
+    const rates = await this.orchestratorService.getPayRates(res.locals.user.activeCaseLoadId)
+    const rateChange = rates.find(rate => rate.id === getSingleParam(req.params.rateId))
+    if (!rateChange) throw createError(404, 'Scheduled pay rate change not found')
+    return rateChange
+  }
+
   GET = async (req: Request, res: Response) => {
-    const rateChange = await this.orchestratorService.getPayRateById(getSingleParam(req.params.rateId))
+    const rateChange = await this.getRateChange(req, res)
     const selectedDate = parse(rateChange.startDate, 'yyyy-MM-dd', new Date())
 
     await auditPageView(req, Page.CANCEL_RATE_CHANGE, { payAmount: rateChange.rate, selectedDate })
@@ -30,7 +38,7 @@ export default class CancelRateChangeHandler {
 
     const errors = validateForm(choice)
     if (errors) {
-      const rateChange = await this.orchestratorService.getPayRateById(getSingleParam(req.params.rateId))
+      const rateChange = await this.getRateChange(req, res)
 
       return res.render('pages/changePayRate/cancel-rate-change', {
         errors: [errors],

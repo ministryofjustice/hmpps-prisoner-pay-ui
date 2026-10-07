@@ -24,17 +24,18 @@ describe('CancelRateChangeHandler', () => {
     handler = new CancelRateChangeHandler(orchestratorService, prisonerPayService)
     req = {
       params: {
-        rateId: 'rate-123',
+        rateId: rateChange.id,
       },
       body: { choice: 'yes' },
     } as unknown as Partial<Request>
     res = {
+      locals: { user: TestData.PrisonUser() },
       render: jest.fn(),
       redirect: jest.fn(),
       redirectWithSuccess: jest.fn(),
     }
 
-    when(orchestratorService.getPayRateById).calledWith('rate-123').mockResolvedValue(TestData.PayRate())
+    when(orchestratorService.getPayRates).calledWith('MDI').mockResolvedValue([rateChange])
 
     jest.mocked(auditUtils.auditPageView).mockResolvedValue(undefined)
   })
@@ -43,7 +44,7 @@ describe('CancelRateChangeHandler', () => {
     it('should render the correct view with rate change details', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(orchestratorService.getPayRateById).toHaveBeenCalledWith('rate-123')
+      expect(orchestratorService.getPayRates).toHaveBeenCalledWith('MDI')
       expect(res.render).toHaveBeenCalledWith('pages/changePayRate/cancel-rate-change', {
         payAmount: rateChange.rate,
         selectedDate: expect.any(Date),
@@ -55,7 +56,7 @@ describe('CancelRateChangeHandler', () => {
     it('should redirect with success to pay-rates when choice is yes', async () => {
       await handler.POST(req as Request, res as Response)
 
-      expect(prisonerPayService.cancelRateChange).toHaveBeenCalledWith('rate-123')
+      expect(prisonerPayService.cancelRateChange).toHaveBeenCalledWith(rateChange.id)
       expect(res.redirectWithSuccess).toHaveBeenCalledWith(
         '../../../pay-rates',
         'Pay rate updated',
