@@ -16,7 +16,7 @@
                   rows: [
                       {
                         key: { text: "Pay amount" },
-                        value: { text: "£" + payAmount | float | toFixed(2) + " per day" },
+                        value: { text: (payAmount | currencyFromPence) + " per day" },
                         actions: {
                           items: [{
                               href: "./pay-amount",

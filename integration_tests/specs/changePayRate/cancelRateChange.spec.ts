@@ -43,6 +43,7 @@ test.describe('Change Pay Rate', () => {
     await cancelLink.click()
 
     const cancelRateChangePage = await CancelRateChangePage.verifyOnPage(page)
+    await expect(page.getByText(/The pay rate is set to change to £0.99 per day/)).toBeVisible()
     await cancelRateChangePage.yesRadio.check()
     await cancelRateChangePage.confirmButton.click()
 

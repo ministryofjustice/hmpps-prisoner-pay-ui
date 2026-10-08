@@ -51,19 +51,32 @@ describe('CheckPayRateHandler', () => {
       const expectedDate = parse('15/08/2024', 'dd/MM/yyyy', new Date())
 
       expect(res.render).toHaveBeenCalledWith('pages/changePayRate/check-pay-rate', {
-        payAmount: '1.00',
+        payAmount: 100,
         selectedDate: expectedDate,
       })
     })
   })
 
   describe('POST', () => {
+    it.each([
+      ['0.65', 65],
+      ['1.13', 113],
+      ['2.00', 200],
+    ])('sends %s pounds to the API as %i pence', async (payAmount, rate) => {
+      req.session!.payAmount = payAmount
+      await handler.POST(req as Request, res as Response)
+      expect(prisonerPayService.patchPayRate).toHaveBeenCalledWith(
+        req.session!.payRateId,
+        expect.objectContaining({ rate }),
+      )
+    })
+
     it('should call patchPayRate with correct parameters', async () => {
       await handler.POST(req as Request, res as Response)
 
       expect(prisonerPayService.patchPayRate).toHaveBeenCalledWith('e6a19788-4f80-4923-8aff-1e5fe26a6139', {
         startDate: '2024-08-15',
-        rate: 1,
+        rate: 100,
       })
     })
 

@@ -4,6 +4,7 @@ import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
 import { findError, formatName, formatDate, initialiseName, toFixed } from './utils'
+import { currencyFromPence } from './currencyUtils'
 import config from '../config'
 import logger from '../../logger'
 
@@ -50,6 +51,7 @@ export default function nunjucksSetup(app: express.Express): void {
 
   njkEnv.addFilter('formatDate', formatDate)
   njkEnv.addFilter('toFixed', toFixed)
+  njkEnv.addFilter('currencyFromPence', currencyFromPence)
 
   njkEnv.addGlobal('activitiesUiUrl', config.activitiesUiUrl)
 }
