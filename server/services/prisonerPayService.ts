@@ -16,6 +16,10 @@ export default class PrisonerPayService {
     return this.prisonerPayApiClient.postPayStatusPeriod(request)
   }
 
+  cancelRateChange(rateId: string) {
+    return this.prisonerPayApiClient.deleteFuturePayRate(rateId)
+  }
+
   patchPayRate(payStatusId: string, request: UpdatePayRateRequest) {
     return this.prisonerPayApiClient.patchPayRate(payStatusId, request)
   }
