@@ -43,6 +43,17 @@ describe('setPayType middleware', () => {
     })
   })
 
+  it('should return 404 for an unknown pay-type slug', () => {
+    req.params = { payTypeSlug: 'unknown-pay-type' }
+    jest.mocked(getPayTypeBySlug).mockReturnValueOnce(undefined)
+
+    setPayType(req as Request, res as Response, next)
+
+    expect(next).toHaveBeenCalledTimes(1)
+    expect(next).toHaveBeenCalledWith(expect.objectContaining({ status: 404, message: 'Pay type not found' }))
+    expect(res.locals.payType).toBeUndefined()
+  })
+
   it('should call next', () => {
     setPayType(req as Request, res as Response, next)
 

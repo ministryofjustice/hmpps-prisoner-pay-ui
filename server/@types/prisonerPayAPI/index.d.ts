@@ -4,415 +4,922 @@
  */
 
 export interface paths {
-  '/pay-status-periods': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** Retrieve a list of pay status periods ordered by start date */
-    get: operations['search']
-    put?: never
-    /** Create a new pay status period */
-    post: operations['create']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/pay-status-periods/{id}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** Retrieve a pay status periods by its id */
-    get: operations['get']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    /** Update a pay status period */
-    patch: operations['update']
-    trace?: never
-  }
+    "/queue-admin/retry-dlq/{dlqName}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * @description Requires one of the following roles:
+         *     * ROLE_QUEUE_ADMIN
+         */
+        put: operations["retryDlq"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/queue-admin/retry-all-dlqs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["retryAllDlqs"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/queue-admin/purge-queue/{queueName}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * @description Requires one of the following roles:
+         *     * ROLE_QUEUE_ADMIN
+         */
+        put: operations["purgeQueue"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/pay-rates/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update or create the pay rate
+         * @description Requires one of the following roles:
+         *     * ROLE_PRISONER_PAY__PRISONER_PAY_UI
+         */
+        put: operations["updatePayRate"];
+        post?: never;
+        /**
+         * Deletes the future pay rate with the given id.
+         * @description Hard deletes the given future pay rate.
+         *
+         *     Requires one of the following roles:
+         *     * ROLE_PRISONER_PAY__PRISONER_PAY_UI
+         */
+        delete: operations["deletePayRate"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/pay-status-periods": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieve a list of pay status periods ordered by start date
+         * @description Requires one of the following roles:
+         *     * ROLE_PRISONER_PAY__PRISONER_PAY_ORCHESTRATOR_API
+         */
+        get: operations["search"];
+        put?: never;
+        /**
+         * Create a new pay status period
+         * @description Requires one of the following roles:
+         *     * ROLE_PRISONER_PAY__PRISONER_PAY_UI
+         */
+        post: operations["create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/job-admin/run/{jobName}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Endpoint to trigger a job, usually fron a cron.
+         * @description This endpoint can only be accessed from within the ingress. Requests from elsewhere will result in a 401 response code.
+         */
+        post: operations["runJob"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/pay-status-periods/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieve a pay status periods by its id
+         * @description Requires one of the following roles:
+         *     * ROLE_PRISONER_PAY__PRISONER_PAY_ORCHESTRATOR_API
+         */
+        get: operations["get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update a pay status period
+         * @description Requires one of the following roles:
+         *     * ROLE_PRISONER_PAY__PRISONER_PAY_UI
+         */
+        patch: operations["update"];
+        trace?: never;
+    };
+    "/queue-admin/get-dlq-messages/{dlqName}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Requires one of the following roles:
+         *     * ROLE_QUEUE_ADMIN
+         */
+        get: operations["getDlqMessages"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/pay-rates/prison/{prisonCode}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieve all current and future pay rates by prison code
+         * @description Requires one of the following roles:
+         *     * ROLE_PRISONER_PAY__PRISONER_PAY_ORCHESTRATOR_API
+         */
+        get: operations["getCurrentAndFuturePayRates"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
-export type webhooks = Record<string, never>
+export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    /** @description Pay Status Period */
-    PayStatusPeriod: {
-      /**
-       * Format: uuid
-       * @description The id
-       * @example e6a19788-4f80-4923-8aff-1e5fe26a6139
-       */
-      id: string
-      /**
-       * @description The prison code
-       * @example PVI
-       */
-      prisonCode: string
-      /**
-       * @description The prisoner number (NOMIS ID)
-       * @example A1234AA
-       */
-      prisonerNumber: string
-      /**
-       * @description The pay status type
-       * @example LONG_TERM_SICK
-       * @enum {string}
-       */
-      type: 'LONG_TERM_SICK'
-      /**
-       * Format: date
-       * @description The start date
-       * @example 2025-07-23
-       */
-      startDate: string
-      /**
-       * Format: date
-       * @description The end date
-       * @example 2025-09-14
-       */
-      endDate?: string
-      /**
-       * @description The user who created the pay status period
-       * @example USER1
-       */
-      createdBy: string
-      /**
-       * Format: date-time
-       * @description The date and time the pay status period was created
-       * @example 2025-07-18T12:45:11
-       */
-      createdDateTime: string
-    }
-    ErrorResponse: {
-      /** Format: int32 */
-      status: number
-      errorCode?: string
-      userMessage?: string
-      developerMessage?: string
-      moreInfo?: string
-    }
-    /** @description The new pay status period */
-    CreatePayStatusPeriodRequest: {
-      /**
-       * @description The prison code
-       * @example PVI
-       */
-      prisonCode: string
-      /**
-       * @description The prisoner number (NOMIS ID)
-       * @example A1234AA
-       */
-      prisonerNumber: string
-      /**
-       * @description The pay status type
-       * @example LONG_TERM_SICK
-       * @enum {string}
-       */
-      type: 'LONG_TERM_SICK'
-      /**
-       * Format: date
-       * @description The start date
-       * @example 2025-07-23
-       */
-      startDate: string
-      /**
-       * Format: date
-       * @description The end date
-       * @example 2025-11-14
-       */
-      endDate?: string
-    }
-    /** @description The update pay status period */
-    UpdatePayStatusPeriodRequest: {
-      /**
-       * Format: date
-       * @description The end date
-       * @example 2025-11-14
-       */
-      endDate?: string
-      /**
-       * @description Should the end date be removed? Can only be true if the end date is null
-       * @default false
-       * @example true
-       */
-      removeEndDate: boolean
-    }
-    /** @description The update or create pay rate request */
-    UpdatePayRateRequest: {
-      /**
-       * Format: date
-       * @description The start date
-       * @example 2025-01-01
-       */
-      startDate: string
-      /**
-       * Format: int32
-       * @description The pay rate in pence per session
-       * @example 99
-       */
-      rate: number
-    }
-  }
-  responses: never
-  parameters: never
-  requestBodies: never
-  headers: never
-  pathItems: never
+    schemas: {
+        RetryDlqResult: {
+            /** Format: int32 */
+            messagesFoundCount: number;
+        };
+        PurgeQueueResult: {
+            /** Format: int32 */
+            messagesFoundCount: number;
+        };
+        /** @description Pay Rate */
+        PayRateDto: {
+            /**
+             * Format: uuid
+             * @description The id
+             * @example e6a19788-4f80-4923-8aff-1e5fe26a6139
+             */
+            id: string;
+            /**
+             * @description The prison code
+             * @example RSI
+             */
+            prisonCode: string;
+            /**
+             * @description The pay status type
+             * @example LONG_TERM_SICK
+             * @enum {string}
+             */
+            type: "LONG_TERM_SICK";
+            /**
+             * Format: date
+             * @description The start date
+             * @example 2025-01-30
+             */
+            startDate: string;
+            /**
+             * Format: int32
+             * @description The pay rate in pence per session
+             * @example 99
+             */
+            rate: number;
+            /**
+             * Format: date-time
+             * @description The date and time the pay rate was created
+             * @example 2025-01-26T12:45:11
+             */
+            createdDateTime: string;
+            /**
+             * @description The user who created the pay rate
+             * @example USER1
+             */
+            createdBy: string;
+            /**
+             * Format: date-time
+             * @description The date and time the pay rate was updated
+             * @example 2025-01-26T12:45:11
+             */
+            updatedDateTime?: string | null;
+            /**
+             * @description The user who updated the pay rate
+             * @example USER2
+             */
+            updatedBy?: string | null;
+        };
+        ErrorResponse: {
+            /** Format: int32 */
+            status: number;
+            errorCode?: string | null;
+            userMessage?: string | null;
+            developerMessage?: string | null;
+            moreInfo?: string | null;
+        };
+        /** @description The update or create pay rate request */
+        UpdatePayRateRequest: {
+            /**
+             * Format: date
+             * @description The start date
+             * @example 2025-01-01
+             */
+            startDate: string;
+            /**
+             * Format: int32
+             * @description The pay rate in pence per session
+             * @example 99
+             */
+            rate: number;
+        };
+        /** @description Pay Status Period */
+        PayStatusPeriod: {
+            /**
+             * Format: uuid
+             * @description The id
+             * @example e6a19788-4f80-4923-8aff-1e5fe26a6139
+             */
+            id: string;
+            /**
+             * @description The prison code
+             * @example PVI
+             */
+            prisonCode: string;
+            /**
+             * @description The prisoner number (NOMIS ID)
+             * @example A1234AA
+             */
+            prisonerNumber: string;
+            /**
+             * @description The pay status type
+             * @example LONG_TERM_SICK
+             * @enum {string}
+             */
+            type: "LONG_TERM_SICK";
+            /**
+             * Format: date
+             * @description The start date
+             * @example 2025-07-23
+             */
+            startDate: string;
+            /**
+             * Format: date
+             * @description The end date
+             * @example 2025-09-14
+             */
+            endDate?: string | null;
+            /**
+             * @description The user who created the pay status period
+             * @example USER1
+             */
+            createdBy: string;
+            /**
+             * Format: date-time
+             * @description The date and time the pay status period was created
+             * @example 2025-07-18T12:45:11
+             */
+            createdDateTime: string;
+        };
+        /** @description The new pay status period */
+        CreatePayStatusPeriodRequest: {
+            /**
+             * @description The prison code
+             * @example PVI
+             */
+            prisonCode: string;
+            /**
+             * @description The prisoner number (NOMIS ID)
+             * @example A1234AA
+             */
+            prisonerNumber: string;
+            /**
+             * @description The pay status type
+             * @example LONG_TERM_SICK
+             * @enum {string}
+             */
+            type: "LONG_TERM_SICK";
+            /**
+             * Format: date
+             * @description The start date
+             * @example 2025-07-23
+             */
+            startDate: string;
+            /**
+             * Format: date
+             * @description The end date
+             * @example 2025-11-14
+             */
+            endDate?: string | null;
+        };
+        /** @description The update pay status period */
+        UpdatePayStatusPeriodRequest: {
+            /**
+             * Format: date
+             * @description The end date
+             * @example 2025-11-14
+             */
+            endDate?: string | null;
+            /**
+             * @description Should the end date be removed? Can only be true if the end date is null
+             * @default false
+             * @example true
+             */
+            removeEndDate: boolean;
+        };
+        DlqMessage: {
+            body: {
+                [key: string]: unknown;
+            };
+            messageId: string;
+        };
+        GetDlqResult: {
+            /** Format: int32 */
+            messagesFoundCount: number;
+            /** Format: int32 */
+            messagesReturnedCount: number;
+            messages: components["schemas"]["DlqMessage"][];
+        };
+    };
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-export type $defs = Record<string, never>
+export type $defs = Record<string, never>;
 export interface operations {
-  search: {
-    parameters: {
-      query: {
-        /**
-         * @description The latest start date the pay status periods started on
-         * @example 2025-07-18
-         */
-        latestStartDate: string
-        /**
-         * @description a prison code
-         * @example PVI
-         */
-        prisonCode?: string
-        /**
-         * @description Whether to return results which are currently active, i.e. the end date is null or not before today
-         * @example true
-         */
-        activeOnly?: boolean
-      }
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Returns the new prisoner status period */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['PayStatusPeriod'][]
-        }
-      }
-      /** @description Invalid Request */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Missing required role. Requires the <TODO> role with write scope. */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  create: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['CreatePayStatusPeriodRequest']
-      }
-    }
-    responses: {
-      /** @description Returns the new prisoner status period */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['PayStatusPeriod']
-        }
-      }
-      /** @description Invalid Request */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Missing required role. Requires the <TODO> role with write scope. */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Data not found */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  get: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description The id of the pay status period */
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Returns the new prisoner status period */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['PayStatusPeriod'][]
-        }
-      }
-      /** @description Invalid Request */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Missing required role. Requires the <TODO> role with write scope. */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Data not found */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  update: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description The id of the pay status period */
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['UpdatePayStatusPeriodRequest']
-      }
-    }
-    responses: {
-      /** @description Returns the new prisoner status period */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['PayStatusPeriod'][]
-        }
-      }
-      /** @description Invalid Request */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Missing required role. Requires the <TODO> role with write scope. */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Data not found */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
+    retryDlq: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                dlqName: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RetryDlqResult"];
+                };
+            };
+        };
+    };
+    retryAllDlqs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RetryDlqResult"][];
+                };
+            };
+        };
+    };
+    purgeQueue: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                queueName: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PurgeQueueResult"];
+                };
+            };
+        };
+    };
+    updatePayRate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The pay rate id */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdatePayRateRequest"];
+            };
+        };
+        responses: {
+            /** @description Pay rate updated or created */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PayRateDto"];
+                };
+            };
+            /** @description Invalid Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorised, requires a valid Oauth2 token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden, requires an appropriate role */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Pay rate id not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    deletePayRate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The future pay rate id */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The future pay rate was deleted. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PayRateDto"];
+                };
+            };
+            /** @description Unauthorised, requires a valid Oauth2 token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden, requires an appropriate role */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Pay rate id not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    search: {
+        parameters: {
+            query: {
+                /**
+                 * @description The latest start date the pay status periods started on
+                 * @example 2025-07-18
+                 */
+                latestStartDate: string;
+                /**
+                 * @description a prison code
+                 * @example PVI
+                 */
+                prisonCode?: string;
+                /**
+                 * @description Whether to return results which are currently active, i.e. the end date is null or not before today
+                 * @example true
+                 */
+                activeOnly?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns the new prisoner status period */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PayStatusPeriod"][];
+                };
+            };
+            /** @description Invalid Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorised, requires a valid Oauth2 token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden, requires an appropriate role */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreatePayStatusPeriodRequest"];
+            };
+        };
+        responses: {
+            /** @description Returns the new prisoner status period */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PayStatusPeriod"];
+                };
+            };
+            /** @description Invalid Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorised, requires a valid Oauth2 token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden, requires an appropriate role */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Data not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    runJob: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                jobName: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The id of the pay status period */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns the prisoner status period */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PayStatusPeriod"];
+                };
+            };
+            /** @description Invalid Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorised, requires a valid Oauth2 token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden, requires an appropriate role */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Data not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The id of the pay status period */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdatePayStatusPeriodRequest"];
+            };
+        };
+        responses: {
+            /** @description Returns the new prisoner status period */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PayStatusPeriod"];
+                };
+            };
+            /** @description Invalid Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorised, requires a valid Oauth2 token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden, requires an appropriate role */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Data not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    getDlqMessages: {
+        parameters: {
+            query?: {
+                maxMessages?: number;
+            };
+            header?: never;
+            path: {
+                dlqName: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["GetDlqResult"];
+                };
+            };
+        };
+    };
+    getCurrentAndFuturePayRates: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The prison code */
+                prisonCode: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns the list of current and future pay rates by prison code */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PayRateDto"][];
+                };
+            };
+            /** @description Invalid Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorised, requires a valid Oauth2 token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden, requires an appropriate role */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
 }

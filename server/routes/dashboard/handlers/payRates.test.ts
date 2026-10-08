@@ -37,6 +37,24 @@ describe('PayRatesHandler', () => {
   })
 
   describe('GET', () => {
+    it('should use the future rate UUID for cancellation and retain the current amount', async () => {
+      const futureRate = {
+        ...TestData.PayRate(),
+        id: 'f7a138e6-7f9e-4336-8494-890d6b3d0a97',
+        startDate: '2999-01-01',
+        rate: 500,
+      }
+      jest.mocked(orchestratorService.getPayRates).mockResolvedValueOnce([futureRate, TestData.PayRate()])
+
+      await handler.GET(req as Request, res as Response)
+
+      expect(res.render).toHaveBeenCalledWith('pages/dashboard/pay-rates', {
+        payTypes: expect.arrayContaining([
+          expect.objectContaining({ currentRate: 99, scheduledRateId: futureRate.id }),
+        ]),
+      })
+    })
+
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
 
@@ -48,6 +66,7 @@ describe('PayRatesHandler', () => {
           ...payType,
           numberOfPrisoners: records.length,
           currentRate: TestData.PayRate().rate,
+          scheduledRateId: undefined as string | undefined,
         }
       })
 
