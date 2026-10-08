@@ -30,7 +30,7 @@
     "npm": "^11"
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.1144.0",
+    "@aws-sdk/client-sqs": "^3.1146.0",
     "@ministryofjustice/frontend": "^11.1.0",
     "@ministryofjustice/hmpps-auth-clients": "^3.0.0",
     "@ministryofjustice/hmpps-azure-telemetry": "^1.1.0",
@@ -74,7 +74,7 @@
     "@types/jest": "^30.0.0",
     "@types/jest-when": "^3.5.5",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^24.19.0",
+    "@types/node": "^24.19.1",
     "@types/nunjucks": "^3.2.6",
     "@types/passport": "^1.0.17",
     "@types/passport-oauth2": "^1.8.0",
@@ -96,7 +96,7 @@
     "nock": "^14.0.17",
     "prettier": "3.9.9",
     "prettier-plugin-jinja-template": "2.2.0",
-    "supertest": "^7.3.0",
+    "supertest": "^7.3.1",
     "ts-jest": "^29.4.14",
     "typescript": "^6.0.3"
   },
