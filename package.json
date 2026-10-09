@@ -108,6 +108,7 @@
     "sinon": {
       "diff": "9.0.0"
     },
-    "ip-address": "10.7.3"
+    "ip-address": "10.7.3",
+    "minimatch": "3.1.5"
   }
 }
