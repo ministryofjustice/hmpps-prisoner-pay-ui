@@ -52,7 +52,7 @@
                       text: "Pay"
                   },
                   value: {
-                      html: "£" + type.currentRate / 100 + " per week"
+                      html: (type.currentRate | currencyFromPence) + " per week"
                   },
                   actions: {
                       items: payActions

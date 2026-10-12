@@ -1,3 +1,4 @@
+import { currencyFromPence, penceToPounds } from '../../../utils/currencyUtils'
 import { FormError } from '../../../@types/template'
 
 type PayAmountForm = {
@@ -9,23 +10,29 @@ const errors: { [key: string]: FormError } = {
     href: '#payAmount',
     text: 'You must enter a pay amount',
   },
+  INVALID_PAY_AMOUNT: {
+    href: '#payAmount',
+    text: 'Enter a valid pay amount',
+  },
 }
-
-// TODO: Validation is missing check for a valid number. Might demand a specific util.
 
 export default function validateForm(
   { payAmount }: PayAmountForm,
   minimumAmount: number,
   payTypeDescription: string,
 ): FormError | null {
-  if (!payAmount) return errors.MISSING_PAY_AMOUNT
+  if (!payAmount?.trim()) return errors.MISSING_PAY_AMOUNT
 
-  const amount = parseFloat(payAmount) * 100
+  if (!/^-?(?:\d+(?:\.\d+)?|\.\d+)$/.test(payAmount.trim()) || !Number.isFinite(Number(payAmount))) {
+    return errors.INVALID_PAY_AMOUNT
+  }
 
-  if (amount <= 0 || amount < minimumAmount) {
+  const amount = Number(payAmount)
+
+  if (amount <= 0 || amount < penceToPounds(minimumAmount)) {
     return {
       href: '#payAmount',
-      text: `${payTypeDescription} pay cannot be less than £${minimumAmount / 100} per day`,
+      text: `${payTypeDescription} pay cannot be less than ${currencyFromPence(minimumAmount)} per day`,
     }
   }
 

@@ -22,7 +22,7 @@
                         isPageHeading: true
                     },
                     hint: {
-                        text: payType.description + " pay must be at least £" + (payType.dailyPayAmount / 100) + " per day (£" + ((payType.dailyPayAmount * 5) / 100) + " per week)."
+                        text: payType.description + " pay must be at least " + (payType.dailyPayAmount | currencyFromPence) + " per day (" + ((payType.dailyPayAmount * 5) | currencyFromPence) + " per week)."
                     },
                     prefix: {
                         text: "£"
