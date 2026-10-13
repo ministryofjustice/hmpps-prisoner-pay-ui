@@ -20,6 +20,3 @@ generic-service:
     PRISONER_PAY_API_URL: "https://prisoner-pay-api-preprod.hmpps.service.justice.gov.uk"
     ENVIRONMENT_NAME: PRE-PRODUCTION
     AUDIT_ENABLED: "false"
-
-generic-prometheus-alerts:
-  alertSeverity: hmpps-activities-management-dev
