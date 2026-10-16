@@ -43,7 +43,7 @@ test.describe('Add prisoner - Long-term sick', () => {
     await addPrisonerResultsPage.continueButton.click()
 
     await expect(
-      page.getByRole('heading', { name: 'When is Nicaigh Johnustine’s first day on this status?' }),
+      page.getByRole('heading', { name: 'When is Nicaigh Johnustine’s first day on long-term sick?' }),
     ).toBeVisible()
     await page.getByRole('radio', { name: /^Today -/ }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
@@ -85,7 +85,7 @@ test.describe('Add prisoner - Long-term sick', () => {
     await addPrisonerResultsPage.continueButton.click()
 
     await expect(
-      page.getByRole('heading', { name: 'When is Nicaigh Johnustine’s first day on this status?' }),
+      page.getByRole('heading', { name: 'When is Nicaigh Johnustine’s first day on long-term sick?' }),
     ).toBeVisible()
     await page.getByRole('radio', { name: /^Today -/ }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
@@ -94,7 +94,7 @@ test.describe('Add prisoner - Long-term sick', () => {
     await endDatePage.yesRadio.click()
     await endDatePage.continueButton.click()
     await expect(
-      page.getByRole('heading', { name: "When is Nicaigh Johnustine's last day in this status?" }),
+      page.getByRole('heading', { name: "When is the last day of Nicaigh Johnustine's time off sick?" }),
     ).toBeVisible()
 
     const futureDate = new Date()
@@ -136,7 +136,7 @@ test.describe('Add prisoner - Long-term sick', () => {
     await addPrisonerResultsPage.continueButton.click()
 
     await expect(
-      page.getByRole('heading', { name: 'When is Nicaigh Johnustine’s first day on this status?' }),
+      page.getByRole('heading', { name: 'When is Nicaigh Johnustine’s first day on long-term sick?' }),
     ).toBeVisible()
     await page.getByRole('radio', { name: /^Today -/ }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
@@ -167,7 +167,7 @@ test.describe('Add prisoner - Long-term sick', () => {
     await addPrisonerResultsPage.continueButton.click()
 
     await expect(
-      page.getByRole('heading', { name: 'When is Nicaigh Johnustine’s first day on this status?' }),
+      page.getByRole('heading', { name: 'When is Nicaigh Johnustine’s first day on long-term sick?' }),
     ).toBeVisible()
     await page.getByRole('radio', { name: /^Today -/ }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
@@ -197,7 +197,7 @@ test.describe('Add prisoner - Long-term sick', () => {
     await page.getByRole('radio', { name: 'Nicaigh Johnustine' }).check()
     await results.continueButton.click()
     await expect(
-      page.getByRole('heading', { name: 'When is Nicaigh Johnustine’s first day on this status?' }),
+      page.getByRole('heading', { name: 'When is Nicaigh Johnustine’s first day on long-term sick?' }),
     ).toBeVisible()
     const continueButton = page.getByRole('button', { name: 'Continue' })
     await expect(page.getByRole('textbox', { name: 'Enter or select the start date' })).toBeHidden()
@@ -228,7 +228,7 @@ test.describe('Add prisoner - Long-term sick', () => {
     await expect(page.getByRole('alert')).toContainText('Enter or select a date')
     await end.endDateInput.fill(format(addDays(start, -1), 'dd/MM/yyyy'))
     await continueButton.click()
-    await expect(page.getByRole('alert')).toContainText('The end date must be on or after the start date')
+    await expect(page.getByRole('alert')).toContainText('Their last day must be today or in the future')
     await end.endDateInput.fill(format(start, 'dd/MM/yyyy'))
     await continueButton.click()
     const check = await CheckPage.verifyOnPage(page)

@@ -18,7 +18,12 @@ export default {
     stubFor({
       request: {
         method: 'GET',
-        urlPattern: '/components-api/components\\?component=header&component=footer',
+        urlPath: '/components-api/components',
+        queryParameters: {
+          component: {
+            hasExactly: [{ equalTo: 'header' }, { equalTo: 'footer' }],
+          },
+        },
       },
       response: {
         status: httpStatus,

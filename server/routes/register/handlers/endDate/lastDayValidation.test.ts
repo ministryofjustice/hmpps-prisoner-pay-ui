@@ -11,8 +11,8 @@ describe('lastDayValidation', () => {
     [undefined, '2026-01-20', 'Enter or select a date'],
     ['32/13/2026', '2026-01-20', 'Enter a real date'],
     ['31/02/2026', '2026-01-20', 'Enter a real date'],
-    ['19/01/2026', '2026-01-20', 'The end date must be on or after the start date'],
-    ['20/01/2026', '2026-01-21', 'The end date must be on or after the start date'],
+    ['19/01/2026', '2026-01-20', 'Their last day must be today or in the future'],
+    ['20/01/2026', '2026-01-21', 'Their last day must be today or in the future'],
     ['19/01/2026', '2026-01-18', 'The end date cannot be in the past'],
   ])('validates %s against start date %s', (date, start, error) => {
     const result = validateForm(date, start)

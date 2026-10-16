@@ -18,7 +18,7 @@ export default class PayOverviewPage extends AbstractPage {
     this.header = page.locator('h1', { hasText: type })
     this.addPersonButton = page.getByTestId('add-to-pay-type-button')
     this.payOverviewTable = page.getByTestId('pay-overview-table')
-    this.changePayRateLink = page.getByRole('link', { name: 'Change pay rate' })
+    this.changePayRateLink = page.getByRole('link', { name: 'Change pay rates', exact: true })
   }
 
   static async verifyOnPage(page: Page, type: string): Promise<PayOverviewPage> {
@@ -31,6 +31,8 @@ export default class PayOverviewPage extends AbstractPage {
   }
 
   getRemoveLink(type: string): Locator {
-    return this.page.getByRole('link', { name: `Remove from ${type}` })
+    return this.payOverviewTable.getByRole('link', {
+      name: new RegExp(`^Remove .+ from ${type}$`, 'i'),
+    })
   }
 }

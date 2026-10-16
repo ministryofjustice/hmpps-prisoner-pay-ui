@@ -13,9 +13,12 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
       <h1 class="govuk-heading-l">{{ payType.description }}</h1>
-      {# Following line needs to be made generic #}
-      <p class="govuk-body">People have been signed off for more than 4 weeks</p>
-      <p class="govuk-body">They're paid {{ payType.dailyPayAmount | currencyFromPence }} per day ({{ weekPay }} for a 5 day week)</p>
+      {# Following line needs to be abstracted out when more pay types are added and API is used to get pay types #}
+      <p class="govuk-body">People who have been signed off sick for more than 4 weeks.</p>
+      <p class="govuk-body">
+        They're paid {{ payTypeDescription }} pay of {{ payType.dailyPayAmount | currencyFromPence }} per day
+        ({{ weekPay }} per week)
+      </p>
       <p class="govuk-body"><a class="govuk-link--no-visited-state" href="../pay-rates">Change pay rates</a></p>
 
       {{
@@ -32,17 +35,35 @@
       {% for row in records %}
         {% set nameHTML %}
           <div {{ "class=" + options.classes if options.classes }} data-qa="prisoner-summary">
-            <div data-qa="prisoner-name">{{ row | formatName(NameFormatStyle.firstLast, false) }}</div>
+            <div data-qa="prisoner-name">
+              <a
+                class="govuk-link--no-visited-state"
+                href="{{ digitalPrisonServiceUrl }}/prisoner/{{ row.prisonerNumber }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                >{{ row | formatName(NameFormatStyle.firstLast, false) }}<span class="govuk-visually-hidden">
+                  (opens in a new tab)</span
+                ></a
+              >
+            </div>
             <div class="govuk-body-s govuk-!-margin-0 secondary-text-colour" data-qa="prisoner-number">
               {{ row.prisonerNumber }}
             </div>
           </div>
         {% endset %}
-        {% if row.endDate %}
-          {% set changeLink = '<a class="govuk-link--no-visited-state" href="./remove/' + row.id + '/removal-date">Change end date</a>' %}
-        {% else %}
-          {% set changeLink = '<a class="govuk-link--no-visited-state" href="./remove/' + row.id + '/removal-date">Remove from ' + payTypeDescription + '</a>' %}
-        {% endif %}
+        {% set changeLink %}
+          <a class="govuk-link--no-visited-state" href="./remove/{{ row.id }}/removal-date">
+            {%- if row.endDate -%}
+              Change end date<span class="govuk-visually-hidden">
+                for {{ row | formatName(NameFormatStyle.firstLast, false) }}</span
+              >
+            {%- else -%}
+              Remove
+              <span class="govuk-visually-hidden">{{ row | formatName(NameFormatStyle.firstLast, false) }} </span>from
+              {{ payTypeDescription }}
+            {%- endif -%}
+          </a>
+        {% endset %}
         {%
           set rows = (rows.push([
               {
@@ -52,7 +73,7 @@
               }, {
                   text: row.startDate | formatDate('d MMMM yyyy')
               }, {
-                  text: row.endDate | formatDate('d MMMM yyyy')
+                  text: (row.endDate | formatDate('d MMMM yyyy')) if row.endDate else 'None set'
               }, {
                   text: ''
               }, {
@@ -80,7 +101,7 @@
                     attributes: { "aria-sort": "none" }
                 },
                 {
-                    text: "Date added to " + payTypeDescription,
+                    text: payType.description + " start date",
                     attributes: { "aria-sort": "none" }
                 },
                 {
@@ -88,7 +109,7 @@
                     attributes: { "aria-sort": "none" }
                 },
                 {
-                    text: "Current allocations",
+                    text: "Allocations",
                     attributes: { "aria-sort": "none" }
                 },
                 {
@@ -96,7 +117,7 @@
                 }
             ],
             rows: rows,
-            classes: "govuk-!-margin-bottom-6"
+            classes: "pay-overview-table govuk-!-margin-bottom-6"
         })
       }}
     </div>

@@ -2,3 +2,10 @@
   min-height: 600px;
   padding-bottom: 0;
 }
+
+.pay-overview-table {
+  .govuk-table__header,
+  .govuk-table__cell {
+    vertical-align: middle;
+  }
+}

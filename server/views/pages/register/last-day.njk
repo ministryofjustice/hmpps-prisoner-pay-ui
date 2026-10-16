@@ -10,6 +10,7 @@
       <span class="govuk-caption-l">{{ payType.description }}</span>
       <form method="POST">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        {# TODO: will need to introduce a way to accomodate other types of status #}
         {{
           mojDatePicker({
             id: "selectedDate",
@@ -17,7 +18,8 @@
             leadingZeros: "true",
             classes: "moj-datepicker--fixed-width",
             label: {
-              text: "When is " + prisonerName + "'s last day in this status?",
+
+              text: "When is the last day of " + prisonerName + "'s time off sick?",
               isPageHeading: true,
               classes: "govuk-label--l"
             },

@@ -17,13 +17,13 @@ const payType = { description: 'Long-term sick', dailyPayAmount: 65 }
 describe('currency in page templates', () => {
   it.each([
     ['changePayRate/pay-amount', { payType }, '£0.65 per day (£3.25 per week)'],
-    ['dashboard/pay-overview', { payType, records: [] }, '£0.65 per day (£3.25 for a 5 day week)'],
+    ['dashboard/pay-overview', { payType, records: [] }, '£0.65 per day (£3.25 per week)'],
     ['dashboard/pay-rates', { payTypes: [{ ...payType, currentRate: 325 }] }, '£3.25 per week'],
     ['changePayRate/cancel-rate-change', { payType, payAmount: 99, selectedDate: new Date() }, '£0.99 per day'],
     ['changePayRate/check-pay-rate', { payType, payAmount: 200, selectedDate: new Date() }, '£2 per day'],
   ])('renders pounds on %s', async (view, locals, expected) => {
     const html = await render(`pages/${view}`, locals)
-    expect(html).toContain(expected)
+    expect(html.replace(/\s+/g, ' ')).toContain(expected)
     expect(html).not.toContain('NaN')
   })
 
