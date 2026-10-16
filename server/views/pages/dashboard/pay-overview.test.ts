@@ -36,7 +36,7 @@ describe('Pay overview view', () => {
         { payType: getPayTypeBySlug('long-term-sick'), records: viewRecords, NameFormatStyle },
         (error, html) => {
           if (error) reject(error)
-          else resolve(html.replace(/\s+/g, ' '))
+          else resolve(html.replace(/\s+/g, ' ').replace(/\s+>/g, '>'))
         },
       )
     })

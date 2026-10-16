@@ -36,7 +36,15 @@
         {% set nameHTML %}
           <div {{ "class=" + options.classes if options.classes }} data-qa="prisoner-summary">
             <div data-qa="prisoner-name">
-              <a class="govuk-link--no-visited-state" href="{{ digitalPrisonServiceUrl }}/prisoner/{{ row.prisonerNumber }}" target="_blank" rel="noopener noreferrer">{{ row | formatName(NameFormatStyle.firstLast, false) }}<span class="govuk-visually-hidden"> (opens in a new tab)</span></a>
+              <a
+                class="govuk-link--no-visited-state"
+                href="{{ digitalPrisonServiceUrl }}/prisoner/{{ row.prisonerNumber }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                >{{ row | formatName(NameFormatStyle.firstLast, false) }}<span class="govuk-visually-hidden">
+                  (opens in a new tab)</span
+                ></a
+              >
             </div>
             <div class="govuk-body-s govuk-!-margin-0 secondary-text-colour" data-qa="prisoner-number">
               {{ row.prisonerNumber }}
