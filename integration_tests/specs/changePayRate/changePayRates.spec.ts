@@ -31,7 +31,7 @@ test.describe('Change Pay Rate', () => {
 
     const payOverviewPage = await PayOverviewPage.verifyOnPage(page, type)
     expect(payOverviewPage.header).toBeDefined()
-    await expect(page.getByText("They're paid £0.65 per day (£3.25 for a 5 day week)")).toBeVisible()
+    await expect(page.getByText("They're paid long-term sick pay of £0.65 per day (£3.25 per week)")).toBeVisible()
     await payOverviewPage.changePayRateLink.click()
 
     const payRatesPage = await PayRatesPage.verifyOnPage(page)
