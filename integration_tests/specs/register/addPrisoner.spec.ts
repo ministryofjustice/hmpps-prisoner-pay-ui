@@ -228,7 +228,7 @@ test.describe('Add prisoner - Long-term sick', () => {
     await expect(page.getByRole('alert')).toContainText('Enter or select a date')
     await end.endDateInput.fill(format(addDays(start, -1), 'dd/MM/yyyy'))
     await continueButton.click()
-    await expect(page.getByRole('alert')).toContainText('The end date must be on or after the start date')
+    await expect(page.getByRole('alert')).toContainText('Their last day must be today or in the future')
     await end.endDateInput.fill(format(start, 'dd/MM/yyyy'))
     await continueButton.click()
     const check = await CheckPage.verifyOnPage(page)

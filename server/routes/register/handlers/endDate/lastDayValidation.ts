@@ -16,7 +16,7 @@ const errors: { [key: string]: FormError } = {
   },
   FUTURE_DATE: {
     href: '#selectedDate',
-    text: 'The end date must be on or after the start date',
+    text: 'Their last day must be today or in the future',
   },
 }
 

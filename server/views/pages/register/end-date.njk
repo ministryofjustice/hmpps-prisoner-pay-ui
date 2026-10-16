@@ -12,6 +12,7 @@
       <span class="govuk-caption-l">{{ payType.description }}</span>
       <form method="POST">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        {# TODO: will need to introduce a way to accomodate other types of status #}
         {{
           govukRadios({
               classes: "govuk-radios",
@@ -19,7 +20,7 @@
               name: "endDateSelection",
               fieldset: {
                   legend: {
-                      text: "Do you want to set " + prisonerName + "'s last day on this status?",
+                      text: "Do you want to set how long " + prisonerName + " is off sick for?",
                       isPageHeading: true,
                       classes: "govuk-fieldset__legend--l"
                   }
