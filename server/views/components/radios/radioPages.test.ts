@@ -156,6 +156,8 @@ describe('radio pages rendered with handler values', () => {
       expect(html).toContain(`id="selected-prisoner-${prisoner.prisonerNumber}"`)
       expect(html).toContain(`for="selected-prisoner-${prisoner.prisonerNumber}"`)
     })
+    const label = html.match(/<label[^>]*for="selected-prisoner-G4529UP"[^>]*>([\s\S]*?)<\/label>/)
+    expect(label?.[1].trim()).toBe('Nicaigh Johnustine')
     expect(html).not.toContain('<fieldset')
   })
 

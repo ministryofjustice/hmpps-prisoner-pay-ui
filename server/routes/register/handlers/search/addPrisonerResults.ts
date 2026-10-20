@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { FormError } from '../../../../@types/template'
-import { formatName } from '../../../../utils/utils'
-import { NameFormatStyle } from '../../../../utils/helpers/nameFormatStyle'
+import { formatFirstLastName } from '../../../../utils/utils'
 import OrchestratorService from '../../../../services/orchestratorService'
 import validateForm from './addPrisonerResultsValidation'
 import { Action, Page, SubjectType } from '../../../../services/auditService'
@@ -37,13 +36,7 @@ export default class AddPrisonerResultsHandler {
                 attributes: errors.some(error => error.href === '#selectedPrisoner')
                   ? { 'aria-describedby': 'selectedPrisoner-error' }
                   : undefined,
-                text: formatName(
-                  prisoner.firstName,
-                  undefined,
-                  prisoner.lastName,
-                  NameFormatStyle.lastCommaFirst,
-                  false,
-                ),
+                text: formatFirstLastName(prisoner.firstName, prisoner.lastName),
               },
             ],
           },
