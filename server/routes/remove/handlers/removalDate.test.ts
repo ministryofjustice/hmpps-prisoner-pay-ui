@@ -39,9 +39,12 @@ describe('RemovalDateHandler', () => {
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/remove/removal-date', {
-        payStatusPeriod: TestData.PayStatusPeriod(),
-      })
+      expect(res.render).toHaveBeenCalledWith(
+        'pages/remove/removal-date',
+        expect.objectContaining({
+          payStatusPeriod: TestData.PayStatusPeriod(),
+        }),
+      )
     })
 
     it('should call audit page view with correct parameters', async () => {

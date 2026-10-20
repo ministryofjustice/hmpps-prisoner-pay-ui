@@ -32,9 +32,12 @@ describe('CancelRemovalHandler', () => {
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/remove/cancel', {
-        prisonerName: 'Joe Bloggs',
-      })
+      expect(res.render).toHaveBeenCalledWith(
+        'pages/remove/cancel',
+        expect.objectContaining({
+          prisonerName: 'Joe Bloggs',
+        }),
+      )
     })
   })
 

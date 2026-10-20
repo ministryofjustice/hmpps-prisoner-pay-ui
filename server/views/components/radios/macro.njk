@@ -1,0 +1,53 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "moj/components/date-picker/macro.njk" import mojDatePicker %}
+{# Accepts explicit presentation values; never reads page or request context. #}
+{% macro appRadios(params) %}
+  {% set items = [] %}
+  {% for item in params.items %}
+    {% set conditional = item.conditional %}
+    {% if item.datePicker %}
+      {%
+        set conditional = { html: mojDatePicker({
+          id: item.datePicker.id,
+          name: item.datePicker.name,
+          leadingZeros: "true",
+          classes: "moj-datepicker--fixed-width",
+          label: item.datePicker.label,
+          hint: item.datePicker.hint,
+          errorMessage: item.datePicker.errorMessage,
+          value: item.datePicker.value
+        }) }
+      %}
+    {% endif %}
+    {%
+      set items = (items.push({
+        id: item.id,
+        value: item.value,
+        text: item.text,
+        hint: item.hint,
+        disabled: item.disabled,
+        checked: item.checked,
+        conditional: conditional,
+        divider: item.divider,
+        attributes: item.attributes
+      }), items)
+    %}
+  {% endfor %}
+  {{
+    govukRadios({
+      idPrefix: params.idPrefix or params.name,
+      name: params.name,
+      classes: params.classes,
+      attributes: params.attributes,
+      fieldset: { legend: {
+        text: params.legend,
+        isPageHeading: params.isPageHeading | default(true),
+        classes: params.legendClasses | default("govuk-fieldset__legend--l")
+      } } if params.legend else undefined,
+      hint: params.hint,
+      value: params.value,
+      errorMessage: params.errorMessage,
+      items: items
+    })
+  }}
+{% endmacro %}
