@@ -26,7 +26,7 @@ export const login = async (
     hmppsAuth.stubSignOutPage(),
     hmppsAuth.token({ name, roles, authSource }),
     tokenVerification.stubVerifyToken(active),
-    componentsApi.stubFrontendComponents(),
+    componentsApi.stubFrontendComponents(200, name),
     prisonApi.stubCaseloads(),
   ])
   await attemptHmppsAuthLogin(page)
