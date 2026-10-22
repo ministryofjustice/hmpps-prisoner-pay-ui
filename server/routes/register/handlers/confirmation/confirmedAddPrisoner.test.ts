@@ -30,6 +30,7 @@ describe('ConfirmedAddPrisonerHandler', () => {
       redirect: jest.fn(),
       locals: {
         user: TestData.PrisonUser(),
+        payType: { description: 'Long-term sick' },
       },
     }
 
@@ -45,8 +46,21 @@ describe('ConfirmedAddPrisonerHandler', () => {
       expect(res.render).toHaveBeenCalledWith(
         'pages/register/confirmed-add-prisoner',
         expect.objectContaining({
-          prisoner: TestData.Prisoner(),
-          selectedDate: '01/01/2025',
+          confirmation: {
+            titleText: 'Long-term sick status confirmed',
+            text: 'Nicaigh Johnustine (G4529UP) will receive long-term sick pay from today',
+            nextSteps: [
+              {
+                text: 'take Nicaigh Johnustine off activities they’re allocated to',
+                href: expect.stringContaining('/prisoner-allocations/G4529UP'),
+              },
+              {
+                text: 'manage Nicaigh Johnustine’s allocations',
+                href: expect.stringContaining('/prisoner-allocations/G4529UP'),
+              },
+              { text: 'add someone else to long-term sick', href: '../register/new' },
+            ],
+          },
         }),
       )
     })
@@ -87,8 +101,9 @@ describe('ConfirmedAddPrisonerHandler', () => {
     expect(res.render).toHaveBeenCalledWith(
       'pages/register/confirmed-add-prisoner',
       expect.objectContaining({
-        prisonerName: 'Nicaigh Johnustine',
-        startDateText,
+        confirmation: expect.objectContaining({
+          text: `Nicaigh Johnustine (G4529UP) will receive long-term sick pay from ${startDateText}`,
+        }),
       }),
     )
   })

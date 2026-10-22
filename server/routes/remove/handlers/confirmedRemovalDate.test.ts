@@ -25,6 +25,7 @@ describe('ConfirmedRemovalDateHandler', () => {
     } as unknown as Request
     res = {
       render: jest.fn(),
+      locals: { user: TestData.PrisonUser(), payType: { description: 'Long-term sick' } },
     }
 
     when(orchestratorService.getPayStatusPeriodById).calledWith('123').mockResolvedValue(TestData.PayStatusPeriod())
@@ -39,8 +40,17 @@ describe('ConfirmedRemovalDateHandler', () => {
       expect(res.render).toHaveBeenCalledWith(
         'pages/remove/confirmed-removal-date',
         expect.objectContaining({
-          payStatusPeriod: TestData.PayStatusPeriod(),
-          selectedDate: expect.any(String),
+          confirmation: {
+            titleText: 'Removal complete',
+            text: 'Nicaigh Johnustine (A1234AA) will not receive long-term sick pay after Thursday, 25 December 2025.',
+            nextSteps: [
+              {
+                text: 'allocate Nicaigh Johnustine to activities',
+                href: expect.stringContaining('/prisoner-allocations/A1234AA'),
+              },
+              { text: 'review people who are on long-term sick', href: '../../pay-overview' },
+            ],
+          },
         }),
       )
     })

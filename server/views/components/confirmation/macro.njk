@@ -1,0 +1,19 @@
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% macro appConfirmation(params) %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ govukPanel({ titleText: params.titleText, text: params.text }) }}
+
+      <h2 class="govuk-heading-m">What you can do next</h2>
+      <p class="govuk-body">You can:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        {% for link in params.nextSteps %}
+          <li>
+            <a class="govuk-link--no-visited-state" href="{{ link.href }}">{{ link.text }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endmacro %}
