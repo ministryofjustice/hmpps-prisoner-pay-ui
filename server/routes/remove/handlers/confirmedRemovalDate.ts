@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
 import { format, isToday, parse } from 'date-fns'
+import config from '../../../config'
 import OrchestratorService from '../../../services/orchestratorService'
 import { auditPageView } from '../../../utils/auditUtils'
 import { Page, SubjectType } from '../../../services/auditService'
-import { getSingleParam } from '../../../utils/utils'
+import { formatFirstLastName, getSingleParam } from '../../../utils/utils'
 
 export default class ConfirmedRemovalDateHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
@@ -24,9 +25,22 @@ export default class ConfirmedRemovalDateHandler {
       prisonerNumber,
     )
 
+    const prisonerName = formatFirstLastName(payStatusPeriod.firstName, payStatusPeriod.lastName)
+    const dateText = isToday(selectedDate) ? 'today' : formattedDate
+    const payTypeDescription = res.locals.payType.description.toLowerCase()
+
     return res.render('pages/remove/confirmed-removal-date', {
-      payStatusPeriod,
-      selectedDate: isToday(selectedDate) ? 'today' : formattedDate,
+      confirmation: {
+        titleText: 'Removal complete',
+        text: `${prisonerName} (${prisonerNumber}) will not receive ${payTypeDescription} pay after ${dateText}.`,
+        nextSteps: [
+          {
+            text: `allocate ${prisonerName} to activities`,
+            href: `${config.activitiesUiUrl}/prisoner-allocations/${prisonerNumber}`,
+          },
+          { text: `review people who are on ${payTypeDescription}`, href: '../../pay-overview' },
+        ],
+      },
     })
   }
 }
