@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { addDays, format, parseISO, startOfToday } from 'date-fns'
-import { formatFirstLastName } from '../../../../utils/utils'
+import { findError, formatFirstLastName } from '../../../../utils/utils'
 import { auditPageView } from '../../../../utils/auditUtils'
 import { Page, SubjectType } from '../../../../services/auditService'
 import { FormError } from '../../../../@types/template'
@@ -10,10 +10,30 @@ import { StartDateOption } from '../../journey'
 export default class StartDateHandler {
   private render = (req: Request, res: Response, form: StartDateForm, errors: FormError[] = []) => {
     const { prisoner } = req.session.registerJourney
+    const prisonerName = formatFirstLastName(prisoner.firstName, prisoner.lastName)
     return res.render('pages/register/start-date', {
-      prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
-      today: format(startOfToday(), 'd MMMM yyyy'),
-      tomorrow: format(addDays(startOfToday(), 1), 'd MMMM yyyy'),
+      radios: {
+        name: 'startDateOption',
+        legend: `When is ${prisonerName}’s first day on ${res.locals.payType.description.toLowerCase()}?`,
+        value: form.startDateOption,
+        errorMessage: findError(errors, 'startDateOption'),
+        items: [
+          { value: 'today', text: `Today - ${format(startOfToday(), 'd MMMM yyyy')}` },
+          { value: 'tomorrow', text: `Tomorrow - ${format(addDays(startOfToday(), 1), 'd MMMM yyyy')}` },
+          {
+            value: 'other',
+            text: 'A different future date',
+            datePicker: {
+              id: 'startDate',
+              name: 'startDate',
+              label: { text: 'Enter or select the start date' },
+              hint: { text: 'For example, 27/03/2027' },
+              errorMessage: findError(errors, 'startDate'),
+              value: form.startDate,
+            },
+          },
+        ],
+      },
       searchQuery: req.session.registerJourney.searchQuery,
       ...form,
       errors,
@@ -32,10 +52,9 @@ export default class StartDateHandler {
       req.session.registerJourney.prisoner.prisonerNumber,
     )
     const { startDate, startDateOption } = req.session.registerJourney
-    const date = startDate ? parseISO(startDate) : null
     return this.render(req, res, {
       startDateOption,
-      startDate: date ? format(date, 'dd/MM/yyyy') : '',
+      startDate: startDate ? format(parseISO(startDate), 'dd/MM/yyyy') : '',
     })
   }
 

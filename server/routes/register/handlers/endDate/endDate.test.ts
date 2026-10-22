@@ -39,11 +39,14 @@ describe('EndDateHandler', () => {
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/register/end-date', {
-        prisonerName: 'Nicaigh Johnustine',
-        prisoner: TestData.Prisoner(),
-        endDateSelection: undefined,
-      })
+      expect(res.render).toHaveBeenCalledWith(
+        'pages/register/end-date',
+        expect.objectContaining({
+          prisonerName: 'Nicaigh Johnustine',
+          prisoner: TestData.Prisoner(),
+          endDateSelection: undefined,
+        }),
+      )
     })
 
     it('should call audit page view with correct parameters', async () => {

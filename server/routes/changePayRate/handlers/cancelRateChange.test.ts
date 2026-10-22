@@ -78,10 +78,13 @@ describe('CancelRateChangeHandler', () => {
       await handler.GET(req as Request, res as Response)
 
       expect(orchestratorService.getPayRates).toHaveBeenCalledWith('MDI')
-      expect(res.render).toHaveBeenCalledWith('pages/changePayRate/cancel-rate-change', {
-        payAmount: rateChange.rate,
-        selectedDate: expect.any(Date),
-      })
+      expect(res.render).toHaveBeenCalledWith(
+        'pages/changePayRate/cancel-rate-change',
+        expect.objectContaining({
+          payAmount: rateChange.rate,
+          selectedDate: expect.any(Date),
+        }),
+      )
     })
   })
 

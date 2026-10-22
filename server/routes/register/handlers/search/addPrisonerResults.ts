@@ -1,4 +1,6 @@
 import { Request, Response } from 'express'
+import { FormError } from '../../../../@types/template'
+import { formatFirstLastName } from '../../../../utils/utils'
 import OrchestratorService from '../../../../services/orchestratorService'
 import validateForm from './addPrisonerResultsValidation'
 import { Action, Page, SubjectType } from '../../../../services/auditService'
@@ -6,6 +8,41 @@ import { auditPageAction, auditPageView, getDisplayedResults } from '../../../..
 
 export default class AddPrisonerResultsHandler {
   constructor(private readonly orchestratorService: OrchestratorService) {}
+
+  private render = (
+    res: Response,
+    prisoners: Awaited<ReturnType<OrchestratorService['searchPrisoners']>>,
+    query: string,
+    errors: FormError[],
+    selectedPrisoner?: string,
+  ) =>
+    res.render('pages/register/add-prisoner-results', {
+      prisoners,
+      query,
+      errors,
+      selectedPrisoner,
+      prisonerRadios: Object.fromEntries(
+        prisoners.map(prisoner => [
+          prisoner.prisonerNumber,
+          {
+            name: 'selectedPrisoner',
+            idPrefix: `selected-prisoner-${prisoner.prisonerNumber}`,
+            classes: 'govuk-radios--small',
+            value: selectedPrisoner,
+            items: [
+              {
+                id: `selected-prisoner-${prisoner.prisonerNumber}`,
+                value: prisoner.prisonerNumber,
+                attributes: errors.some(error => error.href === '#selectedPrisoner')
+                  ? { 'aria-describedby': 'selectedPrisoner-error' }
+                  : undefined,
+                text: formatFirstLastName(prisoner.firstName, prisoner.lastName),
+              },
+            ],
+          },
+        ]),
+      ),
+    })
 
   GET = async (req: Request, res: Response) => {
     const { activeCaseLoadId } = res.locals.user
@@ -30,7 +67,7 @@ export default class AddPrisonerResultsHandler {
           ]
         : []
 
-    return res.render('pages/register/add-prisoner-results', { prisoners: prisonerResults, query, errors })
+    return this.render(res, prisonerResults, query, errors)
   }
 
   POST = async (req: Request, res: Response) => {
@@ -42,12 +79,7 @@ export default class AddPrisonerResultsHandler {
 
     const errors = validateForm({ selectedPrisoner }, prisonerResults)
     if (errors) {
-      return res.render('pages/register/add-prisoner-results', {
-        errors: [errors],
-        selectedPrisoner,
-        query,
-        prisoners: prisonerResults,
-      })
+      return this.render(res, prisonerResults, query, [errors], selectedPrisoner)
     }
 
     const prisoner = prisonerResults.find(p => p.prisonerNumber === selectedPrisoner)

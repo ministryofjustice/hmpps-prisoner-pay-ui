@@ -1,6 +1,6 @@
 {% extends "layout.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "components/radios/macro.njk" import appRadios %}
 
 {% set pageTitle = applicationName + " - End date" %}
 {% set mainClasses = "govuk-body" %}
@@ -13,34 +13,7 @@
       <form method="POST">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
         {# TODO: will need to introduce a way to accomodate other types of status #}
-        {{
-          govukRadios({
-              classes: "govuk-radios",
-              idPrefix: "endDateSelection",
-              name: "endDateSelection",
-              fieldset: {
-                  legend: {
-                      text: "Do you want to set how long " + prisonerName + " is off sick for?",
-                      isPageHeading: true,
-                      classes: "govuk-fieldset__legend--l"
-                  }
-              },
-              items:
-              [
-                {
-                    value: "yes",
-                    text: "Yes",
-                    checked: endDateSelection == "yes"
-                },
-                {
-                      value: "no",
-                      text: "No",
-                      checked: endDateSelection == "no"
-                }
-              ],
-              errorMessage: errors | findError("endDateSelection")
-          })
-        }}
+        {{ appRadios(radios) }}
 
         <div class="govuk-button-group">
           {{

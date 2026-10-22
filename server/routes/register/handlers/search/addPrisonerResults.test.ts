@@ -54,11 +54,14 @@ describe('AddPrisonerResultsHandler', () => {
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner-results', {
-        prisoners: TestData.Prisoners(),
-        query: 'test',
-        errors: [],
-      })
+      expect(res.render).toHaveBeenCalledWith(
+        'pages/register/add-prisoner-results',
+        expect.objectContaining({
+          prisoners: TestData.Prisoners(),
+          query: 'test',
+          errors: [],
+        }),
+      )
     })
 
     it('should call audit page view with correct parameters', async () => {
@@ -91,12 +94,15 @@ describe('AddPrisonerResultsHandler', () => {
 
       await handler.POST(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/register/add-prisoner-results', {
-        errors: [{ href: '#selectedPrisoner', text: 'Select someone from the current search results' }],
-        selectedPrisoner: selection,
-        query: 'test',
-        prisoners: results,
-      })
+      expect(res.render).toHaveBeenCalledWith(
+        'pages/register/add-prisoner-results',
+        expect.objectContaining({
+          errors: [{ href: '#selectedPrisoner', text: 'Select someone from the current search results' }],
+          selectedPrisoner: selection,
+          query: 'test',
+          prisoners: results,
+        }),
+      )
       expect(req.session.registerJourney).toEqual(previousJourney)
       expect(res.redirect).not.toHaveBeenCalled()
     })

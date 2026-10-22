@@ -1,12 +1,14 @@
 import { Request, Response } from 'express'
 import createError from 'http-errors'
 import { format, parse } from 'date-fns'
+import { FormError } from '../../../@types/template'
+import { currencyFromPence } from '../../../utils/currencyUtils'
 import validateForm from './cancelRateChangeValidation'
 import PrisonerPayService from '../../../services/prisonerPayService'
 import OrchestratorService from '../../../services/orchestratorService'
 import { auditPageAction, auditPageView } from '../../../utils/auditUtils'
 import { Action, Page, SubjectType } from '../../../services/auditService'
-import { getSingleParam } from '../../../utils/utils'
+import { findError, getSingleParam } from '../../../utils/utils'
 
 export default class CancelRateChangeHandler {
   constructor(
@@ -27,16 +29,35 @@ export default class CancelRateChangeHandler {
     return rateChange
   }
 
+  private render = (res: Response, payAmount: number, selectedDate: Date, choice?: string, errors: FormError[] = []) =>
+    res.render('pages/changePayRate/cancel-rate-change', {
+      payAmount,
+      selectedDate,
+      choice,
+      errors,
+      radios: {
+        name: 'choice',
+        classes: 'govuk-radios--inline',
+        legend: 'Are you sure you want to cancel the pay rate change?',
+        hint: {
+          text: `The pay rate is set to change to ${currencyFromPence(payAmount)} per day from ${format(selectedDate, 'EEEE, d MMMM yyyy')}.`,
+        },
+        value: choice,
+        errorMessage: findError(errors, 'choice'),
+        items: [
+          { value: 'yes', text: 'Yes' },
+          { value: 'no', text: 'No' },
+        ],
+      },
+    })
+
   GET = async (req: Request, res: Response) => {
     const rateChange = await this.getRateChange(req, res)
     const selectedDate = parse(rateChange.startDate, 'yyyy-MM-dd', new Date())
 
     await auditPageView(req, Page.CANCEL_RATE_CHANGE, { payAmount: rateChange.rate, selectedDate })
 
-    return res.render('pages/changePayRate/cancel-rate-change', {
-      payAmount: rateChange.rate,
-      selectedDate,
-    })
+    return this.render(res, rateChange.rate, selectedDate)
   }
 
   POST = async (req: Request, res: Response) => {
@@ -46,12 +67,7 @@ export default class CancelRateChangeHandler {
     if (errors) {
       const rateChange = await this.getRateChange(req, res)
 
-      return res.render('pages/changePayRate/cancel-rate-change', {
-        errors: [errors],
-        choice,
-        payAmount: rateChange.rate,
-        selectedDate: parse(rateChange.startDate, 'yyyy-MM-dd', new Date()),
-      })
+      return this.render(res, rateChange.rate, parse(rateChange.startDate, 'yyyy-MM-dd', new Date()), choice, [errors])
     }
 
     if (choice === `yes`) {

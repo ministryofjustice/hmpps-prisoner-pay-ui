@@ -30,9 +30,12 @@ describe('SetChangeDateHandler', () => {
     it('should render the correct view with tomorrow date', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/changePayRate/set-change-date', {
-        tomorrow: expect.any(Date),
-      })
+      expect(res.render).toHaveBeenCalledWith(
+        'pages/changePayRate/set-change-date',
+        expect.objectContaining({
+          tomorrow: expect.any(Date),
+        }),
+      )
     })
   })
 

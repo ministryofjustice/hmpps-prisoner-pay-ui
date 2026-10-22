@@ -1,16 +1,32 @@
 import { Request, Response } from 'express'
-import { formatFirstLastName } from '../../../utils/utils'
+import { FormError } from '../../../@types/template'
+import { findError, formatFirstLastName } from '../../../utils/utils'
 import validateForm from './cancelValidation'
 
 export default class CancelHandler {
-  constructor() {}
+  private render = (req: Request, res: Response, choice?: string, errors: FormError[] = []) => {
+    const { selectedPrisoner: prisoner } = req.session
+    const prisonerName = formatFirstLastName(prisoner.firstName, prisoner.lastName)
+    return res.render('pages/remove/cancel', {
+      prisonerName,
+      choice,
+      errors,
+      radios: {
+        name: 'choice',
+        classes: 'govuk-radios--inline',
+        legend: `Are you sure you want to cancel removing ${prisonerName}?`,
+        value: choice,
+        errorMessage: findError(errors, 'choice'),
+        items: [
+          { value: 'yes', text: 'Yes' },
+          { value: 'no', text: 'No' },
+        ],
+      },
+    })
+  }
 
   GET = async (req: Request, res: Response) => {
-    const prisoner = req.session!.selectedPrisoner
-
-    return res.render('pages/remove/cancel', {
-      prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
-    })
+    return this.render(req, res)
   }
 
   POST = async (req: Request, res: Response) => {
@@ -18,7 +34,7 @@ export default class CancelHandler {
     const { payTypeSlug } = req.params
 
     const errors = validateForm(choice)
-    if (errors) return res.render('pages/remove/cancel', { errors: [errors], choice })
+    if (errors) return this.render(req, res, choice, [errors])
 
     if (choice === `yes`) {
       req.session.selectedPrisoner = null

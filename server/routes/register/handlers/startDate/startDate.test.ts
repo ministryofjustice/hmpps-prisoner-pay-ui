@@ -17,7 +17,11 @@ describe('StartDateHandler', () => {
       body: {},
       session: { registerJourney: { prisoner: TestData.Prisoner(), searchQuery: 'John' } },
     } as unknown as Request
-    res = { render: jest.fn(), redirect: jest.fn() } as unknown as Response
+    res = {
+      render: jest.fn(),
+      redirect: jest.fn(),
+      locals: { payType: { description: 'Long-term sick' } },
+    } as unknown as Response
   })
   afterEach(() => jest.useRealTimers())
 
@@ -26,9 +30,14 @@ describe('StartDateHandler', () => {
     expect(res.render).toHaveBeenCalledWith(
       'pages/register/start-date',
       expect.objectContaining({
-        prisonerName: 'Nicaigh Johnustine',
-        today: '7 January 2026',
-        tomorrow: '8 January 2026',
+        radios: expect.objectContaining({
+          name: 'startDateOption',
+          legend: 'When is Nicaigh Johnustine’s first day on long-term sick?',
+          items: expect.arrayContaining([
+            { value: 'today', text: 'Today - 7 January 2026' },
+            { value: 'tomorrow', text: 'Tomorrow - 8 January 2026' },
+          ]),
+        }),
         searchQuery: 'John',
       }),
     )
@@ -79,6 +88,18 @@ describe('StartDateHandler', () => {
         startDateOption: 'other',
         startDate: '31/02/2026',
         errors: [{ href: '#startDate', text: 'Enter a real start date' }],
+        radios: expect.objectContaining({
+          value: 'other',
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              value: 'other',
+              datePicker: expect.objectContaining({
+                value: '31/02/2026',
+                errorMessage: { text: 'Enter a real start date' },
+              }),
+            }),
+          ]),
+        }),
       }),
     )
     expect(req.session.registerJourney.startDate).toBe('2026-02-20')
