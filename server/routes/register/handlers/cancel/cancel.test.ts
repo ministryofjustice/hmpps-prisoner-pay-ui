@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
 import CancelHandler from './cancel'
+import PayType from '../../../../@types/payTypes'
+import TestData from '../../../../testutils/testData'
 
 describe('CancelHandler', () => {
   let handler: CancelHandler
@@ -25,6 +27,7 @@ describe('CancelHandler', () => {
     } as unknown as Partial<Request>
 
     res = {
+      locals: { user: TestData.PrisonUser(), payType: { type: PayType.LONG_TERM_SICK } },
       render: jest.fn(),
       redirect: jest.fn(),
     }
@@ -37,7 +40,7 @@ describe('CancelHandler', () => {
       expect(res.render).toHaveBeenCalledWith(
         'pages/register/cancel',
         expect.objectContaining({
-          prisonerName: 'Joe Bloggs',
+          radios: expect.objectContaining({ legend: 'Are you sure you want to cancel adding Joe Bloggs?' }),
         }),
       )
     })
@@ -94,5 +97,21 @@ describe('CancelHandler', () => {
     await handler.GET(req as Request, res as Response)
     await handler.POST(req as Request, res as Response)
     expect(res.redirect).toHaveBeenCalledWith('add-prisoner')
+  })
+  it.each([undefined, '', 'invalid'])('preserves the draft and return page for invalid choice %s', async choice => {
+    req.body = { choice }
+    req.session.registerJourney.returnTo = 'check'
+    const before = JSON.stringify(req.session)
+    await handler.POST(req as Request, res as Response)
+    expect(JSON.stringify(req.session)).toBe(before)
+    expect(res.redirect).not.toHaveBeenCalled()
+    expect(res.render).toHaveBeenCalledWith(
+      'pages/register/cancel',
+      expect.objectContaining({
+        choice,
+        errors: [{ href: '#choice', text: 'Select cancellation option' }],
+        radios: expect.objectContaining({ errorMessage: { text: 'Select cancellation option' } }),
+      }),
+    )
   })
 })

@@ -2,7 +2,7 @@
 {% from "components/radios/macro.njk" import appRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - cancel" %}
+{% set pageTitle = applicationName + " - " + pageTitleSuffix %}
 {% set mainClasses = "govuk-body" %}
 {% set backLinkHref = "./add-prisoner" %}
 
@@ -17,7 +17,7 @@
 
         {{
           govukButton({
-              text: "Confirm"
+              text: confirmButtonText
           })
         }}
       </form>

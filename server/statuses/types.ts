@@ -1,5 +1,6 @@
 export type StartDateOption = 'today' | 'tomorrow' | 'other'
 export type EndDateSelection = 'yes' | 'no'
+export type CancellationChoice = 'yes' | 'no'
 
 export interface StartDateDefinition {
   question: (context: { prisonerName: string }) => string
@@ -72,10 +73,20 @@ export interface ConfirmationDefinition {
   }[]
 }
 
+export interface CancellationDefinition {
+  pageTitle: string
+  question: (context: { prisonerName: string }) => string
+  options: readonly CancellationChoice[]
+  optionLabels: Record<CancellationChoice, string>
+  confirmButtonText: string
+  errors: { missingOption: string }
+}
+
 export interface StatusDefinition {
   startDate: StartDateDefinition
   endDate: EndDateDefinition
   lastDay: LastDayDefinition
   check: CheckDefinition
   confirmation: ConfirmationDefinition
+  cancellation: CancellationDefinition
 }

@@ -1,45 +1,38 @@
 import { Request, Response } from 'express'
 import { FormError } from '../../../../@types/template'
-import { findError, formatFirstLastName } from '../../../../utils/utils'
-import validateForm from './cancelValidation'
+import getStatusDefinition from '../../../../statuses'
+import buildCancellationPage from '../../viewModels/cancel'
+import validateCancellation, { CancellationForm } from './cancelValidation'
 
 export default class CancelHandler {
-  private render = (req: Request, res: Response, choice?: string, errors: FormError[] = []) => {
-    const { prisoner } = req.session.registerJourney
-    const prisonerName = formatFirstLastName(prisoner.firstName, prisoner.lastName)
-    return res.render('pages/register/cancel', {
-      prisonerName,
-      choice,
-      errors,
-      radios: {
-        name: 'choice',
-        classes: 'govuk-radios--inline',
-        legend: `Are you sure you want to cancel adding ${prisonerName}?`,
-        value: choice,
-        errorMessage: findError(errors, 'choice'),
-        items: [
-          { value: 'yes', text: 'Yes' },
-          { value: 'no', text: 'No' },
-        ],
-      },
-    })
+  private render = (req: Request, res: Response, form: CancellationForm, errors: FormError[] = []) => {
+    const status = getStatusDefinition(res.locals.payType.type)
+    return res.render(
+      'pages/register/cancel',
+      buildCancellationPage(status, {
+        journey: req.session.registerJourney,
+        form,
+        errors,
+      }),
+    )
   }
 
   GET = async (req: Request, res: Response) => {
     if (!req.session.registerJourney) return res.redirect('add-prisoner')
-    return this.render(req, res)
+    return this.render(req, res, {})
   }
 
   POST = async (req: Request, res: Response) => {
     const journey = req.session.registerJourney
     if (!journey) return res.redirect('add-prisoner')
-    const { choice } = req.body
+    const form: CancellationForm = { choice: req.body.choice }
     const { payTypeSlug } = req.params
 
-    const errors = validateForm(choice)
-    if (errors) return this.render(req, res, choice, [errors])
+    const status = getStatusDefinition(res.locals.payType.type)
+    const result = validateCancellation(form, status.cancellation)
+    if (result.valid === false) return this.render(req, res, form, result.errors)
 
-    if (choice === 'yes') {
+    if (result.choice === 'yes') {
       delete req.session.registerJourney
       return res.redirect(`/${payTypeSlug}/pay-overview`)
     }

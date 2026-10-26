@@ -66,6 +66,14 @@ const longTermSick: StatusDefinition = {
       { destination: 'newRegistration', text: () => 'add someone else to long-term sick' },
     ],
   },
+  cancellation: {
+    pageTitle: 'cancel',
+    question: ({ prisonerName }) => `Are you sure you want to cancel adding ${prisonerName}?`,
+    options: ['yes', 'no'],
+    optionLabels: { yes: 'Yes', no: 'No' },
+    confirmButtonText: 'Confirm',
+    errors: { missingOption: 'Select cancellation option' },
+  },
 }
 
 export default longTermSick
