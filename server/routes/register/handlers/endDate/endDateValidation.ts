@@ -1,14 +1,16 @@
 import { FormError } from '../../../../@types/template'
+import { EndDateDefinition, EndDateSelection } from '../../../../statuses/types'
 
-const errors: { [key: string]: FormError } = {
-  SELECT_OPTION: {
-    href: '#endDateSelection',
-    text: 'Select if you want to set their last day or not',
-  },
+export interface EndDateForm {
+  endDateSelection?: string
 }
 
-export default function validateForm(endDateSelection: string): FormError | null {
-  if (!['yes', 'no'].includes(endDateSelection)) return errors.SELECT_OPTION
+type EndDateValidationResult = { valid: true; selection: EndDateSelection } | { valid: false; errors: FormError[] }
 
-  return null
+export default function validateEndDate(form: EndDateForm, definition: EndDateDefinition): EndDateValidationResult {
+  const selection = definition.options.find(value => value === form.endDateSelection)
+  if (!selection) {
+    return { valid: false, errors: [{ href: '#endDateSelection', text: definition.errors.missingOption }] }
+  }
+  return { valid: true, selection }
 }

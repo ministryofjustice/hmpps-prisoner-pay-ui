@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { format } from 'date-fns'
+import PayType from '../../../../@types/payTypes'
 import LastDayHandler from './lastDay'
 import * as auditUtils from '../../../../utils/auditUtils'
 import TestData from '../../../../testutils/testData'
@@ -32,6 +33,7 @@ describe('LastDayHandler', () => {
       redirect: jest.fn(),
       locals: {
         user: TestData.PrisonUser(),
+        payType: { type: PayType.LONG_TERM_SICK, description: 'Long-term sick' },
       },
     }
 
@@ -44,11 +46,16 @@ describe('LastDayHandler', () => {
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/register/last-day', {
-        prisonerName: 'Nicaigh Johnustine',
-        prisoner: TestData.Prisoner(),
-        selectedDate: undefined,
-      })
+      expect(res.render).toHaveBeenCalledWith(
+        'pages/register/last-day',
+        expect.objectContaining({
+          selectedDate: undefined,
+          datePicker: expect.objectContaining({
+            name: 'selectedDate',
+            label: expect.objectContaining({ text: "When is the last day of Nicaigh Johnustine's time off sick?" }),
+          }),
+        }),
+      )
     })
 
     it('should call audit page view with correct parameters', async () => {

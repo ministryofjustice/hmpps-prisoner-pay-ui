@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import PayType from '../../../../@types/payTypes'
 import EndDateHandler from './endDate'
 import * as auditUtils from '../../../../utils/auditUtils'
 import TestData from '../../../../testutils/testData'
@@ -29,6 +30,7 @@ describe('EndDateHandler', () => {
       redirect: jest.fn(),
       locals: {
         user: TestData.PrisonUser(),
+        payType: { type: PayType.LONG_TERM_SICK, description: 'Long-term sick' },
       },
     }
 
@@ -42,8 +44,9 @@ describe('EndDateHandler', () => {
       expect(res.render).toHaveBeenCalledWith(
         'pages/register/end-date',
         expect.objectContaining({
-          prisonerName: 'Nicaigh Johnustine',
-          prisoner: TestData.Prisoner(),
+          radios: expect.objectContaining({
+            legend: 'Do you want to set how long Nicaigh Johnustine is off sick for?',
+          }),
           endDateSelection: undefined,
         }),
       )

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import PayType from '../../../../@types/payTypes'
 import StartDateHandler from './startDate'
 import TestData from '../../../../testutils/testData'
 import { auditPageView } from '../../../../utils/auditUtils'
@@ -20,7 +21,7 @@ describe('StartDateHandler', () => {
     res = {
       render: jest.fn(),
       redirect: jest.fn(),
-      locals: { payType: { description: 'Long-term sick' } },
+      locals: { payType: { type: PayType.LONG_TERM_SICK, description: 'Long-term sick' } },
     } as unknown as Response
   })
   afterEach(() => jest.useRealTimers())
