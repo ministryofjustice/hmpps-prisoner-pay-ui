@@ -1,5 +1,6 @@
-export type StartDateOption = 'today' | 'tomorrow' | 'other'
-export type EndDateSelection = 'yes' | 'no'
+import { EndDateSelection, StartDateOption } from '../../statuses/types'
+
+export type { EndDateSelection, StartDateOption } from '../../statuses/types'
 
 export type RegisterJourney = {
   prisoner: {

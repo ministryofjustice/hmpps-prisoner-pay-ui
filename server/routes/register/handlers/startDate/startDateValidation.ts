@@ -1,26 +1,39 @@
-import { isValid, parse, startOfToday } from 'date-fns'
+import { addDays, isValid, parse, startOfDay } from 'date-fns'
 import { FormError } from '../../../../@types/template'
+import { StartDateDefinition, StartDateOption } from '../../../../statuses/types'
 
 export type StartDateForm = {
   startDateOption?: string
   startDate?: string
 }
 
-export const parseStartDate = ({ startDate }: StartDateForm): Date => parse(startDate || '', 'dd/MM/yyyy', new Date())
+type StartDateValidationResult =
+  { valid: true; date: Date; option: StartDateOption } | { valid: false; errors: FormError[] }
 
-export default function validateForm(form: StartDateForm): FormError | null {
-  if (!['today', 'tomorrow', 'other'].includes(form.startDateOption))
-    return { href: '#startDateOption', text: 'Select when this status should start' }
+const invalid = (field: string, text: string): StartDateValidationResult => ({
+  valid: false,
+  errors: [{ href: `#${field}`, text }],
+})
 
-  if (form.startDateOption !== 'other') return null
+export default function validateStartDate(
+  form: StartDateForm,
+  definition: StartDateDefinition,
+  context: { today: Date },
+): StartDateValidationResult {
+  const { errors, rules } = definition
+  const today = startOfDay(context.today)
+  const option = definition.options.find(value => value === form.startDateOption)
+  if (!option) return invalid('startDateOption', errors.missingOption)
 
-  if (!form.startDate?.trim()) return { href: '#startDate', text: 'Enter or select a start date' }
+  if (option !== 'other') {
+    return { valid: true, option, date: addDays(today, option === 'tomorrow' ? 1 : 0) }
+  }
 
-  const date = parseStartDate(form)
+  if (!form.startDate?.trim()) return invalid('startDate', errors.missingDate)
 
-  if (!isValid(date)) return { href: '#startDate', text: 'Enter a real start date' }
+  const date = parse(form.startDate, 'dd/MM/yyyy', today)
+  if (!isValid(date)) return invalid('startDate', errors.invalidDate)
+  if (!rules.allowPastDates && date < today) return invalid('startDate', errors.pastDate)
 
-  if (date < startOfToday()) return { href: '#startDate', text: 'The start date must be today or in the future' }
-
-  return null
+  return { valid: true, option, date }
 }

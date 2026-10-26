@@ -1,43 +1,28 @@
 import { Request, Response } from 'express'
-import { addDays, format, parseISO, startOfToday } from 'date-fns'
-import { findError, formatFirstLastName } from '../../../../utils/utils'
+import { format, parseISO, startOfToday } from 'date-fns'
 import { auditPageView } from '../../../../utils/auditUtils'
 import { Page, SubjectType } from '../../../../services/auditService'
 import { FormError } from '../../../../@types/template'
-import validateForm, { parseStartDate, StartDateForm } from './startDateValidation'
-import { StartDateOption } from '../../journey'
+import validateStartDate, { StartDateForm } from './startDateValidation'
+import getStatusDefinition from '../../../../statuses'
+import buildStartDatePage from '../../viewModels/startDate'
 
 export default class StartDateHandler {
-  private render = (req: Request, res: Response, form: StartDateForm, errors: FormError[] = []) => {
-    const { prisoner } = req.session.registerJourney
-    const prisonerName = formatFirstLastName(prisoner.firstName, prisoner.lastName)
-    return res.render('pages/register/start-date', {
-      radios: {
-        name: 'startDateOption',
-        legend: `When is ${prisonerName}’s first day on ${res.locals.payType.description.toLowerCase()}?`,
-        value: form.startDateOption,
-        errorMessage: findError(errors, 'startDateOption'),
-        items: [
-          { value: 'today', text: `Today - ${format(startOfToday(), 'd MMMM yyyy')}` },
-          { value: 'tomorrow', text: `Tomorrow - ${format(addDays(startOfToday(), 1), 'd MMMM yyyy')}` },
-          {
-            value: 'other',
-            text: 'A different future date',
-            datePicker: {
-              id: 'startDate',
-              name: 'startDate',
-              label: { text: 'Enter or select the start date' },
-              hint: { text: 'For example, 27/03/2027' },
-              errorMessage: findError(errors, 'startDate'),
-              value: form.startDate,
-            },
-          },
-        ],
-      },
-      searchQuery: req.session.registerJourney.searchQuery,
-      ...form,
-      errors,
-    })
+  private render = (
+    req: Request,
+    res: Response,
+    context: { form: StartDateForm; errors?: FormError[]; today: Date },
+  ) => {
+    const status = getStatusDefinition(res.locals.payType.type)
+    return res.render(
+      'pages/register/start-date',
+      buildStartDatePage(status, {
+        journey: req.session.registerJourney,
+        form: context.form,
+        errors: context.errors || [],
+        today: context.today,
+      }),
+    )
   }
 
   GET = async (req: Request, res: Response) => {
@@ -53,8 +38,8 @@ export default class StartDateHandler {
     )
     const { startDate, startDateOption } = req.session.registerJourney
     return this.render(req, res, {
-      startDateOption,
-      startDate: startDate ? format(parseISO(startDate), 'dd/MM/yyyy') : '',
+      form: { startDateOption, startDate: startDate ? format(parseISO(startDate), 'dd/MM/yyyy') : '' },
+      today: startOfToday(),
     })
   }
 
@@ -65,14 +50,12 @@ export default class StartDateHandler {
       startDateOption: req.body.startDateOption,
       startDate: req.body.startDate,
     }
-    const error = validateForm(form)
-    if (error) return this.render(req, res, form, [error])
-    const date =
-      form.startDateOption === 'other'
-        ? parseStartDate(form)
-        : addDays(startOfToday(), form.startDateOption === 'tomorrow' ? 1 : 0)
-    req.session.registerJourney.startDate = format(date, 'yyyy-MM-dd')
-    req.session.registerJourney.startDateOption = form.startDateOption as StartDateOption
+    const status = getStatusDefinition(res.locals.payType.type)
+    const today = startOfToday()
+    const result = validateStartDate(form, status.startDate, { today })
+    if (result.valid === false) return this.render(req, res, { form, errors: result.errors, today })
+    req.session.registerJourney.startDate = format(result.date, 'yyyy-MM-dd')
+    req.session.registerJourney.startDateOption = result.option
     return res.redirect('end-date')
   }
 }

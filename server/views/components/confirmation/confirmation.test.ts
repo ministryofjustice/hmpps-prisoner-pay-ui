@@ -1,6 +1,7 @@
 import path from 'path'
 import { Request, Response } from 'express'
 import nunjucks from 'nunjucks'
+import PayType from '../../../@types/payTypes'
 import ConfirmedAddPrisonerHandler from '../../../routes/register/handlers/confirmation/confirmedAddPrisoner'
 import ConfirmedRemovalDateHandler from '../../../routes/remove/handlers/confirmedRemovalDate'
 import OrchestratorService from '../../../services/orchestratorService'
@@ -27,7 +28,7 @@ describe('confirmation pages', () => {
       session: { registerConfirmation: { prisoner: TestData.Prisoner(), startDate } },
     } as unknown as Request
     const res = {
-      locals: { payType: { description: 'Long-term sick' } },
+      locals: { payType: { type: PayType.LONG_TERM_SICK, description: 'Long-term sick' } },
       render: jest.fn(),
     } as unknown as Response
 
@@ -52,7 +53,7 @@ describe('confirmation pages', () => {
   ])('renders the removal confirmation and next steps for %s', async (selectedDate, expectedDate) => {
     const req = { params: { payStatusId: '123' }, session: { selectedDate } } as unknown as Request
     const res = {
-      locals: { payType: { description: 'Long-term sick' } },
+      locals: { payType: { type: PayType.LONG_TERM_SICK, description: 'Long-term sick' } },
       render: jest.fn(),
     } as unknown as Response
     const orchestrator = {

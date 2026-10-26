@@ -10,24 +10,7 @@
       <span class="govuk-caption-l">{{ payType.description }}</span>
       <form method="POST">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-        {# TODO: will need to introduce a way to accomodate other types of status #}
-        {{
-          mojDatePicker({
-            id: "selectedDate",
-            name: "selectedDate",
-            leadingZeros: "true",
-            classes: "moj-datepicker--fixed-width",
-            label: {
-
-              text: "When is the last day of " + prisonerName + "'s time off sick?",
-              isPageHeading: true,
-              classes: "govuk-label--l"
-            },
-            hint: { text: "Enter the date, for example 27/03/2027, or click the calendar to select" },
-            value: selectedDate,
-            errorMessage: errors | findError("selectedDate")
-          })
-        }}
+        {{ mojDatePicker(datePicker) }}
         <div class="govuk-button-group">
           {{ govukButton({ text: "Continue" }) }}
           <a class="govuk-link--no-visited-state" href="cancel">Cancel</a>

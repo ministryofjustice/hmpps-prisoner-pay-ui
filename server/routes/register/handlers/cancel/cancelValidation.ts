@@ -1,14 +1,19 @@
 import { FormError } from '../../../../@types/template'
+import { CancellationChoice, CancellationDefinition } from '../../../../statuses/types'
 
-const errors: { [key: string]: FormError } = {
-  SELECT_OPTION: {
-    href: '#choice',
-    text: 'Select cancellation option',
-  },
+export interface CancellationForm {
+  choice?: string
 }
 
-export default function validateForm(choice: string): FormError | null {
-  if (!choice) return errors.SELECT_OPTION
+type CancellationValidationResult = { valid: true; choice: CancellationChoice } | { valid: false; errors: FormError[] }
 
-  return null
+export default function validateCancellation(
+  form: CancellationForm,
+  definition: CancellationDefinition,
+): CancellationValidationResult {
+  const choice = definition.options.find(value => value === form.choice)
+  if (!choice) {
+    return { valid: false, errors: [{ href: '#choice', text: definition.errors.missingOption }] }
+  }
+  return { valid: true, choice }
 }

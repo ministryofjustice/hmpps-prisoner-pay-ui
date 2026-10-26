@@ -12,7 +12,6 @@
       <span class="govuk-caption-l">{{ payType.description }}</span>
       <form method="POST">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-        {# TODO: will need to introduce a way to accomodate other types of status #}
         {{ appRadios(radios) }}
 
         <div class="govuk-button-group">
