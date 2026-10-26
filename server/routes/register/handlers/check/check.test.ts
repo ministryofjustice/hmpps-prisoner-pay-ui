@@ -53,13 +53,21 @@ describe('CheckHandler', () => {
     it('should render the correct view', async () => {
       await handler.GET(req as Request, res as Response)
 
-      expect(res.render).toHaveBeenCalledWith('pages/register/check', {
-        prisonerName: 'Nicaigh Johnustine',
-        prisoner: TestData.Prisoner(),
-        endDateText: '25 January 2025',
-        previousPage: 'last-day',
-        startDateText: 'Tomorrow - 24 January 2025',
-      })
+      expect(res.render).toHaveBeenCalledWith(
+        'pages/register/check',
+        expect.objectContaining({
+          heading: 'Check and confirm details',
+          previousPage: 'last-day',
+          confirmButtonText: 'Confirm and add to long-term sick',
+          summaryList: {
+            rows: expect.arrayContaining([
+              expect.objectContaining({ key: { text: "Who you're adding" }, value: { text: 'Nicaigh Johnustine' } }),
+              expect.objectContaining({ key: { text: 'Start date' }, value: { text: 'Tomorrow - 24 January 2025' } }),
+              expect.objectContaining({ key: { text: 'End Date' }, value: { text: '25 January 2025' } }),
+            ]),
+          },
+        }),
+      )
     })
 
     it('should call audit page view with correct parameters', async () => {
@@ -135,7 +143,15 @@ describe('CheckHandler', () => {
     await handler.GET(req as Request, res as Response)
     expect(res.render).toHaveBeenCalledWith(
       'pages/register/check',
-      expect.objectContaining({ startDateText: 'Tomorrow - 24 January 2025', endDateText: 'None set' }),
+      expect.objectContaining({
+        previousPage: 'end-date',
+        summaryList: {
+          rows: expect.arrayContaining([
+            expect.objectContaining({ key: { text: 'Start date' }, value: { text: 'Tomorrow - 24 January 2025' } }),
+            expect.objectContaining({ key: { text: 'End Date' }, value: { text: 'None set' } }),
+          ]),
+        },
+      }),
     )
   })
 
@@ -189,8 +205,12 @@ describe('CheckHandler', () => {
     expect(res.render).toHaveBeenCalledWith(
       'pages/register/check',
       expect.objectContaining({
-        startDateText: text,
-        endDateText: text,
+        summaryList: {
+          rows: expect.arrayContaining([
+            expect.objectContaining({ key: { text: 'Start date' }, value: { text } }),
+            expect.objectContaining({ key: { text: 'End Date' }, value: { text } }),
+          ]),
+        },
       }),
     )
     expect(req.session.registerJourney.startDate).toBe(date)

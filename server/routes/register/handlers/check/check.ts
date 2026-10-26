@@ -1,20 +1,14 @@
 import { Request, Response } from 'express'
-import { isToday, isTomorrow, parseISO } from 'date-fns'
+import { startOfToday } from 'date-fns'
 import { getPayTypeBySlug } from '../../../../utils/payTypeUtils'
-import { formatDate, formatFirstLastName, getSingleParam } from '../../../../utils/utils'
+import { getSingleParam } from '../../../../utils/utils'
 import PrisonerPayService from '../../../../services/prisonerPayService'
 import { CreatePayStatusPeriodRequest } from '../../../../@types/prisonerPayAPI/types'
 import { auditPageAction, auditPageView } from '../../../../utils/auditUtils'
 import { Action, Page, SubjectType } from '../../../../services/auditService'
 import { getRegisterJourneyRedirect } from '../../registerJourneyValidation'
-
-const formatCheckDate = (date: string): string => {
-  const parsedDate = parseISO(date)
-  const fullDate = formatDate(date, 'd MMMM yyyy')
-  if (isToday(parsedDate)) return `Today - ${fullDate}`
-  if (isTomorrow(parsedDate)) return `Tomorrow - ${fullDate}`
-  return fullDate
-}
+import getStatusDefinition from '../../../../statuses'
+import buildCheckPage from '../../viewModels/check'
 
 export default class CheckHandler {
   constructor(private readonly prisonerPayService: PrisonerPayService) {}
@@ -38,13 +32,8 @@ export default class CheckHandler {
       prisonerNumber,
     )
 
-    return res.render('pages/register/check', {
-      prisonerName: formatFirstLastName(prisoner.firstName, prisoner.lastName),
-      prisoner,
-      startDateText: formatCheckDate(startDate),
-      previousPage: endDate ? 'last-day' : 'end-date',
-      endDateText: endDate ? formatCheckDate(endDate) : 'None set',
-    })
+    const status = getStatusDefinition(payType)
+    return res.render('pages/register/check', buildCheckPage(status, { journey, today: startOfToday() }))
   }
 
   POST = async (req: Request, res: Response) => {

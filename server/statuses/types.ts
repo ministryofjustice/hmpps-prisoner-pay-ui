@@ -43,8 +43,39 @@ export interface LastDayDefinition {
   }
 }
 
+export interface CheckDefinition {
+  pageTitle: string
+  heading: string
+  labels: { prisoner: string; startDate: string; endDate: string }
+  changeLinkText: string
+  changeDescriptions: { prisoner: string; startDate: string; endDate: string }
+  dateLabels: { today: string; tomorrow: string }
+  noEndDateText: string
+  confirmButtonText: string
+  cancelLinkText: string
+}
+
+export interface ConfirmationContentContext {
+  prisonerName: string
+  prisonerNumber: string
+  startDateText: string
+}
+
+export interface ConfirmationDefinition {
+  pageTitle: string
+  titleText: string
+  text: (context: ConfirmationContentContext) => string
+  todayText: string
+  nextSteps: readonly {
+    destination: 'prisonerAllocations' | 'newRegistration'
+    text: (context: ConfirmationContentContext) => string
+  }[]
+}
+
 export interface StatusDefinition {
   startDate: StartDateDefinition
   endDate: EndDateDefinition
   lastDay: LastDayDefinition
+  check: CheckDefinition
+  confirmation: ConfirmationDefinition
 }

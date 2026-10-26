@@ -40,6 +40,32 @@ const longTermSick: StatusDefinition = {
       pastDate: 'The end date cannot be in the past',
     },
   },
+  check: {
+    pageTitle: 'check and confirm',
+    heading: 'Check and confirm details',
+    labels: { prisoner: "Who you're adding", startDate: 'Start date', endDate: 'End Date' },
+    changeLinkText: 'Change',
+    changeDescriptions: { prisoner: 'change prisoner', startDate: 'start date', endDate: 'change end date' },
+    dateLabels: { today: 'Today', tomorrow: 'Tomorrow' },
+    noEndDateText: 'None set',
+    confirmButtonText: 'Confirm and add to long-term sick',
+    cancelLinkText: 'Cancel',
+  },
+  confirmation: {
+    pageTitle: 'Add prisoner confirmation',
+    titleText: 'Long-term sick status confirmed',
+    text: ({ prisonerName, prisonerNumber, startDateText }) =>
+      `${prisonerName} (${prisonerNumber}) will receive long-term sick pay from ${startDateText}`,
+    todayText: 'today',
+    nextSteps: [
+      {
+        destination: 'prisonerAllocations',
+        text: ({ prisonerName }) => `take ${prisonerName} off activities they’re allocated to`,
+      },
+      { destination: 'prisonerAllocations', text: ({ prisonerName }) => `manage ${prisonerName}’s allocations` },
+      { destination: 'newRegistration', text: () => 'add someone else to long-term sick' },
+    ],
+  },
 }
 
 export default longTermSick

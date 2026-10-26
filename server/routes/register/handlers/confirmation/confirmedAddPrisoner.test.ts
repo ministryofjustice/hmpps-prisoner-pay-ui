@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import PayType from '../../../../@types/payTypes'
 import ConfirmedAddPrisonerHandler from './confirmedAddPrisoner'
 import * as auditUtils from '../../../../utils/auditUtils'
 import TestData from '../../../../testutils/testData'
@@ -30,7 +31,7 @@ describe('ConfirmedAddPrisonerHandler', () => {
       redirect: jest.fn(),
       locals: {
         user: TestData.PrisonUser(),
-        payType: { description: 'Long-term sick' },
+        payType: { type: PayType.LONG_TERM_SICK, description: 'Long-term sick' },
       },
     }
 
