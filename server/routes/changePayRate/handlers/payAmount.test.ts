@@ -48,6 +48,23 @@ describe('PayAmountHandler', () => {
   })
 
   describe('POST', () => {
+    it('selects the short-term sick rate when both sick pay types have rates', async () => {
+      res.locals.payType = { type: 'SHORT_TERM_SICK', description: 'Short-term sick', dailyPayAmount: 65 }
+      when(validateForm).calledWith(expect.any(Object), expect.any(Number), expect.any(String)).mockReturnValue(null)
+      jest
+        .mocked(orchestratorService.getPayRates)
+        .mockResolvedValueOnce([
+          ...TestData.PayRates(),
+          { ...TestData.PayRate(), id: 'short-term-rate-id', type: 'SHORT_TERM_SICK' },
+        ])
+
+      await handler.POST(req as Request, res as Response)
+
+      expect(validateForm).toHaveBeenCalledWith({ payAmount: '1.00' }, 65, 'Short-term sick')
+      expect(req.session!.payRateId).toBe('short-term-rate-id')
+      expect(res.redirect).toHaveBeenCalledWith('./set-change-date')
+    })
+
     it('should redirect when validation passes', async () => {
       when(validateForm).calledWith(expect.any(Object), expect.any(Number), expect.any(String)).mockReturnValue(null)
 

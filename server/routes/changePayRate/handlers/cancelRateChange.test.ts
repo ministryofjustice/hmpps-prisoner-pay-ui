@@ -31,7 +31,7 @@ describe('CancelRateChangeHandler', () => {
       body: { choice: 'yes' },
     } as unknown as Partial<Request>
     res = {
-      locals: { user: TestData.PrisonUser(), payType: { type: 'LONG_TERM_SICK' } },
+      locals: { user: TestData.PrisonUser(), payType: { type: 'LONG_TERM_SICK', description: 'Long-term sick' } },
       render: jest.fn(),
       redirect: jest.fn(),
       redirectWithSuccess: jest.fn(),
@@ -89,6 +89,27 @@ describe('CancelRateChangeHandler', () => {
   })
 
   describe('POST', () => {
+    it('cancels a short-term sick change with the correct confirmation and audit type', async () => {
+      res.locals.payType = { type: 'SHORT_TERM_SICK', description: 'Short-term sick' }
+      jest.mocked(orchestratorService.getPayRates).mockResolvedValueOnce([{ ...rateChange, type: 'SHORT_TERM_SICK' }])
+
+      await handler.POST(req as Request, res as Response)
+
+      expect(prisonerPayService.cancelRateChange).toHaveBeenCalledWith(rateChange.id)
+      expect(res.redirectWithSuccess).toHaveBeenCalledWith(
+        '../../../pay-rates',
+        'Pay rate updated',
+        "You've cancelled the change to the pay rate for Short-term sick.",
+      )
+      expect(auditUtils.auditPageAction).toHaveBeenCalledWith(
+        req,
+        Page.CANCEL_RATE_CHANGE,
+        Action.CANCEL_RATE_CHANGE,
+        expect.objectContaining({ payType: 'SHORT_TERM_SICK' }),
+        SubjectType.NOT_APPLICABLE,
+      )
+    })
+
     it('should redirect with success to pay-rates when choice is yes', async () => {
       await handler.POST(req as Request, res as Response)
 
