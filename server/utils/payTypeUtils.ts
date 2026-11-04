@@ -7,6 +7,12 @@ const payTypes = [
     slug: 'long-term-sick',
     dailyPayAmount: 65,
   },
+  {
+    type: PayType.SHORT_TERM_SICK,
+    description: 'Short-term sick',
+    slug: 'short-term-sick',
+    dailyPayAmount: 65,
+  },
 ]
 
 // TODO: Change from hardcoded list to handle types from the api.

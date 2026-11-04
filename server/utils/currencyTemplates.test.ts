@@ -1,5 +1,6 @@
 import express from 'express'
 import nunjucksSetup from './nunjucksSetup'
+import { getAllPayTypes } from './payTypeUtils'
 
 const app = express()
 nunjucksSetup(app)
@@ -24,6 +25,17 @@ describe('currency in page templates', () => {
     const html = await render(`pages/${view}`, locals)
     expect(html.replace(/\s+/g, ' ')).toContain(expected)
     expect(html).not.toContain('NaN')
+  })
+
+  it('shows change and cancellation links for short-term sick and overview links', async () => {
+    const html = await render('pages/dashboard/pay-rates', {
+      payTypes: getAllPayTypes().map(type => ({ ...type, currentRate: 325, scheduledRateId: 'future-rate' })),
+    })
+    expect(html).toContain('Short-term sick')
+    expect(html).toContain('../short-term-sick/change-pay-rate/pay-amount')
+    expect(html).toContain('../short-term-sick/change-pay-rate/future-rate/cancel-rate-change')
+    expect(html).toContain('../long-term-sick/pay-overview')
+    expect(html).toContain('../short-term-sick/pay-overview')
   })
 
   it('handles a missing current rate', async () => {
