@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { when } from 'jest-when'
+import { PayRate } from '../../../@types/payOrchestratorAPI/types'
 import CancelRateChangeHandler from './cancelRateChange'
 import PrisonerPayService from '../../../services/prisonerPayService'
 import OrchestratorService from '../../../services/orchestratorService'
@@ -47,10 +48,10 @@ describe('CancelRateChangeHandler', () => {
     jest.useRealTimers()
   })
 
-  describe.each([
+  describe.each<[string, PayRate]>([
     ['a current rate', { ...rateChange, startDate: '2025-10-06' }],
     ['a rate starting today', { ...rateChange, startDate: '2025-10-07' }],
-    ['a future rate for another pay type', { ...rateChange, type: 'RETIRED' }],
+    ['a future rate for another pay type', { ...rateChange, type: 'SHORT_TERM_SICK' }],
     ['an unknown ID', { ...rateChange, id: 'another-id' }],
   ])('rejecting %s', (_description, rate) => {
     beforeEach(() => {
