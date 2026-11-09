@@ -46,7 +46,7 @@ To extract these values, the following commands are used - N.B. access to the K8
 kubectl -n hmpps-prisoner-pay-dev get secrets hmpps-prisoner-pay -o json | jq -r ".data | map_values(@base64d)"
 ```
 
-Install dependencies using `npm install`, ensuring you are using `node v20`
+Install dependencies using `npm ci`, ensuring you are using `node v26`
 
 Note: Using `nvm` (or [fnm](https://github.com/Schniz/fnm)), run `nvm install --latest-npm` within the repository folder
 to use the correct version of node, and the latest version of npm. This matches the `engines` config in `package.json`

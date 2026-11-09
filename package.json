@@ -22,12 +22,11 @@
     "int-test-ui": "npx playwright test --ui",
     "int-test-init:ci": "npx playwright install",
     "clean": "rm -rf dist test_results",
-    "rebuild": "npm run clean && npm i && npm run build",
-    "setup": "npm ci && hmpps-npm-script-run-allowlist"
+    "rebuild": "npm run clean && npm i && npm run build"
   },
   "engines": {
-    "node": "^24",
-    "npm": "^11"
+    "node": "^26",
+    "npm": "^12"
   },
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.1158.0",
@@ -61,10 +60,9 @@
   "devDependencies": {
     "@jgoz/esbuild-plugin-typecheck": "^5.0.0",
     "@ministryofjustice/eslint-config-hmpps": "2.0.0-alpha.2",
-    "@ministryofjustice/hmpps-npm-script-allowlist": "0.0.6",
     "@ministryofjustice/hmpps-precommit-hooks": "^3.0.2",
     "@playwright/test": "^1.64.1",
-    "@tsconfig/node24": "^24.0.5",
+    "@tsconfig/node26": "26.0.1",
     "@types/bunyan": "^1.8.11",
     "@types/bunyan-format": "^0.2.9",
     "@types/compression": "^1.8.1",
@@ -74,7 +72,7 @@
     "@types/jest": "^30.0.0",
     "@types/jest-when": "^3.5.5",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^24.19.2",
+    "@types/node": "26.6.6",
     "@types/nunjucks": "^3.2.6",
     "@types/passport": "^1.0.17",
     "@types/passport-oauth2": "^1.8.0",
@@ -108,5 +106,11 @@
     "sinon": {
       "diff": "9.0.0"
     }
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "dtrace-provider@0.8.8": true,
+    "esbuild@0.28.2": true,
+    "fsevents@2.3.3": true
   }
 }
