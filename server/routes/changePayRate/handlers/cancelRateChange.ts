@@ -90,7 +90,7 @@ export default class CancelRateChangeHandler {
       return res.redirectWithSuccess(
         '../../../pay-rates',
         'Pay rate updated',
-        "You've cancelled the change to the pay rate for Long-term sick.",
+        `You've cancelled the change to the pay rate for ${res.locals.payType.description}.`,
       )
     }
     return res.redirect('../../../pay-rates')

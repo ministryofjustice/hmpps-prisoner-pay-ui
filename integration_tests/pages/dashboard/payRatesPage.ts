@@ -18,7 +18,7 @@ export default class PayRatesPage extends AbstractPage {
   static async verifyOnPage(page: Page): Promise<PayRatesPage> {
     const payRatesPage = new PayRatesPage(page)
     await expect(payRatesPage.header).toBeVisible()
-    await expect(payRatesPage.payTypeSummaryCards).toBeVisible()
+    await expect(payRatesPage.payTypeSummaryCards.first()).toBeVisible()
     return payRatesPage
   }
 }
