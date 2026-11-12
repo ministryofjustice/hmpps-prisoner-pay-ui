@@ -4,7 +4,12 @@ import TestData from '../../../testutils/testData'
 
 describe('GET /Edit pay homepage', () => {
   const handler = new EditPayHandler()
-  let req: Request
+  const req = {
+    params: {},
+    query: {},
+    body: {},
+    session: {},
+  } as Request
   let res: Response
 
   beforeEach(() => {

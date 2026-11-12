@@ -1,5 +1,4 @@
 import { currencyFromPence, penceToPounds } from '../../../utils/currencyUtils'
-import { FormError } from '../../../@types/template'
 
 type PayAmountForm = {
   payAmount: string

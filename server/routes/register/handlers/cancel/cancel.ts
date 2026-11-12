@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { FormError } from '../../../../@types/template'
 import getStatusDefinition from '../../../../statuses'
 import buildCancellationPage from '../../viewModels/cancel'
 import validateCancellation, { CancellationForm } from './cancelValidation'

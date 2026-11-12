@@ -1,6 +1,5 @@
 import { addDays, format } from 'date-fns'
 import { Request, Response } from 'express'
-import { FormError } from '../../../@types/template'
 import { findError } from '../../../utils/utils'
 import validateForm from './setChangeDateValidation'
 

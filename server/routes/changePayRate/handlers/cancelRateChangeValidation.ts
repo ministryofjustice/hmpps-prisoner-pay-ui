@@ -1,5 +1,3 @@
-import { FormError } from '../../../@types/template'
-
 const errors: { [key: string]: FormError } = {
   SELECT_OPTION: {
     href: '#choice',
