@@ -1,14 +1,13 @@
-import { Request, Response } from 'express'
-import createError from 'http-errors'
 import { format, parse } from 'date-fns'
-import { FormError } from '../../../@types/template'
-import { currencyFromPence } from '../../../utils/currencyUtils'
-import validateForm from './cancelRateChangeValidation'
-import PrisonerPayService from '../../../services/prisonerPayService'
+import createError from 'http-errors'
+import { Request, Response } from 'express'
 import OrchestratorService from '../../../services/orchestratorService'
-import { auditPageAction, auditPageView } from '../../../utils/auditUtils'
+import PrisonerPayService from '../../../services/prisonerPayService'
 import { Action, Page, SubjectType } from '../../../services/auditService'
+import { auditPageAction, auditPageView } from '../../../utils/auditUtils'
+import { currencyFromPence } from '../../../utils/currencyUtils'
 import { findError, getSingleParam } from '../../../utils/utils'
+import validateForm from './cancelRateChangeValidation'
 
 export default class CancelRateChangeHandler {
   constructor(

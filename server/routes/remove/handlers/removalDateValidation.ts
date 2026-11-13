@@ -1,5 +1,3 @@
-import { FormError } from '../../../@types/template'
-
 type RemovalDateForm = {
   removalDateOption: string
   removalDate?: string

@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import { format } from 'date-fns'
-import { FormError } from '../../../@types/template'
 import OrchestratorService from '../../../services/orchestratorService'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 import validateForm from './removalDateValidation'

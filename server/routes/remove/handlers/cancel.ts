@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { FormError } from '../../../@types/template'
 import { findError, formatFirstLastName } from '../../../utils/utils'
 import validateForm from './cancelValidation'
 

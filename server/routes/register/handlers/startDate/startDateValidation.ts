@@ -1,5 +1,4 @@
 import { addDays, isValid, parse, startOfDay } from 'date-fns'
-import { FormError } from '../../../../@types/template'
 import { StartDateDefinition, StartDateOption } from '../../../../statuses/types'
 
 export type StartDateForm = {

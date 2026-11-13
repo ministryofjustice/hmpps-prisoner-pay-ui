@@ -13,7 +13,12 @@ const orchestratorService = new OrchestratorService(null)
 
 describe('GET /dashboard', () => {
   const handler = new DashboardHandler(orchestratorService)
-  let req: Request
+  const req = {
+    params: {},
+    query: {},
+    body: {},
+    session: {},
+  } as Request
   let res: Response
 
   beforeEach(() => {

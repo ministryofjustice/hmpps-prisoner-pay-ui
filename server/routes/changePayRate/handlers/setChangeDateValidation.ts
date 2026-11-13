@@ -1,5 +1,4 @@
 import { isBefore, isValid, parse, startOfToday } from 'date-fns'
-import { FormError } from '../../../@types/template'
 
 type SetChangeDateForm = {
   changeDateOption: string
