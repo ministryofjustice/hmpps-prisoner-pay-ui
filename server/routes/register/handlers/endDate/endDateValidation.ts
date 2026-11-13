@@ -1,4 +1,3 @@
-import { FormError } from '../../../../@types/template'
 import { EndDateDefinition, EndDateSelection } from '../../../../statuses/types'
 
 export interface EndDateForm {

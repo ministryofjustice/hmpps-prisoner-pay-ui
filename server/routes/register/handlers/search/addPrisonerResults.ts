@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { FormError } from '../../../../@types/template'
 import { formatFirstLastName } from '../../../../utils/utils'
 import OrchestratorService from '../../../../services/orchestratorService'
 import validateForm from './addPrisonerResultsValidation'

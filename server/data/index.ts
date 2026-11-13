@@ -1,15 +1,14 @@
-/* eslint-disable import/first */
 import { AuthenticationClient, InMemoryTokenStore, RedisTokenStore } from '@ministryofjustice/hmpps-auth-clients'
+
 import applicationInfoSupplier from '../applicationInfo'
-
-const applicationInfo = applicationInfoSupplier()
-
-import { createRedisClient } from './redisClient'
 import config from '../config'
-import HmppsAuditClient from './hmppsAuditClient'
 import logger from '../../logger'
+import { createRedisClient } from './redisClient'
+import HmppsAuditClient from './hmppsAuditClient'
 import OrchestratorApiClient from './orchestratorApiClient'
 import PrisonerPayApiClient from './prisonerPayApiClient'
+
+const applicationInfo = applicationInfoSupplier()
 
 export const dataAccess = () => {
   const hmppsAuthClient = new AuthenticationClient(

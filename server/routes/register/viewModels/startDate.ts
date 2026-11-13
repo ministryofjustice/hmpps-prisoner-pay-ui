@@ -1,5 +1,4 @@
 import { addDays, format, startOfDay } from 'date-fns'
-import { FormError } from '../../../@types/template'
 import { StatusDefinition } from '../../../statuses/types'
 import { findError, formatFirstLastName } from '../../../utils/utils'
 import { RegisterJourney } from '../journey'

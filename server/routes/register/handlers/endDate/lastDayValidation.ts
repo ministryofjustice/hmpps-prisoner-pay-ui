@@ -1,5 +1,4 @@
 import { isBefore, isValid, parse, parseISO, startOfDay } from 'date-fns'
-import { FormError } from '../../../../@types/template'
 import { LastDayDefinition } from '../../../../statuses/types'
 
 export interface LastDayForm {

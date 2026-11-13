@@ -1,4 +1,3 @@
-import { FormError } from '../../../../@types/template'
 import { CancellationChoice, CancellationDefinition } from '../../../../statuses/types'
 
 export interface CancellationForm {

@@ -1,4 +1,8 @@
-export interface FormError {
-  href: string
-  text: string
+declare global {
+  interface FormError {
+    href: string
+    text: string
+  }
 }
+
+export {}
