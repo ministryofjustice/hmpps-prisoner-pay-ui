@@ -1,4 +1,4 @@
-import { PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
+import { PayStatusPeriod, PayRate } from '../@types/payOrchestratorAPI/types'
 import { PrisonUser } from '../interfaces/hmppsUser'
 
 export default class TestData {
@@ -102,7 +102,7 @@ export default class TestData {
     }
   }
 
-  static PayRate() {
+  static PayRate(): PayRate {
     return {
       id: '019b268f-f691-785d-ac40-93cb6f815452',
       prisonCode: 'BCI',
@@ -117,7 +117,7 @@ export default class TestData {
     }
   }
 
-  static PayRates() {
+  static PayRates(): PayRate[] {
     return [
       {
         id: '019b268f-f691-785d-ac40-93cb6f815452',
