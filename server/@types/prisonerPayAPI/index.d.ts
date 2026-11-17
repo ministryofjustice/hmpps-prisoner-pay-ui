@@ -149,7 +149,14 @@ export interface paths {
         get: operations["get"];
         put?: never;
         post?: never;
-        delete?: never;
+        /**
+         * Deletes a pay status period with the given id that has not yet started.
+         * @description Hard deletes the given future pay status period.
+         *
+         *     Requires one of the following roles:
+         *     * ROLE_PRISONER_PAY__PRISONER_PAY_UI
+         */
+        delete: operations["delete"];
         options?: never;
         head?: never;
         /**
@@ -231,7 +238,7 @@ export interface components {
              * @example LONG_TERM_SICK
              * @enum {string}
              */
-            type: "LONG_TERM_SICK";
+            type: "LONG_TERM_SICK" | "SHORT_TERM_SICK";
             /**
              * Format: date
              * @description The start date
@@ -313,7 +320,7 @@ export interface components {
              * @example LONG_TERM_SICK
              * @enum {string}
              */
-            type: "LONG_TERM_SICK";
+            type: "LONG_TERM_SICK" | "SHORT_TERM_SICK";
             /**
              * Format: date
              * @description The start date
@@ -355,7 +362,7 @@ export interface components {
              * @example LONG_TERM_SICK
              * @enum {string}
              */
-            type: "LONG_TERM_SICK";
+            type: "LONG_TERM_SICK" | "SHORT_TERM_SICK";
             /**
              * Format: date
              * @description The start date
@@ -554,6 +561,15 @@ export interface operations {
                     "application/json": components["schemas"]["PayRateDto"];
                 };
             };
+            /** @description The pay rate start date is in the past or today and cannot be deleted. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
             /** @description Unauthorised, requires a valid Oauth2 token */
             401: {
                 headers: {
@@ -596,6 +612,11 @@ export interface operations {
                  * @example PVI
                  */
                 prisonCode?: string;
+                /**
+                 * @description The type of pay status period
+                 * @example LONG_TERM_SICK
+                 */
+                type?: "LONG_TERM_SICK" | "SHORT_TERM_SICK";
                 /**
                  * @description Whether to return results which are currently active, i.e. the end date is null or not before today
                  * @example true
@@ -775,6 +796,63 @@ export interface operations {
                 };
             };
             /** @description Data not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The id of the pay status period */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The future pay status period was deleted */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description The pay status period start date is in the past or today and cannot be deleted */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorised, requires a valid Oauth2 token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden, requires an appropriate role */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Pay status period not found */
             404: {
                 headers: {
                     [name: string]: unknown;

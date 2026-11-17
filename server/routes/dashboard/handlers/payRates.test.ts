@@ -65,7 +65,7 @@ describe('PayRatesHandler', () => {
         return {
           ...payType,
           numberOfPrisoners: records.length,
-          currentRate: TestData.PayRate().rate,
+          currentRate: payType.type === 'LONG_TERM_SICK' ? TestData.PayRate().rate : undefined,
           scheduledRateId: undefined as string | undefined,
         }
       })

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { when } from 'jest-when'
+import { PayRate } from '../../../@types/payOrchestratorAPI/types'
 import CancelRateChangeHandler from './cancelRateChange'
 import PrisonerPayService from '../../../services/prisonerPayService'
 import OrchestratorService from '../../../services/orchestratorService'
@@ -31,7 +32,7 @@ describe('CancelRateChangeHandler', () => {
       body: { choice: 'yes' },
     } as unknown as Partial<Request>
     res = {
-      locals: { user: TestData.PrisonUser(), payType: { type: 'LONG_TERM_SICK' } },
+      locals: { user: TestData.PrisonUser(), payType: { type: 'LONG_TERM_SICK', description: 'Long-term sick' } },
       render: jest.fn(),
       redirect: jest.fn(),
       redirectWithSuccess: jest.fn(),
@@ -47,10 +48,10 @@ describe('CancelRateChangeHandler', () => {
     jest.useRealTimers()
   })
 
-  describe.each([
+  describe.each<[string, PayRate]>([
     ['a current rate', { ...rateChange, startDate: '2025-10-06' }],
     ['a rate starting today', { ...rateChange, startDate: '2025-10-07' }],
-    ['a future rate for another pay type', { ...rateChange, type: 'RETIRED' }],
+    ['a future rate for another pay type', { ...rateChange, type: 'SHORT_TERM_SICK' }],
     ['an unknown ID', { ...rateChange, id: 'another-id' }],
   ])('rejecting %s', (_description, rate) => {
     beforeEach(() => {
@@ -89,6 +90,27 @@ describe('CancelRateChangeHandler', () => {
   })
 
   describe('POST', () => {
+    it('cancels a short-term sick change with the correct confirmation and audit type', async () => {
+      res.locals.payType = { type: 'SHORT_TERM_SICK', description: 'Short-term sick' }
+      jest.mocked(orchestratorService.getPayRates).mockResolvedValueOnce([{ ...rateChange, type: 'SHORT_TERM_SICK' }])
+
+      await handler.POST(req as Request, res as Response)
+
+      expect(prisonerPayService.cancelRateChange).toHaveBeenCalledWith(rateChange.id)
+      expect(res.redirectWithSuccess).toHaveBeenCalledWith(
+        '../../../pay-rates',
+        'Pay rate updated',
+        "You've cancelled the change to the pay rate for Short-term sick.",
+      )
+      expect(auditUtils.auditPageAction).toHaveBeenCalledWith(
+        req,
+        Page.CANCEL_RATE_CHANGE,
+        Action.CANCEL_RATE_CHANGE,
+        expect.objectContaining({ payType: 'SHORT_TERM_SICK' }),
+        SubjectType.NOT_APPLICABLE,
+      )
+    })
+
     it('should redirect with success to pay-rates when choice is yes', async () => {
       await handler.POST(req as Request, res as Response)
 
