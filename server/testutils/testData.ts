@@ -1,5 +1,4 @@
-import { PayStatusPeriod } from '../@types/payOrchestratorAPI/types'
-import { PayRate } from '../@types/payOrchestratorAPI/types'
+import { PayStatusPeriod, PayRate } from '../@types/payOrchestratorAPI/types'
 import { PrisonUser } from '../interfaces/hmppsUser'
 
 export default class TestData {
