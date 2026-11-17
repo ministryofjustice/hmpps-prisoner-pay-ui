@@ -166,7 +166,7 @@ export interface components {
              * @example LONG_TERM_SICK
              * @enum {string}
              */
-            type: "LONG_TERM_SICK";
+            type: "LONG_TERM_SICK" | "SHORT_TERM_SICK";
             /**
              * Format: date
              * @description The start date
@@ -209,7 +209,7 @@ export interface components {
              * @example LONG_TERM_SICK
              * @enum {string}
              */
-            type: "LONG_TERM_SICK";
+            type: "LONG_TERM_SICK" | "SHORT_TERM_SICK";
             /**
              * Format: date
              * @description The start date
@@ -332,6 +332,11 @@ export interface operations {
                  * @example PVI
                  */
                 prisonCode: string;
+                /**
+                 * @description The type of pay status period
+                 * @example LONG_TERM_SICK
+                 */
+                type?: "LONG_TERM_SICK" | "SHORT_TERM_SICK";
                 /**
                  * @description Whether to return results which are currently active, i.e. the end date is null or not before today
                  * @example true

@@ -613,6 +613,11 @@ export interface operations {
                  */
                 prisonCode?: string;
                 /**
+                 * @description The type of pay status period
+                 * @example LONG_TERM_SICK
+                 */
+                type?: "LONG_TERM_SICK" | "SHORT_TERM_SICK";
+                /**
                  * @description Whether to return results which are currently active, i.e. the end date is null or not before today
                  * @example true
                  */
