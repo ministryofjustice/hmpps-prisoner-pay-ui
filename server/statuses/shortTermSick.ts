@@ -2,7 +2,7 @@ import { StatusDefinition } from './types'
 
 const shortTermSick: StatusDefinition = {
   startDate: {
-    question: ({ prisonerName }) => `When is ${prisonerName}’s first day on long-term sick?`,
+    question: ({ prisonerName }) => `When is ${prisonerName}’s first day on short-term sick?`,
     options: ['today', 'tomorrow', 'other'],
     optionLabels: {
       today: 'Today',
@@ -36,7 +36,7 @@ const shortTermSick: StatusDefinition = {
     errors: {
       missingDate: 'Enter or select a date',
       invalidDate: 'Enter a real date',
-      beforeStartDate: 'Their last day must be today or in the future',
+      beforeStartDate: 'Their last day must be on or after their start date',
       pastDate: 'The end date cannot be in the past',
     },
   },
@@ -48,14 +48,14 @@ const shortTermSick: StatusDefinition = {
     changeDescriptions: { prisoner: 'change prisoner', startDate: 'start date', endDate: 'change end date' },
     dateLabels: { today: 'Today', tomorrow: 'Tomorrow' },
     noEndDateText: 'None set',
-    confirmButtonText: 'Confirm and add to long-term sick',
+    confirmButtonText: 'Confirm and add to short-term sick',
     cancelLinkText: 'Cancel',
   },
   confirmation: {
     pageTitle: 'Add prisoner confirmation',
-    titleText: 'Long-term sick status confirmed',
+    titleText: 'Short-term sick status confirmed',
     text: ({ prisonerName, prisonerNumber, startDateText }) =>
-      `${prisonerName} (${prisonerNumber}) will receive long-term sick pay from ${startDateText}`,
+      `${prisonerName} (${prisonerNumber}) will receive short-term sick pay from ${startDateText}`,
     todayText: 'today',
     nextSteps: [
       {
@@ -63,7 +63,7 @@ const shortTermSick: StatusDefinition = {
         text: ({ prisonerName }) => `take ${prisonerName} off activities they’re allocated to`,
       },
       { destination: 'prisonerAllocations', text: ({ prisonerName }) => `manage ${prisonerName}’s allocations` },
-      { destination: 'newRegistration', text: () => 'add someone else to long-term sick' },
+      { destination: 'newRegistration', text: () => 'add someone else to short-term sick' },
     ],
   },
   cancellation: {
