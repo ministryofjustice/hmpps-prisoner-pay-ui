@@ -1,4 +1,5 @@
 import express from 'express'
+import { telemetryMiddleware } from '@ministryofjustice/hmpps-azure-telemetry'
 
 import createError from 'http-errors'
 
@@ -43,6 +44,7 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpCurrentUser())
   app.use(setUpDpsComponents())
   app.use(setUpCaseLoadData())
+  app.use(telemetryMiddleware.addUserMetadataToTelemetry())
   app.use(setUpAuditService(services.auditService))
   app.use(routes(services))
 
