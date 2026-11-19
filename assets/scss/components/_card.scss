@@ -2,6 +2,8 @@
    COMPONENTS / #CARD
    ========================================================================== */
 
+@use "govuk-frontend/dist/govuk/index" as *;
+
 $card-border-width: 1px;
 $card-border-bottom-width: govuk-spacing(1);
 $card-border-hover-color: govuk-colour("black", $variant: "tint-50");

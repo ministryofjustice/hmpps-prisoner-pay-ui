@@ -1,3 +1,5 @@
+@use "govuk-frontend/dist/govuk/index" as *;
+
 .homepage {
   &-search {
     padding: govuk-spacing(6) 0;
