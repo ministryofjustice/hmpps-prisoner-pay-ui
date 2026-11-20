@@ -1,3 +1,5 @@
+@use "govuk-frontend/dist/govuk/index" as *;
+
 .secondary-text-colour {
     color: $govuk-secondary-text-colour;
 }
