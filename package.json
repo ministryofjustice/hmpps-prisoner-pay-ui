@@ -29,7 +29,7 @@
     "npm": "^12"
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.1168.0",
+    "@aws-sdk/client-sqs": "^3.1169.0",
     "@ministryofjustice/frontend": "^12.0.0",
     "@ministryofjustice/hmpps-auth-clients": "^3.0.0",
     "@ministryofjustice/hmpps-azure-telemetry": "^1.3.0",
@@ -61,7 +61,7 @@
     "@jgoz/esbuild-plugin-typecheck": "^5.0.0",
     "@ministryofjustice/eslint-config-hmpps": "2.0.0-alpha.3",
     "@ministryofjustice/hmpps-precommit-hooks": "^3.0.2",
-    "@playwright/test": "^1.65.0",
+    "@playwright/test": "^1.65.1",
     "@tsconfig/node26": "26.0.2",
     "@types/bunyan": "^1.8.11",
     "@types/bunyan-format": "^0.2.9",
@@ -90,7 +90,7 @@
     "jest-junit": "^17.0.0",
     "jest-when": "^4.0.3",
     "jsonwebtoken": "^9.0.3",
-    "lint-staged": "^17.6.0",
+    "lint-staged": "^17.6.1",
     "nock": "^14.0.17",
     "prettier": "3.10.1",
     "prettier-plugin-jinja-template": "2.2.0",
