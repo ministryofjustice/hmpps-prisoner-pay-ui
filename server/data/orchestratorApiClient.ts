@@ -11,13 +11,14 @@ export default class OrchestratorApiClient extends RestClient {
     super('orchestrator API', config.apis.payOrchestratorApi, logger, authenticationClient)
   }
 
-  async getPayStatusPeriods(latestStartDate: string, prisonCode: string): Promise<PayStatusPeriod[]> {
+  async getUnendedPayStatusPeriods(prisonCode: string): Promise<PayStatusPeriod[]> {
     return this.get<PayStatusPeriod[]>(
       {
         path: '/pay-status-periods',
         query: {
-          latestStartDate,
+          latestStartDate: '9999-12-31',
           prisonCode,
+          activeOnly: true,
         },
       },
       asSystem(),

@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { format } from 'date-fns'
 import OrchestratorService from '../../../services/orchestratorService'
 import { getPayTypeBySlug } from '../../../utils/payTypeUtils'
 import { auditPageView, getDisplayedPaySummary } from '../../../utils/auditUtils'
@@ -12,9 +11,9 @@ export default class PayOverviewHandler {
   GET = async (req: Request, res: Response) => {
     const { activeCaseLoadId } = res.locals.user
     const payType = getPayTypeBySlug(getSingleParam(req.params.payTypeSlug))
-    const paySummary = (
-      await this.orchestratorService.getPayStatusPeriodsByType(format(new Date(), 'yyyy-MM-dd'), activeCaseLoadId)
-    ).filter(period => period.type === payType.type)
+    const paySummary = (await this.orchestratorService.getUnendedPayStatusPeriods(activeCaseLoadId)).filter(
+      period => period.type === payType.type,
+    )
 
     await auditPageView(
       req,

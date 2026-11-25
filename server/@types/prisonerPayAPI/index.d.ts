@@ -24,6 +24,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/queue-admin/retry-dlq-messages/{dlqName}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * @description Requires one of the following roles:
+         *     * ROLE_QUEUE_ADMIN
+         */
+        put: operations["retryDlqMessages"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/queue-admin/retry-all-dlqs": {
         parameters: {
             query?: never;
@@ -53,6 +73,26 @@ export interface paths {
          *     * ROLE_QUEUE_ADMIN
          */
         put: operations["purgeQueue"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/queue-admin/delete-dlq-messages/{dlqName}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * @description Requires one of the following roles:
+         *     * ROLE_QUEUE_ADMIN
+         */
+        put: operations["deleteDlqMessages"];
         post?: never;
         delete?: never;
         options?: never;
@@ -167,6 +207,26 @@ export interface paths {
         patch: operations["update"];
         trace?: never;
     };
+    "/queue-admin/search-dlq-messages/{dlqName}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Requires one of the following roles:
+         *     * ROLE_QUEUE_ADMIN
+         */
+        get: operations["searchDlqMessages"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/queue-admin/get-dlq-messages/{dlqName}": {
         parameters: {
             query?: never;
@@ -216,9 +276,32 @@ export interface components {
             /** Format: int32 */
             messagesFoundCount: number;
         };
+        RetryDlqMessagesBody: {
+            messageIds: string[];
+        };
+        RetryDlqMessagesResult: {
+            /** Format: int32 */
+            messagesFoundCount: number;
+            /** Format: int32 */
+            messagesRetriedCount: number;
+            retriedMessageIds: string[];
+            notFoundMessageIds: string[];
+        };
         PurgeQueueResult: {
             /** Format: int32 */
             messagesFoundCount: number;
+        };
+        DeleteDlqMessagesBody: {
+            messageIds: string[];
+        };
+        DeleteDlqMessagesResult: {
+            /** Format: int32 */
+            messagesFoundCount: number;
+            /** Format: int32 */
+            messagesDeletedCount: number;
+            deletedMessageIds: string[];
+            notFoundMessageIds: string[];
+            failedMessageIds: string[];
         };
         /** @description Pay Rate */
         PayRateDto: {
@@ -396,6 +479,15 @@ export interface components {
                 [key: string]: unknown;
             };
             messageId: string;
+            /** Format: int32 */
+            approximateReceiveCount?: number | null;
+        };
+        SearchDlqResult: {
+            /** Format: int32 */
+            messagesFoundCount: number;
+            /** Format: int32 */
+            messagesReturnedCount: number;
+            messages: components["schemas"]["DlqMessage"][];
         };
         GetDlqResult: {
             /** Format: int32 */
@@ -431,6 +523,32 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["RetryDlqResult"];
+                };
+            };
+        };
+    };
+    retryDlqMessages: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                dlqName: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RetryDlqMessagesBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RetryDlqMessagesResult"];
                 };
             };
         };
@@ -473,6 +591,32 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["PurgeQueueResult"];
+                };
+            };
+        };
+    };
+    deleteDlqMessages: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                dlqName: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeleteDlqMessagesBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["DeleteDlqMessagesResult"];
                 };
             };
         };
@@ -922,6 +1066,31 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    searchDlqMessages: {
+        parameters: {
+            query?: {
+                filter?: string;
+                maxMessages?: number;
+            };
+            header?: never;
+            path: {
+                dlqName: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["SearchDlqResult"];
                 };
             };
         };

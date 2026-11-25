@@ -21,47 +21,46 @@ describe('OrchestratorApiClient', () => {
     jest.resetAllMocks()
   })
 
-  describe('getPayStatusPeriods', () => {
-    it('should make a GET request to the correct endpoint with query parameters', async () => {
-      const latestStartDate = '2025-01-01'
+  describe('getUnendedPayStatusPeriods', () => {
+    const latestStartDate = '9999-12-31'
+
+    it('should request current and scheduled periods without including ended periods', async () => {
       const prisonCode = 'MDI'
       const mockPayStatusPeriods = TestData.PayStatusPeriods()
 
       nock(config.apis.payOrchestratorApi.url)
         .get('/pay-status-periods')
-        .query({ latestStartDate, prisonCode })
+        .query({ latestStartDate, prisonCode, activeOnly: true })
         .reply(200, mockPayStatusPeriods)
 
-      const result = await orchestratorApiClient.getPayStatusPeriods(latestStartDate, prisonCode)
+      const result = await orchestratorApiClient.getUnendedPayStatusPeriods(prisonCode)
 
       expect(result).toEqual(mockPayStatusPeriods)
       expect(mockAuthenticationClient.getToken).toHaveBeenCalled()
     })
 
     it('should handle empty response', async () => {
-      const latestStartDate = '2025-01-01'
       const prisonCode = 'MDI'
 
       nock(config.apis.payOrchestratorApi.url)
         .get('/pay-status-periods')
-        .query({ latestStartDate, prisonCode })
+        .query({ latestStartDate, prisonCode, activeOnly: true })
         .reply(200, [])
 
-      const result = await orchestratorApiClient.getPayStatusPeriods(latestStartDate, prisonCode)
+      const result = await orchestratorApiClient.getUnendedPayStatusPeriods(prisonCode)
 
       expect(result).toEqual([])
     })
 
     it('should handle 404 Not Found', async () => {
-      const latestStartDate = '2025-01-01'
       const prisonCode = 'INVALID'
 
       nock(config.apis.payOrchestratorApi.url)
         .get('/pay-status-periods')
-        .query({ latestStartDate, prisonCode })
+        .query({ latestStartDate, prisonCode, activeOnly: true })
         .reply(404)
 
-      await expect(orchestratorApiClient.getPayStatusPeriods(latestStartDate, prisonCode)).rejects.toThrow()
+      await expect(orchestratorApiClient.getUnendedPayStatusPeriods(prisonCode)).rejects.toThrow()
     })
   })
 

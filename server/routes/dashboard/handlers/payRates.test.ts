@@ -27,8 +27,8 @@ describe('PayRatesHandler', () => {
       redirect: jest.fn(),
     }
 
-    when(orchestratorService.getPayStatusPeriodsByType)
-      .calledWith(expect.any(String), expect.any(String))
+    when(orchestratorService.getUnendedPayStatusPeriods)
+      .calledWith('MDI')
       .mockResolvedValue(TestData.PayStatusPeriods())
 
     when(orchestratorService.getPayRates).calledWith('MDI').mockResolvedValue([TestData.PayRate()])

@@ -43,8 +43,8 @@ describe('PayOverviewHandler', () => {
 
     jest.mocked(auditUtils.auditPageView).mockResolvedValue(undefined)
 
-    when(orchestratorService.getPayStatusPeriodsByType)
-      .calledWith(expect.any(String), expect.any(String))
+    when(orchestratorService.getUnendedPayStatusPeriods)
+      .calledWith('MDI')
       .mockResolvedValue(TestData.PayStatusPeriods())
   })
 
