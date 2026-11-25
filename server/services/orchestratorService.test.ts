@@ -13,41 +13,36 @@ describe('OrchestratorService', () => {
     orchestratorService = new OrchestratorService(orchestratorApiClient)
   })
 
-  describe('getPayStatusPeriodsByType', () => {
+  describe('getUnendedPayStatusPeriods', () => {
     it('should call the API client with the correct parameters', async () => {
-      const latestStartDate = '2025-01-01'
       const prisonCode = 'MDI'
       const mockPayStatusPeriods = TestData.PayStatusPeriods()
 
-      orchestratorApiClient.getPayStatusPeriods.mockResolvedValue(mockPayStatusPeriods)
+      orchestratorApiClient.getUnendedPayStatusPeriods.mockResolvedValue(mockPayStatusPeriods)
 
-      const result = await orchestratorService.getPayStatusPeriodsByType(latestStartDate, prisonCode)
+      const result = await orchestratorService.getUnendedPayStatusPeriods(prisonCode)
 
-      expect(orchestratorApiClient.getPayStatusPeriods).toHaveBeenCalledWith(latestStartDate, prisonCode)
+      expect(orchestratorApiClient.getUnendedPayStatusPeriods).toHaveBeenCalledWith(prisonCode)
       expect(result).toEqual(mockPayStatusPeriods)
     })
 
     it('should return an empty array when no pay status periods are found', async () => {
-      const latestStartDate = '2025-01-01'
       const prisonCode = 'MDI'
 
-      orchestratorApiClient.getPayStatusPeriods.mockResolvedValue([])
+      orchestratorApiClient.getUnendedPayStatusPeriods.mockResolvedValue([])
 
-      const result = await orchestratorService.getPayStatusPeriodsByType(latestStartDate, prisonCode)
+      const result = await orchestratorService.getUnendedPayStatusPeriods(prisonCode)
 
       expect(result).toEqual([])
     })
 
     it('should propagate errors from the API client', async () => {
-      const latestStartDate = '2025-01-01'
       const prisonCode = 'MDI'
       const error = new Error('API error')
 
-      orchestratorApiClient.getPayStatusPeriods.mockRejectedValue(error)
+      orchestratorApiClient.getUnendedPayStatusPeriods.mockRejectedValue(error)
 
-      await expect(orchestratorService.getPayStatusPeriodsByType(latestStartDate, prisonCode)).rejects.toThrow(
-        'API error',
-      )
+      await expect(orchestratorService.getUnendedPayStatusPeriods(prisonCode)).rejects.toThrow('API error')
     })
   })
 

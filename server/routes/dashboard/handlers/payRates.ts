@@ -11,10 +11,7 @@ export default class PayRatesHandler {
   GET = async (req: Request, res: Response) => {
     const { activeCaseLoadId } = res.locals.user
     const payTypes = getAllPayTypes()
-    const paySummary = await this.orchestratorService.getPayStatusPeriodsByType(
-      format(new Date(), 'yyyy-MM-dd'),
-      activeCaseLoadId,
-    )
+    const paySummary = await this.orchestratorService.getUnendedPayStatusPeriods(activeCaseLoadId)
     const payRates = await this.orchestratorService.getPayRates(activeCaseLoadId)
     const today = format(new Date(), 'yyyy-MM-dd')
     const payTypeData = payTypes.map(payType => {

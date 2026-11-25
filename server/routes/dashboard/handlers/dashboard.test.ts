@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { addDays, format } from 'date-fns'
 import { when } from 'jest-when'
 import DashboardHandler from './dashboard'
 import OrchestratorService from '../../../services/orchestratorService'
@@ -29,8 +30,8 @@ describe('GET /dashboard', () => {
       render: jest.fn(),
     } as unknown as Response
 
-    when(orchestratorService.getPayStatusPeriodsByType)
-      .calledWith(expect.any(String), expect.any(String))
+    when(orchestratorService.getUnendedPayStatusPeriods)
+      .calledWith('MDI')
       .mockResolvedValue(TestData.PayStatusPeriods())
 
     jest.mocked(auditUtils.auditPageView).mockResolvedValue(undefined)
@@ -43,6 +44,23 @@ describe('GET /dashboard', () => {
   it('should render dashboard page', async () => {
     await handler.GET(req, res)
     expect(res.render).toHaveBeenCalledWith('pages/dashboard/dashboard', expect.any(Object))
+  })
+
+  it('should count a status starting tomorrow with no end date', async () => {
+    const scheduledPeriod = {
+      ...TestData.PayStatusPeriods()[0],
+      startDate: format(addDays(new Date(), 1), 'yyyy-MM-dd'),
+    }
+    jest.mocked(orchestratorService.getUnendedPayStatusPeriods).mockResolvedValueOnce([scheduledPeriod])
+
+    await handler.GET(req, res)
+
+    expect(res.render).toHaveBeenCalledWith(
+      'pages/dashboard/dashboard',
+      expect.objectContaining({
+        payTypes: expect.arrayContaining([expect.objectContaining({ type: scheduledPeriod.type, prisonerCount: 1 })]),
+      }),
+    )
   })
 
   it('should log page view to audit service with correct parameters', async () => {
