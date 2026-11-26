@@ -92,6 +92,7 @@ export default class TestData {
     return {
       staffId: 12345,
       userId: 'ABCD1234',
+      userUuid: '11111111-1111-1111-1111-111111111111',
       name: 'Test User',
       displayName: 'Test User',
       userRoles: ['ROLE_PRISONER_PAY'],
